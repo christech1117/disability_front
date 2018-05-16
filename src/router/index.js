@@ -38,23 +38,35 @@ export const constantRouterMap = [
   },
 
   {
-    path: '/example',
+    path: '/company',
     component: Layout,
     redirect: '/example/table',
     name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
+    meta: { title: '組織管理', icon: 'example' },
     children: [
       {
-        path: 'table',
+        path: 'basic',
         name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
+        component: () => import('@/views/company/index'),
+        meta: { title: '組織基本資料', icon: 'table' }
       },
       {
-        path: 'tree',
+        path: 'department',
         name: 'Tree',
         component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
+        meta: { title: '單位管理', icon: 'tree' }
+      },
+      {
+        path: 'plan',
+        name: 'Tree',
+        component: () => import('@/views/tree/index'),
+        meta: { title: '方案管理', icon: 'tree' }
+      },
+      {
+        path: 'file',
+        name: 'Tree',
+        component: () => import('@/views/tree/index'),
+        meta: { title: '檔案管理', icon: 'tree' }
       }
     ]
   },
@@ -67,7 +79,97 @@ export const constantRouterMap = [
         path: 'index',
         name: 'Form',
         component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
+        meta: { title: '個人層級', icon: 'form' }
+      }
+    ]
+  },
+
+  {
+    path: '/team',
+    component: Layout,
+    redirect: '/example/table',
+    name: 'Example',
+    meta: { title: '團隊層級', icon: 'example' },
+    children: [
+      {
+        path: 'basic',
+        name: 'Table',
+        component: () => import('@/views/table/index'),
+        meta: { title: '團隊管理', icon: 'table' }
+      },
+      {
+        path: 'department',
+        name: 'Tree',
+        component: () => import('@/views/tree/index'),
+        meta: { title: '個人與團隊特質量表', icon: 'tree' }
+      },
+      {
+        path: 'plan',
+        name: 'Tree',
+        component: () => import('@/views/tree/index'),
+        meta: { title: '發展計畫', icon: 'tree' }
+      },
+      {
+        path: 'file',
+        name: 'Tree',
+        component: () => import('@/views/tree/index'),
+        meta: { title: 'CFI統計', icon: 'tree' }
+      }
+    ]
+  },
+
+  {
+    path: '/organization',
+    component: Layout,
+    redirect: '/example/table',
+    name: 'Example',
+    meta: { title: '組織層級', icon: 'example' },
+    children: [
+      {
+        path: 'oees',
+        name: 'Table',
+        component: () => import('@/views/table/index'),
+        meta: { title: '組織效益效率量表(OEES)', icon: 'table' }
+      },
+      {
+        path: 'develop_plan',
+        name: 'Tree',
+        component: () => import('@/views/tree/index'),
+        meta: { title: '發展計畫', icon: 'tree' }
+      },
+      {
+        path: 'statistic',
+        name: 'Tree',
+        component: () => import('@/views/tree/index'),
+        meta: { title: '統計分析', icon: 'tree' }
+      }
+    ]
+  },
+
+  {
+    path: '/work',
+    component: Layout,
+    redirect: '/example/table',
+    name: 'Example',
+    meta: { title: '工作管理', icon: 'example' },
+    children: [
+      {
+        path: 'person',
+        name: 'Table',
+        component: () => import('@/views/table/index'),
+        meta: { title: '個人層級', icon: 'table' }
+      },
+      {
+        path: 'team',
+        name: 'Tree',
+        component: () => import('@/views/tree/index'),
+        meta: { title: '團隊層級', icon: 'tree' }
+      },
+      {
+        path: 'organization',
+        name: 'Tree',
+        component: () => import('@/views/tree/index'),
+        meta: { title: '組織層級', icon: 'tree' }
       }
     ]
   },
