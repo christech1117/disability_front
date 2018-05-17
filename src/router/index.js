@@ -40,32 +40,32 @@ export const constantRouterMap = [
   {
     path: '/company',
     component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
+    redirect: '/company/basic',
+    name: 'Company',
     meta: { title: '組織管理', icon: 'example' },
     children: [
       {
         path: 'basic',
-        name: 'Table',
-        component: () => import('@/views/company/index'),
+        name: 'Basic',
+        component: () => import('@/views/company/Basic'),
         meta: { title: '組織基本資料', icon: 'table' }
       },
       {
         path: 'department',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
+        name: 'Department',
+        component: () => import('@/views/company/department'),
         meta: { title: '單位管理', icon: 'tree' }
       },
       {
         path: 'plan',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
+        name: 'Plan',
+        component: () => import('@/views/company/Plan'),
         meta: { title: '方案管理', icon: 'tree' }
       },
       {
         path: 'file',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
+        name: 'File',
+        component: () => import('@/views/company/File'),
         meta: { title: '檔案管理', icon: 'tree' }
       }
     ]
@@ -87,32 +87,32 @@ export const constantRouterMap = [
   {
     path: '/team',
     component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
+    redirect: '/team/basic',
+    name: 'Team',
     meta: { title: '團隊層級', icon: 'example' },
     children: [
       {
         path: 'basic',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
+        name: 'Basic',
+        component: () => import('@/views/team/basic'),
         meta: { title: '團隊管理', icon: 'table' }
       },
       {
-        path: 'department',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
+        path: 'personTeam',
+        name: 'PersonTeam',
+        component: () => import('@/views/team/PersonTeam'),
         meta: { title: '個人與團隊特質量表', icon: 'tree' }
       },
       {
-        path: 'plan',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
+        path: 'developPlan',
+        name: 'DevelopPlan',
+        component: () => import('@/views/team/DevelopPlan'),
         meta: { title: '發展計畫', icon: 'tree' }
       },
       {
-        path: 'file',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
+        path: 'CFIstatistic',
+        name: 'CFIstatistic',
+        component: () => import('@/views/team/CFIstatistic'),
         meta: { title: 'CFI統計', icon: 'tree' }
       }
     ]
@@ -122,7 +122,7 @@ export const constantRouterMap = [
     path: '/organization',
     component: Layout,
     redirect: '/example/table',
-    name: 'Example',
+    name: 'Organization',
     meta: { title: '組織層級', icon: 'example' },
     children: [
       {
@@ -132,7 +132,7 @@ export const constantRouterMap = [
         meta: { title: '組織效益效率量表(OEES)', icon: 'table' }
       },
       {
-        path: 'develop_plan',
+        path: 'developPlan',
         name: 'Tree',
         component: () => import('@/views/tree/index'),
         meta: { title: '發展計畫', icon: 'tree' }
@@ -150,7 +150,7 @@ export const constantRouterMap = [
     path: '/work',
     component: Layout,
     redirect: '/example/table',
-    name: 'Example',
+    name: 'Work',
     meta: { title: '工作管理', icon: 'example' },
     children: [
       {
