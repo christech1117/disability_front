@@ -1,8 +1,13 @@
+@import '~bootstrap/scss/bootstrap';
 @import './variables.scss';
 @import './mixin.scss';
 @import './transition.scss';
 @import './element-ui.scss';
 @import './sidebar.scss';
+@import './variables';
+@import './override-bootstrap';
+@import './override-custom-libs';
+@import '~pretty-checkbox/src/pretty-checkbox.scss';
 
 body {
   height: 100%;
