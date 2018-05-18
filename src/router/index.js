@@ -72,13 +72,13 @@ export const constantRouterMap = [
   },
 
   {
-    path: '/form',
+    path: '/person',
     component: Layout,
     children: [
       {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
+        path: 'user',
+        name: 'User',
+        component: () => import('@/views/person/User'),
         meta: { title: '個人層級', icon: 'form' }
       }
     ]
