@@ -51,16 +51,22 @@ export const constantRouterMap = [
         meta: { title: '組織基本資料', icon: 'table' }
       },
       {
+        path: 'plan',
+        name: 'Plan',
+        component: () => import('@/views/company/Plan'),
+        meta: { title: '方案管理', icon: 'tree' }
+      },
+      {
         path: 'department',
         name: 'Department',
         component: () => import('@/views/company/department'),
         meta: { title: '單位管理', icon: 'tree' }
       },
       {
-        path: 'plan',
-        name: 'Plan',
-        component: () => import('@/views/company/Plan'),
-        meta: { title: '方案管理', icon: 'tree' }
+        path: 'member',
+        name: 'Member',
+        component: () => import('@/views/company/Member'),
+        meta: { title: '人員管理', icon: 'tree' }
       },
       {
         path: 'file',

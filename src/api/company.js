@@ -8,6 +8,48 @@ export function getCompanyBasic(params) {
     params
   })
 }
+// 編輯組織基本資料
+export function updateCompanyBasic(params) {
+  return request({
+    url: '/company/basic',
+    method: 'patch',
+    params
+  })
+}
+
+// 方案管理
+export function getCompanyPlanList(params) {
+  return request({
+    url: '/company/plan',
+    method: 'get',
+    params
+  })
+}
+// 新增方案
+export function createCompanyPlan(params) {
+  return request({
+    url: '/company/plan',
+    method: 'put',
+    params
+  })
+}
+// 修改方案
+export function updateCompanyPlan(params) {
+  return request({
+    url: '/company/plan/:id',
+    method: 'patch',
+    params
+  })
+}
+// 刪除方案
+export function deleteCompanyPlan(params) {
+  return request({
+    url: '/company/plan/:id',
+    method: 'delete',
+    params
+  })
+}
+
 // 單位管理
 export function getCompanyDepartmentList(params) {
   return request({
@@ -17,7 +59,7 @@ export function getCompanyDepartmentList(params) {
   })
 }
 // 新增單位
-export function addCompanyDepartment(params) {
+export function createCompanyDepartment(params) {
   return request({
     url: '/company/department',
     method: 'put',
@@ -40,34 +82,35 @@ export function deleteCompanyDepartment(params) {
     params
   })
 }
-// 方案管理
-export function getCompanyPlanList(params) {
+
+// 人員管理
+export function getCompanyMemberList(params) {
   return request({
-    url: '/company/plan',
+    url: '/company/member',
     method: 'get',
     params
   })
 }
-// 新增方案
-export function addCompanyPlan(params) {
+// 新增人員
+export function createCompanyMember(params) {
   return request({
-    url: '/company/plan',
+    url: '/company/member',
     method: 'put',
     params
   })
 }
-// 修改方案
-export function updateCompanyPlan(params) {
+// 修改人員
+export function updateCompanyMember(params) {
   return request({
-    url: '/company/plan/:id',
+    url: '/company/member/:id',
     method: 'patch',
     params
   })
 }
-// 刪除方案
-export function deleteCompanyPlan(params) {
+// 刪除人員
+export function deleteCompanyMember(params) {
   return request({
-    url: '/company/plan/:id',
+    url: '/company/member/:id',
     method: 'delete',
     params
   })

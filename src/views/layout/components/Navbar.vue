@@ -1,5 +1,5 @@
 <template>
-  <el-menu class="navbar" mode="horizontal">
+  <el-menu class="my-navbar" mode="horizontal">
     <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
     <breadcrumb></breadcrumb>
     <el-dropdown class="avatar-container" trigger="click">
@@ -51,7 +51,7 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.navbar {
+.my-navbar {
   height: 50px;
   line-height: 50px;
   border-radius: 0px !important;

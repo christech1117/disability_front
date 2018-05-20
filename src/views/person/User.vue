@@ -1,9 +1,15 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
+        <!-- <el-input
+          placeholder="请输入内容"
+          prefix-icon="el-icon-search"
+          style="width: 200px;" class="filter-item"
+          v-model="input21">
+        </el-input> -->
       <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">搜索</el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="el-icon-edit">新增</el-button>
-      <el-button class="filter-item" type="primary" :loading="downloadLoading" v-waves icon="el-icon-download" @click="handleDownload">下載</el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="warning" icon="el-icon-plus">新增</el-button>
+      <!-- <el-button class="filter-item" type="primary" :loading="downloadLoading" v-waves icon="el-icon-download" @click="handleDownload">下載</el-button> -->
     </div>
     <el-table :data="list" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row>
       <el-table-column align="center" label='代號' width="105">
@@ -33,9 +39,9 @@
       </el-table-column>
       <el-table-column class-name="status-col" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button type="success" size="mini" @click="handleUpdate(scope.row)">選擇</el-button>
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">編輯</el-button>
-          <el-button type="danger" size="mini" @click="handleUpdate(scope.row)">刪除</el-button>
+          <el-button type="success" size="mini" @click="handleUpdate(scope.row)" icon="el-icon-check"></el-button>
+          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)" icon="el-icon-edit"></el-button>
+          <el-button type="danger" size="mini" @click="handleUpdate(scope.row)" icon="el-icon-delete"></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -64,7 +70,17 @@ export default {
         update: 'Edit',
         create: 'Create'
       },
+      temp: {
+        id: undefined,
+        importance: 1,
+        remark: '',
+        timestamp: new Date(),
+        title: '',
+        type: '',
+        status: 'published'
+      },
       dialogFormVisible: false,
+      input21: '',
     }
   },
   filters: {
@@ -86,15 +102,6 @@ export default {
         this.list = response.data.items
         this.total = response.data.total
         this.listLoading = false
-      })
-    },
-    handleUpdate(row) {
-      this.temp = Object.assign({}, row) // copy obj
-      this.temp.timestamp = new Date(this.temp.timestamp)
-      this.dialogStatus = 'update'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
       })
     },
   }

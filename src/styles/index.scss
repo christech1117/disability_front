@@ -1,10 +1,9 @@
 @import '~bootstrap/scss/bootstrap';
-@import './variables.scss';
+@import 'variables';
 @import './mixin.scss';
 @import './transition.scss';
 @import './element-ui.scss';
 @import './sidebar.scss';
-@import './variables';
 @import './override-bootstrap';
 @import './override-custom-libs';
 @import '~pretty-checkbox/src/pretty-checkbox.scss';
@@ -80,4 +79,29 @@ a:hover {
 
 .app-container {
   padding: 20px;
+}
+
+.filter-container {
+  margin: 0 20px 20px 10px;
+  display: flex;
+}
+
+.table {
+  border: 1px solid black;
+  th {
+    width: 200px;
+    text-align: center;
+    border: 1px solid black;
+  }
+  td {
+    border: 1px solid black;
+    width: 200px;
+  }
+}
+.el-checkbox, .el-radio {
+  margin-left: 10px;
+  
+}
+.el-checkbox+.el-checkbox, .el-radio+.el-radio {
+  margin-left: 10px;
 }
