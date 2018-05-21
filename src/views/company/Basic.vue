@@ -150,8 +150,8 @@ export default {
         budget: '',
         service_content: '',
         created_at: new Date(),
-        updated_at: new Date(),
-      },
+        updated_at: new Date()
+      }
     }
   },
   filters: {

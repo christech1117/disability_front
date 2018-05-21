@@ -177,35 +177,34 @@ export default {
         team_name: '',
         role: [],
         approve_status: [],
-        work_status: [],
         income: [],
         is_del: 0,
         created_at: new Date(),
-        updated_at: new Date(),
+        updated_at: new Date()
       },
       dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
         update: '編輯人員',
         create: '新增人員'
-      },
+      }
     }
   },
   filters: {
     statusFilter(status) {
       const statusMap = {
-        1: 'success',
-        0: 'danger',
+        '就職': 'success',
+        '離職': 'danger'
       }
       return statusMap[status]
-    },
-    valueFilter(value) {
-      const valueMap = {
-        1: '在職',
-        0: '離職',
-      }
-      return valueMap[value]
     }
+    // valueFilter(value) {
+    //   const valueMap = {
+    //     1: '就職',
+    //     0: '離職',
+    //   }
+    //   return valueMap[value]
+    // }
   },
   created() {
     this.fetchData()
@@ -235,11 +234,10 @@ export default {
         team_name: '',
         role: [],
         approve_status: [],
-        work_status: [],
         income: [],
         is_del: 0,
         created_at: new Date(),
-        updated_at: new Date(),
+        updated_at: new Date()
       }
     },
     handleCreate() {

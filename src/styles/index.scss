@@ -86,16 +86,26 @@ a:hover {
   display: flex;
 }
 
-.table {
-  border: 1px solid black;
+.table, .el-table {
+  color: black;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
   th {
     width: 200px;
     text-align: center;
-    border: 1px solid black;
+    border-right: 1px solid black;
+    border-top: 1px solid black;
   }
   td {
-    border: 1px solid black;
+    border-right: 1px solid black;
+    border-top: 1px solid black;
     width: 200px;
+  }
+}
+.el-table {
+  th {
+    color: $theme-brown;
   }
 }
 .el-checkbox, .el-radio {

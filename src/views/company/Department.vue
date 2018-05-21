@@ -221,15 +221,14 @@ export default {
         adress: '',
         tel: '',
         created_at: new Date(),
-        updated_at: new Date(),
+        updated_at: new Date()
       },
       dialogFormVisible: false,
       dialogStatus: '',
-      checkList: ['选中且禁用','复选框 A'],
       textMap: {
         update: '編輯',
         create: '新增'
-      },
+      }
     }
   },
   filters: {
@@ -245,7 +244,7 @@ export default {
       const valueMap = {
         day: '日間',
         live: '居住',
-        job: '就業'  
+        job: '就業'
       }
       return valueMap[value]
     }
@@ -272,7 +271,7 @@ export default {
         adress: '',
         tel: '',
         created_at: new Date(),
-        updated_at: new Date(),
+        updated_at: new Date()
       }
     },
     handleCreate() {

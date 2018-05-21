@@ -1,12 +1,6 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-        <!-- <el-input
-          placeholder="请输入内容"
-          prefix-icon="el-icon-search"
-          style="width: 200px;" class="filter-item"
-          v-model="input21">
-        </el-input> -->
       <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">搜索</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="warning" icon="el-icon-plus">新增</el-button>
       <!-- <el-button class="filter-item" type="primary" :loading="downloadLoading" v-waves icon="el-icon-download" @click="handleDownload">下載</el-button> -->
@@ -79,8 +73,7 @@ export default {
         type: '',
         status: 'published'
       },
-      dialogFormVisible: false,
-      input21: '',
+      dialogFormVisible: false
     }
   },
   filters: {
@@ -103,7 +96,7 @@ export default {
         this.total = response.data.total
         this.listLoading = false
       })
-    },
+    }
   }
 }
 </script>
