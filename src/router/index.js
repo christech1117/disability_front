@@ -104,9 +104,9 @@ export const constantRouterMap = [
         meta: { title: '團隊管理', icon: 'table' }
       },
       {
-        path: 'personTeam',
-        name: 'PersonTeam',
-        component: () => import('@/views/team/PersonTeam'),
+        path: 'traitChart',
+        name: 'TraitChart',
+        component: () => import('@/views/team/TraitChart'),
         meta: { title: '個人與團隊特質量表', icon: 'tree' }
       },
       {

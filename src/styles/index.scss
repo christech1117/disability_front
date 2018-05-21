@@ -88,18 +88,18 @@ a:hover {
 
 .table, .el-table {
   color: black;
-  border-left: 1px solid black;
-  border-right: 1px solid black;
-  border-bottom: 1px solid black;
+  border-left: 1px solid $dark-gray;
+  border-right: 1px solid $dark-gray;
+  border-bottom: 1px solid $dark-gray;
   th {
     width: 200px;
     text-align: center;
-    border-right: 1px solid black;
-    border-top: 1px solid black;
+    border-right: 1px solid $dark-gray;
+    border-top: 1px solid $dark-gray;
   }
   td {
-    border-right: 1px solid black;
-    border-top: 1px solid black;
+    border-right: 1px solid $dark-gray;
+    border-top: 1px solid $dark-gray;
     width: 200px;
   }
 }

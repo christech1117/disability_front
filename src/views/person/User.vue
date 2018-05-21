@@ -39,11 +39,89 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog title="Reading statistics" :visible.sync="dialogFormVisible">
-      <el-table :data="list" border fit highlight-current-row style="width: 100%">
-        <el-table-column prop="key" label="Channel"> </el-table-column>
-        <el-table-column prop="pv" label="Pv"> </el-table-column>
-      </el-table>
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+      <table class="table day" border="1">
+        <tr>
+          <th>姓名</th>
+          <td>
+            <el-input v-model="temp.name"></el-input>
+          </td>
+          <th>照片</th>
+          <td></td>
+        </tr>
+        <tr>
+          <th>就職日期</th>
+          <td>
+            <el-input v-model="temp.work_start_date"></el-input>
+          </td>
+          <th>工作狀態</th>
+          <td>
+              <el-radio v-for="item in work_status" :key="item.key" :label="item" v-model="temp.work_status">{{item}}</el-radio>
+          </td>
+        </tr>
+        <tr>
+          <th>電話</th>
+          <td>
+            <el-input v-model="temp.tel"></el-input>
+          </td>
+          <th>E-mail</th>
+          <td>
+            <el-input v-model="temp.email"></el-input>
+          </td>
+        </tr>
+        <tr>
+          <th>聯絡住址</th>
+          <td colspan="3">
+            <el-input v-model="temp.adress"></el-input>
+          </td>
+        </tr>
+        <tr>
+          <th>部門或單位</th>
+          <td>
+            <el-input v-model="temp.depart_name"></el-input>
+          </td>
+          <th>職稱</th>
+          <td>
+            <el-input v-model="temp.work_title"></el-input>
+          </td>
+        </tr>
+        <tr>
+          <th>方案計畫名稱</th>
+          <td colspan="3">
+            <el-input v-model="temp.plan_name"></el-input>
+          </td>
+        </tr>
+        <tr>
+          <th>所屬團隊</th>
+          <td colspan="3">
+            <el-input v-model="temp.team_name"></el-input>
+          </td>
+        </tr>
+        <tr>
+          <th colspan="4" class="bg-grap">權限</th>
+        </tr>
+        <tr>
+          <th>角色</th>
+          <td colspan="3">
+            <el-checkbox-group v-model="temp.role">
+              <el-checkbox v-for="item in role" :key="item.key" :label="item">{{item}}</el-checkbox>
+            </el-checkbox-group>
+          </td>
+        </tr>
+        <tr>
+          <th>審核</th>
+          <td>
+            <el-checkbox-group v-model="temp.approve_status">
+              <el-checkbox v-for="item in approve_status" :key="item.key" :label="item">{{item}}</el-checkbox>
+            </el-checkbox-group>
+            
+          </td>
+          <th>個人收入</th>
+          <td>
+            <el-radio v-for="item in income" :key="item.key" :label="item" v-model="temp.income">{{item}}</el-radio>
+          </td>
+        </tr>
+      </table>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogFormVisible = false">儲存</el-button>
       </span>
@@ -61,8 +139,8 @@ export default {
       list: null,
       listLoading: true,
       textMap: {
-        update: 'Edit',
-        create: 'Create'
+        update: '編輯',
+        create: '新增'
       },
       temp: {
         id: undefined,
@@ -95,6 +173,46 @@ export default {
         this.list = response.data.items
         this.total = response.data.total
         this.listLoading = false
+      })
+    },
+    resetTemp() {
+      this.temp = {
+        member_id: undefined,
+        name: '',
+        avatar: '',
+        work_start_date: '',
+        work_end_date: '',
+        work_status: '',
+        tel: '',
+        email: '',
+        adress: '',
+        depart_name: '',
+        work_title: '',
+        plan_name: '',
+        team_name: '',
+        role: [],
+        approve_status: [],
+        income: [],
+        is_del: 0,
+        created_at: new Date(),
+        updated_at: new Date()
+      }
+    },
+    handleCreate() {
+      this.resetTemp()
+      this.dialogStatus = 'create'
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
+    },
+    handleUpdate(row) {
+      this.temp = Object.assign({}, row) // copy obj
+      this.temp.timestamp = new Date(this.temp.timestamp)
+      this.dialogStatus = 'update'
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
       })
     }
   }

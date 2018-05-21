@@ -185,8 +185,8 @@ export default {
       dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
-        update: '編輯人員',
-        create: '新增人員'
+        update: '編輯',
+        create: '新增'
       }
     }
   },
