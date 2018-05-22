@@ -9,9 +9,9 @@
           <table class="table">
             <tr>
               <th colspan="2">姓名(自評)</th>
-              <td>{{temp.company_name}}</td>
+              <td></td>
               <th>施測日期</th>
-              <td>{{temp.company_name}}</td>
+              <td></td>
             </tr>
             <tr class="title">
               <th>要素</th>
@@ -21,8 +21,8 @@
               <th>小計</th>
             </tr>
             <tr>
-              <th rowspan="10">專業能力</th>
-              <th rowspan="3">專業標準</th>
+              <th rowspan="10">{{type}}</th>
+              <th rowspan="3">{{subtype}}</th>
               <td>認識自己與他人的能力範圍</td>
               <td></td>
               <td rowspan="3"></td>
@@ -132,38 +132,32 @@
 </template>
 
 <script>
-import { getList } from '@/api/table'
+import { getTraitChartData } from '@/api/team'
 
 export default {
   data() {
     return {
       list: null,
+      type: null,
+      subtype: null,
       listLoading: true,
-      temp: {
-        compony_id: undefined,
-        company_name: '',
-        member_name: '',
-        tel: '',
-        email: '',
-        service_area: '',
-        user_count: '',
-        member_count: '',
-        service_people: '',
-        people_age: '',
-        budget: '',
-        service_content: '',
-        created_at: new Date(),
-        updated_at: new Date()
+      textMap: {
+        update: '編輯',
+        create: '新增'
       },
-      activeName: 'first'
+      temp: {
+        type: this.list,
+        // subtype: this.list['subtype']
+      },
+      activeName: 'first',
+      dialogFormVisible: false
     }
   },
   filters: {
     statusFilter(status) {
       const statusMap = {
-        published: 'success',
-        draft: 'gray',
-        deleted: 'danger'
+        服務中: 'success',
+        暫停: 'danger'
       }
       return statusMap[status]
     }
@@ -174,16 +168,37 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      getList(this.listQuery).then(response => {
+      getTraitChartData(this.listQuery).then(response => {
         this.list = response.data.items
+        this.type = response.data.items[0].type
+        this.subtype = response.data.items[0].subtype
+        this.total = response.data.total
         this.listLoading = false
+      })
+    },
+    resetTemp() {
+      this.temp = {
+        type: '',
+        subtype: []
+      }
+    },
+    handleCreate() {
+      this.resetTemp()
+      this.dialogStatus = 'create'
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
+    },
+    handleUpdate(row) {
+      this.temp = Object.assign({}, row) // copy obj
+      this.temp.timestamp = new Date(this.temp.timestamp)
+      this.dialogStatus = 'update'
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
       })
     }
   }
 }
 </script>
-<style lang="scss" scoped>
-.title {
-  background-color: #c8f9c5;
-}
-</style>
