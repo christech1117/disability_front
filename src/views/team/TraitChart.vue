@@ -21,8 +21,8 @@
               <th>小計</th>
             </tr>
             <tr>
-              <th rowspan="10">{{type}}</th>
-              <th rowspan="3">{{subtype}}</th>
+              <th rowspan="10">專業能力</th>
+              <th rowspan="3">專業標準</th>
               <td>認識自己與他人的能力範圍</td>
               <td></td>
               <td rowspan="3"></td>
