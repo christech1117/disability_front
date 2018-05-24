@@ -8,3 +8,11 @@ export function getList(params) {
     params
   })
 }
+// 支持強度量表(SIS)資料
+export function getSisData(params) {
+  return request({
+    url: '/person/sisData',
+    method: 'get',
+    params
+  })
+}

@@ -6,9 +6,9 @@
       <!-- <el-button class="filter-item" type="primary" :loading="downloadLoading" v-waves icon="el-icon-download" @click="handleDownload">下載</el-button> -->
     </div>
     <el-tabs type="card" v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="個案基本資料" name="first">
+      <el-tab-pane label="基本資料" name="first">
         <h5>一、基本資料</h5>
-        <table border="1" class="table text-center">
+        <table class="table">
           <tr>
             <th>姓名</th>
             <td colspan="2"></td>
@@ -71,17 +71,138 @@
           </tr>
         </table>
       </el-tab-pane>
-      <el-tab-pane label="支持強度量表(SIS)訪談紀錄" name="second">
+      <el-tab-pane label="支持強度量表(SIS)" name="second">
+        <table class="table">
+          <tr>
+            <th colspan="6" class="bg-gray">服務對象資訊</th>
+          </tr>
+          <tr>
+            <th>姓名</th>
+            <td></td>
+            <th>性別</th>
+            <td></td>
+            <th>出生日期</th>
+            <td></td>
+          </tr>
+          <tr>
+            <th>地址</th>
+            <td colspan="3"></td>
+            <th>電話</th>
+            <td></td>
+          </tr>
+          <tr>
+            <th>服務提供單位</th>
+            <td colspan="5"></td>
+          </tr>
+          <tr>
+            <th>服務提供單位地址</th>
+            <td colspan="5"></td>
+          </tr>
+          <tr>
+            <th>機構連絡人</th>
+            <td colspan="3"></td>
+            <th>電話</th>
+            <td></td>
+          </tr>
+          <tr>
+            <th colspan="6" class="bg-gray">受訪者資訊</th>
+          </tr>
+          <tr>
+            <th colspan="3">受訪者姓名</th>
+            <th colspan="3">關係</th>
+          </tr>
+          <tr>
+            <th colspan="6" class="bg-gray">訪員資訊</th>
+          </tr>
+          <tr>
+            <th>訪員姓名</th>
+            <td colspan="3"></td>
+            <th>聯絡電話</th>
+            <td colspan="3"></td>
+          </tr>
+          <tr>
+            <th>郵件信箱</th>
+            <td colspan="5"></td>
+          </tr>
+          <tr>
+            <th>訪談日期</th>
+            <td colspan="3"></td>
+            <th>報告填寫日期</th>
+            <td colspan="3"></td>
+          </tr>
+        </table>
+        <h5>● 訪談表</h5>
+        <table class="table">
+          <tr class="bg-gray">
+            <th colspan="4">第一(A)部分:特殊醫療及行為支持需求</th>
+            <th colspan="4">第一(B)部分: 特殊行為支持需求</th>
+          </tr>
+          <tr>
+            <th width="200px">需要的特殊醫療支持</th>
+            <th>不需要支持</th>
+            <th>需要部分支持</th>
+            <th>需要廣泛與多元支持</th>
+            <th>需要的特殊行為支持</th>
+            <th>不需要支持</th>
+            <th>需要部分支持</th>
+            <th>需要廣泛與多元支持</th>
+          </tr>
+          <tr>
+            <td colspan="4">呼吸道照顧</td>
+            <td colspan="4">外在導向的行為</td>
+          </tr>
+          <tr>
+            <td>1.吸入性治療或氧氣治療</td>
+            <td>0</td>
+            <td>1</td>
+            <td>2</td>
+            <td>1.避免情緒失控</td>
+            <td>0</td>
+            <td>1</td>
+            <td>2</td>
+          </tr>
+          
+        </table>
       </el-tab-pane>
-      <el-tab-pane label="一頁ISP" name="second">
+      <el-tab-pane label="我的支持計畫" name="three">
+        <el-table :data="list" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row>
+          <el-table-column align="center" label='第一(A)部分:特殊醫療及行為支持需求' width="95">
+            <el-table-column label="需要的特殊醫療支持" width="250px">
+              <template slot-scope="scope">
+                {{scope.row.title}}
+              </template>
+            </el-table-column>
+            <el-table-column label="不需要支持">
+            </el-table-column>
+            <el-table-column label="需要部分支持">
+            </el-table-column>
+            <el-table-column label="需要廣泛與多元支持">
+            </el-table-column>
+          </el-table-column>
+          <el-table-column align="center" label='第一(B)部分: 特殊行為支持需求' width="95">
+            <el-table-column label="需要的特殊行為支持" width="250px">
+            </el-table-column>
+            <el-table-column label="不需要支持">
+            </el-table-column>
+            <el-table-column label="需要部分支持">
+            </el-table-column>
+            <el-table-column label="需要廣泛與多元支持">
+            </el-table-column>
+          </el-table-column>
+        </el-table>
       </el-tab-pane>
-      <el-tab-pane label="個別化支持服務計畫" name="second">
+      <el-tab-pane label="個別化支持服務計畫" name="four">
       </el-tab-pane>
-      <el-tab-pane label="個人成果量表(POS)訪談紀錄" name="second">
+      <el-tab-pane label="ISP會議記錄" name="five">
       </el-tab-pane>
-      <el-tab-pane label="社區生活技能評量表" name="second">
+      <el-tab-pane label="個人成果量表(POS)" name="six">
       </el-tab-pane>
-      
+      <el-tab-pane label="社區生活技能評量表" name="seven">
+      </el-tab-pane>
+      <el-tab-pane label="統計分析" name="eight">
+      </el-tab-pane>
+      <el-tab-pane label="個案管理" name="night">
+      </el-tab-pane>
     </el-tabs>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <table class="table day" border="1">
@@ -175,7 +296,7 @@
 </template>
 
 <script>
-import { getList } from '@/api/person'
+import { getSisData } from '@/api/person'
 
 export default {
   data() {
@@ -214,7 +335,7 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      getList(this.listQuery).then(response => {
+      getSisData(this.listQuery).then(response => {
         this.list = response.data.items
         this.total = response.data.total
         this.listLoading = false
