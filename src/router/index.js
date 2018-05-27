@@ -136,20 +136,20 @@ export const constantRouterMap = [
   {
     path: '/organization',
     component: Layout,
-    redirect: '/example/table',
+    redirect: '/organization/OEES',
     name: 'Organization',
     meta: { title: '組織層級', icon: 'example' },
     children: [
       {
         path: 'oees',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
+        name: 'OEES',
+        component: () => import('@/views/organization/OEES'),
         meta: { title: '組織效益效率量表(OEES)', icon: 'table' }
       },
       {
         path: 'developPlan',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
+        name: 'DevelopPlans',
+        component: () => import('@/views/organization/DevelopPlans'),
         meta: { title: '發展計畫', icon: 'tree' }
       },
       {

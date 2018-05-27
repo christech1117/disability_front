@@ -13,13 +13,54 @@
               <th>施測日期</th>
               <td></td>
             </tr>
-            <tr class="title">
+            <tr class="title bg-green">
               <th>要素</th>
               <th>面向</th>
               <th style="width: 700px;">題項</th>
               <th>分數</th>
               <th>小計</th>
             </tr>
+            
+            <!-- <tbody v-for="n in 3" :key="n">
+              <tr v-for="(item, index) in type" :key="item.id" v-if="index===0">
+                <th rowspan="10">{{ item.type }}</th>
+                <th rowspan="3">{{ item.subtype[0] }}</th>
+                <td>{{ item.title[0] }}</td>
+                <td>{{ item.score }}</td>
+                <td rowspan="3">{{ item.total }}</td>
+              </tr>
+              <tr v-for="(item, index) in type" :key="item.id" v-if="index===0">
+                <td>{{ item.title[1] }}</td>
+                <td>{{ item.score }}</td>
+              </tr>
+              <tr v-for="(item, index) in type" :key="item.id" v-if="index===0">
+                <td>{{ item.title[2] }}</td>
+                <td>{{ item.score }}</td>
+              </tr>
+              <tr v-for="(item, index) in type" :key="item.id" v-if="index===0">
+                <th rowspan="3">{{ item.subtype[1] }}</th>
+                <td>{{ item.title[0] }}</td>
+                <td>{{ item.score }}</td>
+                <td>{{ item.total }}</td>
+              </tr>
+              <tr v-for="(item, index) in type" :key="item.id" v-if="index===0">
+                <td>{{ item.title[1] }}</td>
+              </tr>
+              <tr v-for="(item, index) in type" :key="item.id" v-if="index===0">
+                <td>{{ item.title[2] }}</td>
+              </tr>
+              <tr v-for="(item, index) in type" :key="item.id" v-if="index===0">
+                <th rowspan="3">{{ item.subtype[2] }}</th>
+                <td>{{ item.title[0] }}</td>
+              </tr>
+              <tr v-for="(item, index) in type" :key="item.id" v-if="index===0">
+                <td>{{ item.title[1] }}</td>
+              </tr>
+              <tr v-for="(item, index) in type" :key="item.id" v-if="index===0">
+                <td>{{ item.title[2] }}</td>
+              </tr>
+            </tbody> -->
+
             <tr>
               <th rowspan="10">專業能力</th>
               <th rowspan="3">專業標準</th>
@@ -67,6 +108,194 @@
               <th colspan="2">合計</th>
               <td colspan="2"></td>
             </tr>
+            <tr>
+              <th rowspan="10">領導能力</th>
+              <th rowspan="3">輔導與教導</th>
+              <td>引進及解說概念、資訊、及想法</td>
+              <td></td>
+              <td rowspan="3"></td>
+            </tr>
+            <tr>
+              <td>體現及發展具體團隊提升策略及/或技巧</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>批評時用正向的態度及方法，建立他人的自信及自尊</td>
+              <td></td>
+            </tr>
+            <tr>
+              <th rowspan="3">激勵及賦權</th>
+              <td>提供一個願景</td>
+              <td></td>
+              <td rowspan="3"></td>
+            </tr>
+            <tr>
+              <td>體現高度動機</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>支配工作及授權給他人</td>
+              <td></td>
+            </tr>
+            <tr>
+              <th rowspan="3">合作及伙伴關係</th>
+              <td>和團隊成員一起協作</td>
+              <td></td>
+              <td rowspan="3"></td>
+            </tr>
+            <tr>
+              <td>採用共同解決問題的態度及策略</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>連結其他潛在夥伴來提升團隊表現</td>
+              <td></td>
+            </tr>
+            <tr>
+              <th colspan="2">合計</th>
+              <td colspan="2"></td>
+            </tr>
+            <tr>
+              <th rowspan="10">情緒穩定能力</th>
+              <th rowspan="3">壓力承擔</th>
+              <td>能面對不利的事件及壓力大的狀況而不崩潰</td>
+              <td></td>
+              <td rowspan="3"></td>
+            </tr>
+            <tr>
+              <td>運用好的壓力管理辦法來正向的應付壓力</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>能在努力工作與私人時間兩者中維持一個恰當的平衡</td>
+              <td></td>
+            </tr>
+            <tr>
+              <th rowspan="3">衝動約束</th>
+              <td>抗拒或遲緩一個衝動、激動或誘惑行動</td>
+              <td></td>
+              <td rowspan="3"></td>
+            </tr>
+            <tr>
+              <td>體現高挫折承擔能力</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>生氣時維持自我約束</td>
+              <td></td>
+            </tr>
+            <tr>
+              <th rowspan="3">恆心/毅力</th>
+              <td>有個認真努力工作的歷史</td>
+              <td></td>
+              <td rowspan="3"></td>
+            </tr>
+            <tr>
+              <td>按時並高標準的完成工作</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>碰到挫折時能繼續邁進</td>
+              <td></td>
+            </tr>
+            <tr>
+              <th colspan="2">合計</th>
+              <td colspan="2"></td>
+            </tr>
+                        <tr>
+              <th rowspan="10">人際關係技巧能力</th>
+              <th rowspan="3">社交關係</th>
+              <td>團隊成員裡建立及維持互相滿意的關係</td>
+              <td></td>
+              <td rowspan="3"></td>
+            </tr>
+            <tr>
+              <td>表現同理心 (了解及賞識他人的感受及心態)</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>建構社會資產 (例如他人的支持及貢獻)</td>
+              <td></td>
+            </tr>
+            <tr>
+              <th rowspan="3">衝突管理</th>
+              <td>衝突狀態中能了解雙方的觀點，並追求一個雙贏的策略</td>
+              <td></td>
+              <td rowspan="3"></td>
+            </tr>
+            <tr>
+              <td>解決衝突時能同時體現獨斷表達及相互合作</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>知道如何以尊重的態度面對重要議題，發生衝突時避免無關緊要的異議</td>
+              <td></td>
+            </tr>
+            <tr>
+              <th rowspan="3">適應性</th>
+              <td>根據團隊的需求或狀況的訴求，調整態度、方法、或行為</td>
+              <td></td>
+              <td rowspan="3"></td>
+            </tr>
+            <tr>
+              <td>根據顯性知識(客觀性)或隱性知識(主觀經驗)，調整態度、 方法、或行為</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>依據深思熟慮後的判斷而調整自己，避免不穩定的姿態</td>
+              <td></td>
+            </tr>
+            <tr>
+              <th colspan="2">合計</th>
+              <td colspan="2"></td>
+            </tr>
+            <tr>
+              <th rowspan="10">資源運用能力</th>
+              <th rowspan="3">時間管理</th>
+              <td>會安排時間自我調適，自我獎勵，有經常性的運動安排</td>
+              <td></td>
+              <td rowspan="3"></td>
+            </tr>
+            <tr>
+              <td>可由一個工作中得到多重效益 (例如一個行動能完成兩件 事)</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>願意投入時間幫助他人提升效率</td>
+              <td></td>
+            </tr>
+            <tr>
+              <th rowspan="3">知識</th>
+              <td>體認資源，包括時間、專長、財務資本、社會資本、和科技</td>
+              <td></td>
+              <td rowspan="3"></td>
+            </tr>
+            <tr>
+              <td>認識及使用資訊來源來加強自己的知識及洞察力</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>做決定時結合研究文獻及個人經驗</td>
+              <td></td>
+            </tr>
+            <tr>
+              <th rowspan="3">科技</th>
+              <td>精通使用輔助資訊科技 (包括電腦)，能在工作及溝通上獨 立操作使用</td>
+              <td></td>
+              <td rowspan="3"></td>
+            </tr>
+            <tr>
+              <td>熟悉資訊科技的創新與發展，用科技增強個人或/及團隊的 績效</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>願意並有能力學習新資訊科技相關使用技術</td>
+              <td></td>
+            </tr>
+            <tr>
+              <th colspan="2">合計</th>
+              <td colspan="2"></td>
+            </tr>
           </table>
         </el-tab-pane>
         <el-tab-pane label="團隊評量" name="second">
@@ -89,7 +318,7 @@
             </tr>
           </table>
           <table class="table">
-            <tr>
+            <tr class="bg-green">
               <th>要素</th>
               <th>面向</th>
               <th>題項</th>
@@ -132,14 +361,14 @@
 </template>
 
 <script>
-import { getTraitChartData } from '@/api/team'
+import { getTraitChartDataType, getTraitChartDataSubtype, getTraitChartDataTitle } from '@/api/team'
 
 export default {
   data() {
     return {
-      list: null,
       type: null,
       subtype: null,
+      title: null,
       listLoading: true,
       textMap: {
         update: '編輯',
@@ -168,11 +397,16 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      getTraitChartData(this.listQuery).then(response => {
-        this.list = response.data.items
-        this.type = response.data.items[0].type
-        this.subtype = response.data.items[0].subtype
-        this.total = response.data.total
+      getTraitChartDataType(this.listQuery).then(response => {
+        this.type = response.data.items
+        this.listLoading = false
+      })
+      getTraitChartDataSubtype(this.listQuery).then(response => {
+        this.subtype = response.data.items
+        this.listLoading = false
+      })
+      getTraitChartDataTitle(this.listQuery).then(response => {
+        this.title = response.data.items
         this.listLoading = false
       })
     },
