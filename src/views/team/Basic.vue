@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-button class="filter-item" type="primary" v-waves icon="el-icon-search">搜索</el-button>
+      <el-button class="filter-item" type="primary" icon="el-icon-search">搜索</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="warning" icon="el-icon-plus">新增</el-button>
       <!-- <el-button class="filter-item" type="primary" :loading="downloadLoading" v-waves icon="el-icon-download" @click="handleDownload">下載</el-button> -->
     </div>
@@ -115,14 +115,14 @@ export default {
         '離職': 'danger'
       }
       return statusMap[status]
+    },
+    valueFilter(value) {
+      const valueMap = {
+        '就職': '就職',
+        '離職': '離職'
+      }
+      return valueMap[value]
     }
-    // valueFilter(value) {
-    //   const valueMap = {
-    //     1: '就職',
-    //     0: '離職',
-    //   }
-    //   return valueMap[value]
-    // }
   },
   created() {
     this.fetchData()

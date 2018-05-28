@@ -93,15 +93,3 @@ a:hover {
     width: 200px;
   }
 }
-.el-table {
-  th {
-    color: $theme-brown;
-  }
-}
-.el-checkbox, .el-radio {
-  margin-left: 10px;
-  
-}
-.el-checkbox+.el-checkbox, .el-radio+.el-radio {
-  margin-left: 10px;
-}
