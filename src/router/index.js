@@ -48,7 +48,11 @@ export const constantRouterMap = [
         path: 'basic',
         name: 'Basic',
         component: () => import('@/views/company/Basic'),
-        meta: { title: '組織基本資料', icon: 'table' }
+        meta: {
+          title: '組織基本資料',
+          icon: 'table',
+          role: ['admin', 'company_admin']
+        }
       },
       {
         path: 'plan',

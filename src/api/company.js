@@ -12,7 +12,7 @@ export function getCompanyBasic(params) {
 export function updateCompanyBasic(params) {
   return request({
     url: '/company/basic',
-    method: 'patch',
+    method: 'put',
     params
   })
 }
