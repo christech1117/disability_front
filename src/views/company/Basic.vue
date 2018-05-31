@@ -1,24 +1,22 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-button class="filter-item" type="primary" v-waves icon="el-icon-search">搜索</el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="warning" icon="el-icon-edit">編輯</el-button>
-      <!-- <el-button class="filter-item" type="primary" :loading="downloadLoading" v-waves icon="el-icon-download" @click="handleDownload">下載</el-button> -->
+      <el-button class="filter-item" style="margin-left: 10px;" @click="handleUpdate()" type="warning" icon="el-icon-edit">編輯</el-button>
     </div>
     <table class="table">
         <tr>
           <th>組織\單位名稱</th>
-          <td colspan="3">{{temp.company_name}}</td>
+          <td colspan="3">{{ list[0].company_name }}</td>
         </tr>
         <tr>
           <th>聯絡人姓名</th>
-          <td></td>
+          <td>{{ list[0].member_name }}</td>
           <th>電話</th>
-          <td></td>
+          <td>{{ list[0].tel }}</td>
         </tr>
         <tr>
           <th>Email</th>
-          <td colspan="3"></td>
+          <td colspan="3">{{ list[0].email }}</td>
         </tr>
         <tr colspan="4">
           <th>服務地區類別</th>
@@ -73,7 +71,7 @@
                 {{ service_content_live }} -->
               </li>
               <li>
-                <p-check class="p-default p-smooth p-bigger" color="warning" value="daytime" v-model="daytime">日間活動</p-check>
+                <!-- <p-check class="p-default p-smooth p-bigger" color="warning" value="daytime" v-model="daytime">日間活動</p-check> -->
               </li>
               <li>
                 <span>就業 ➔</span>
@@ -83,7 +81,7 @@
                 {{ service_content_job }} -->
               </li>
               <li>
-                <p-check class="p-default p-smooth p-bigger" color="warning" value="education" v-model="education">教育(學校)</p-check>
+                <!-- <p-check class="p-default p-smooth p-bigger" color="warning" value="education" v-model="education">教育(學校)</p-check> -->
               </li>
               <li>
                 <span>其他</span>
@@ -92,11 +90,14 @@
           </td>
         </tr>
     </table>
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+      <!-- {{list}} -->
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getList } from '@/api/table'
+import { getCompanyBasic } from '@/api/company'
 
 export default {
   data() {
@@ -113,11 +114,14 @@ export default {
         user_count: '',
         member_count: '',
         service_people: '',
-        people_age: '',
         budget: '',
-        service_content: '',
-        created_at: new Date(),
-        updated_at: new Date()
+        service_content: ''
+      },
+      dialogFormVisible: false,
+      dialogStatus: '',
+      textMap: {
+        update: '編輯',
+        create: '新增'
       }
     }
   },
@@ -137,9 +141,19 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      getList(this.listQuery).then(response => {
+      getCompanyBasic(this.listQuery).then(response => {
         this.list = response.data.items
+        console.log(this.list)
         this.listLoading = false
+      })
+    },
+    handleUpdate(row) {
+      this.temp = Object.assign({}, row) // copy obj
+      this.temp.timestamp = new Date(this.temp.timestamp)
+      this.dialogStatus = 'update'
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
       })
     }
   }
