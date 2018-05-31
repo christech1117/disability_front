@@ -104,7 +104,7 @@ export default {
         create: '新增'
       },
       temp: {
-        type: this.list,
+        type: this.list
         // subtype: this.list['subtype']
       },
       activeName: 'first',

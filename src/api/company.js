@@ -29,7 +29,7 @@ export function getCompanyPlanList(params) {
 export function createCompanyPlan(params) {
   return request({
     url: '/company/plan',
-    method: 'put',
+    method: 'post',
     params
   })
 }
@@ -37,7 +37,7 @@ export function createCompanyPlan(params) {
 export function updateCompanyPlan(params) {
   return request({
     url: '/company/plan/:id',
-    method: 'patch',
+    method: 'put',
     params
   })
 }
@@ -62,7 +62,7 @@ export function getCompanyDepartmentList(params) {
 export function createCompanyDepartment(params) {
   return request({
     url: '/company/department',
-    method: 'put',
+    method: 'post',
     params
   })
 }
@@ -70,7 +70,7 @@ export function createCompanyDepartment(params) {
 export function updateCompanyDepartment(params) {
   return request({
     url: '/company/department/:id',
-    method: 'patch',
+    method: 'put',
     params
   })
 }
