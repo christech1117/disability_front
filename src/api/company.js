@@ -1,11 +1,10 @@
 import request from '@/utils/request'
 
 // 組織基本資料
-export function getCompanyBasic(params) {
+export function getCompanyBasic(id) {
   return request({
-    url: '/company/basic',
-    method: 'get',
-    params
+    url: '/company/basic/' + id,
+    method: 'get'
   })
 }
 // 編輯組織基本資料
