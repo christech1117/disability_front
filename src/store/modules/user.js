@@ -1,4 +1,4 @@
-import { login, logout, getUserInfo } from '@/api/login'
+import { loginByUsername, logout, getUserInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
@@ -45,12 +45,12 @@ const user = {
 
   actions: {
     // 用户名登录
-    Login({ commit }, userInfo) {
+    LoginByUsername({ commit }, userInfo) {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
-        login(username, userInfo.password).then(response => {
+        loginByUsername(username, userInfo.password).then(response => {
           const data = response.data
-          console.log(data)
+          console.log(response)
           commit('SET_TOKEN', data.token)
           setToken(response.data.token)
           resolve()
