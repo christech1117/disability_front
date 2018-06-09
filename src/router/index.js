@@ -59,6 +59,7 @@ export const asyncRouterMap = [
         component: () => import('@/views/company/Basic'),
         meta: {
           title: '組織基本資料',
+          icon: 'tree',
           roles: ['super_admin', 'admin', 'company_leader']
         }
       },
@@ -99,16 +100,7 @@ export const asyncRouterMap = [
         meta: {
           title: '檔案管理',
           icon: 'tree',
-          roles: [
-            'super_admin',
-            'admin',
-            'company_leader',
-            'department_leader',
-            'group_leader',
-            'isp',
-            'supervisor',
-            'supporter'
-          ]
+          roles: ['super_admin', 'admin', 'company_leader', 'department_leader', 'group_leader', 'isp', 'supervisor', 'supporter']
         }
       }
     ]

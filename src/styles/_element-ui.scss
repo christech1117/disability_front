@@ -38,7 +38,7 @@
 
 .el-checkbox, .el-radio {
   margin-left: 10px;
-  
+
 }
 
 .el-checkbox+.el-checkbox, .el-radio+.el-radio {
@@ -52,4 +52,16 @@
   input:focus, input:active, input:hover {
     border: 1px $theme-orange solid;
   }
+}
+
+// ***** dialog設定 ***** //
+.el-dialog__header {
+  text-align: center;
+  .el-dialog__title {
+    font-size: 25px;
+  }
+}
+
+.el-dialog__body {
+  padding: 5px 20px;
 }
