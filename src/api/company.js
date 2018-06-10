@@ -8,9 +8,9 @@ export function getCompanyBasic(id) {
   })
 }
 // 編輯組織基本資料
-export function updateCompanyBasic(params) {
+export function updateCompanyBasic(params, id) {
   return request({
-    url: '/company/basic',
+    url: '/company/basic/' + id,
     method: 'put',
     params
   })
