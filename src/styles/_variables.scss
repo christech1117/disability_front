@@ -1,91 +1,91 @@
 // Colors //
-$gray-light: #acb5be !default;
-$light-gray: #eee;
-$lighter-gray: #ddd;
-$charcoal: #555;
-$darkest-gray: #333;
-$almost-black: #161616;
-$vue-green: #4ae387;
-$vue-light-green: #dbf9e8;
-$light-orange: #fff6e8;
-$light-green: #c8f9c5;
-$light-blue: #dcf1ff;
-$light-yellow: #fff1c8;
-$light-pink: #ffcece;
+$gray-light      : #acb5be !default;
+$light-gray      : #eee;
+$lighter-gray    : #ddd;
+$charcoal        : #555;
+$darkest-gray    : #333;
+$almost-black    : #161616;
+$vue-green       : #4ae387;
+$vue-light-green : #dbf9e8;
+$light-orange    : #fff6e8;
+$light-green     : #c8f9c5;
+$light-blue      : #dcf1ff;
+$light-yellow    : #fff1c8;
+$light-pink      : #ffcece;
 $vue-darkest-blue: #34495e;
-$vue-turquoise: #dbf9e7;
-$white: #fff;
-$theme-orange: #F7AC51;
-$theme-red: #e34a4a;
-$theme-blue: #4ab2e3;
-$theme-violet: #db76df;
-$theme-pale: #d9d9d9;
-$theme-brown: #6d451b;
-$brand-primary: $theme-orange !default;
-$brand-danger: $theme-red;
-$brand-warning: $theme-orange;
-$brand-info: $theme-blue;
-$brand-success: $theme-orange;
-$light-gray2: #eff4f5;
-$dark-gray: #282828;
-$gray: #adb3b9;
-$violet: #db76df;
-$dark-blue: #0045b6;
+$vue-turquoise   : #dbf9e7;
+$white           : #fff;
+$theme-orange    : #F7AC51;
+$theme-red       : #e34a4a;
+$theme-blue      : #4ab2e3;
+$theme-violet    : #db76df;
+$theme-pale      : #d9d9d9;
+$theme-brown     : #6d451b;
+$brand-primary   : $theme-orange !default;
+$brand-danger    : $theme-red;
+$brand-warning   : $theme-orange;
+$brand-info      : $theme-blue;
+$brand-success   : $theme-orange;
+$light-gray2     : #eff4f5;
+$dark-gray       : #282828;
+$gray            : #adb3b9;
+$violet          : #db76df;
+$dark-blue       : #0045b6;
 $breadcrumbs-gray: #b4b4b4;
 
 //sidebar
-$menuBg:#304156;
-$subMenuBg:#1f2d3d;
-$menuHover:#001528;
+$menuBg          : #304156;
+$subMenuBg       : #1f2d3d;
+$menuHover       : #001528;
 
 $colors-map: (
-  brand-danger: $brand-danger,
+  brand-danger : $brand-danger,
   brand-primary: $brand-primary,
-  brand-info: $brand-info,
+  brand-info   : $brand-info,
   brand-success: $brand-success,
   brand-warning: $brand-warning,
-  black: black,
-  white: white,
-  lighter-gray: $lighter-gray
+  black        : black,
+  white        : white,
+  lighter-gray : $lighter-gray
 );
 
 $theme-colors: (
-  "primary":    $brand-primary,
-  "secondary":  $white,
-  "success":    $light-green,
-  "info":       $brand-info,
-  "warning":    $brand-warning,
-  "danger":     $brand-danger,
-  "light":      $light-gray2,
-  "dark":       $almost-black,
-  "pale":       $theme-pale
+  "primary"  : $brand-primary,
+  "secondary": $white,
+  "success"  : $light-green,
+  "info"     : $brand-info,
+  "warning"  : $brand-warning,
+  "danger"   : $brand-danger,
+  "light"    : $light-gray2,
+  "dark"     : $almost-black,
+  "pale"     : $theme-pale
 );
 
 // Layout //
-$body-bg : $light-gray;
-$top-nav-bg : $darkest-gray;
-$body-color : $vue-darkest-blue !default;
-$layout-padding : 24px;
-$layout-padding-right : 44px;
+$body-bg                    : $light-gray;
+$top-nav-bg                 : $darkest-gray;
+$body-color                 : $vue-darkest-blue !default;
+$layout-padding             : 24px;
+$layout-padding-right       : 44px;
 
-$top-nav-height : 72px;
-$nav-padding-left : $layout-padding;
-$nav-padding-right : $layout-padding-right;
+$top-nav-height             : 72px;
+$nav-padding-left           : $layout-padding;
+$nav-padding-right          : $layout-padding-right;
 $navbar-brand-container-left: 75px;
 
-$sidebar-bg : $darkest-gray;
-$sidebar-width : 225px;
-$sidebar-top : calc(#{$top-nav-height} + #{$layout-padding});
-$sidebar-left : $layout-padding;
+$sidebar-bg                 : $darkest-gray;
+$sidebar-width              : 225px;
+$sidebar-top                : calc(#{$top-nav-height} + #{$layout-padding});
+$sidebar-left               : $layout-padding;
 
-$content-wrap-ml : calc(#{$sidebar-left} + #{$sidebar-width} + 35px);
-$content-wrap-pr : $layout-padding-right;
-$content-wrap-pt : $layout-padding;
-$content-wrap-pb : $layout-padding;
+$content-wrap-ml            : calc(#{$sidebar-left} + #{$sidebar-width} + 35px);
+$content-wrap-pr            : $layout-padding-right;
+$content-wrap-pt            : $layout-padding;
+$content-wrap-pb            : $layout-padding;
 
-$greeny-box-shadow: 0 4px 9.6px 0.4px rgba($vue-green, .5);
+$greeny-box-shadow          : 0 4px 9.6px 0.4px rgba($vue-green, .5);
 
-$min-z-index : -1000;
+$min-z-index                : -1000;
 
 //Auth
 $auth-wallpaper-ivuestic-h: 2.625rem;
