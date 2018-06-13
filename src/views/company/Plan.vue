@@ -1,14 +1,19 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-button class="filter-item" type="primary" v-waves icon="el-icon-search">搜索</el-button>
+      <!-- <el-button class="filter-item" type="primary" v-waves icon="el-icon-search">搜索</el-button> -->
       <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate()" type="warning" icon="el-icon-plus">新增</el-button>
       <!-- <el-button class="filter-item" type="primary" :loading="downloadLoading" v-waves icon="el-icon-download" @click="handleDownload">下載</el-button> -->
     </div>
-    <el-table :data="list" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row>
+    <el-table :data="item" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row>
       <el-table-column align="center" label='編號' width="95">
         <template slot-scope="scope">
           {{scope.$index + 1}}
+        </template>
+      </el-table-column>
+      <el-table-column label="方案計畫名稱" align="center">
+        <template slot-scope="scope">
+          {{scope.row.plan_name}}
         </template>
       </el-table-column>
       <el-table-column label="服務據點名稱" align="center">
@@ -18,17 +23,7 @@
       </el-table-column>
       <el-table-column label="計畫承辦人" align="center">
         <template slot-scope="scope">
-          {{scope.row.member_name}}
-        </template>
-      </el-table-column>
-      <el-table-column label="電話" align="center">
-        <template slot-scope="scope">
-          {{scope.row.tel}}
-        </template>
-      </el-table-column>
-      <el-table-column label="Email" align="center">
-        <template slot-scope="scope">
-          {{scope.row.email}}
+          {{scope.row.username}}
         </template>
       </el-table-column>
       <el-table-column label="服務開辦日期" align="center">
@@ -54,12 +49,12 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+    <el-dialog :title="dialogStatus" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
       <table class="table day" border="1">
         <tr>
           <th>方案計畫名稱</th>
           <td colspan="3">
-            <el-input v-model="temp.name"></el-input>
+            <el-input v-model="temp.plan_name"></el-input>
           </td>
         </tr>
         <tr>
@@ -71,19 +66,17 @@
         <tr>
           <th>計畫承辦人</th>
           <td colspan="3">
-            <el-input v-model="temp.member_name"></el-input>
+            <el-input v-model="temp.username"></el-input>
           </td>
         </tr>
         <tr>
           <th>電話</th>
           <td colspan="3">
-            <el-input v-model="temp.tel"></el-input>
           </td>
         </tr>
         <tr>
           <th>E-mail</th>
           <td colspan="3">
-            <el-input v-model="temp.email"></el-input>
           </td>
         </tr>
         <tr>
@@ -99,7 +92,7 @@
         <tr>
           <th>服務時間</th>
           <td colspan="3">
-            <el-input v-model="temp.service_time"></el-input>
+            <!-- <el-input v-model="temp.service_time"></el-input> -->
           </td>
         </tr>
         <tr>
@@ -122,35 +115,25 @@
         </tr>
       </table>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="create()">儲存</el-button>
+        <el-button type="warning" @click="updateData()">儲存</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { getCompanyPlanList, createCompanyPlan } from '@/api/company'
-
-const work_status = ['就職', '離職']
-const role = ['組織管理員', '組織主管', '部門主管', '組/科/室主管', 'ISP促進者', '執行監督者', '支持者', 'OEES訪員', 'SIS訪員', 'POS訪員', '服務對象/家屬']
-const approve_status = ['SIS', 'POS', '社區生活技能', 'ISP及會議紀錄']
-const income = ['無', '檢視', '編輯']
+import { getCompanyPlanList, createCompanyPlan, updateCompanyPlan } from '@/api/company'
 
 export default {
   data() {
     return {
-      list: null,
+      item: null,
       listLoading: true,
-      work_status,
-      role,
-      approve_status,
-      income,
       temp: {
-        member_id: undefined,
-        name: '',
+        plan_name: '',
         area_name: '',
-        member_name: '',
-        tel: '',
+        username: '',
+        phone: '',
         email: '',
         service_start_date: '',
         service_end_date: '',
@@ -159,11 +142,7 @@ export default {
         description: ''
       },
       dialogFormVisible: false,
-      dialogStatus: '',
-      textMap: {
-        update: '編輯',
-        create: '新增'
-      }
+      dialogStatus: ''
     }
   },
   created() {
@@ -172,18 +151,17 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      getCompanyPlanList(this.listQuery).then(response => {
-        this.list = response.data.items
+      getCompanyPlanList(1).then(response => {
+        this.item = response.data
         this.listLoading = false
       })
     },
     resetTemp() {
       this.temp = {
-        member_id: undefined,
-        name: '',
+        plan_name: '',
         area_name: '',
-        member_name: '',
-        tel: '',
+        username: '',
+        phone: '',
         email: '',
         service_start_date: '',
         service_end_date: '',
@@ -194,11 +172,10 @@ export default {
     },
     handleCreate() {
       this.resetTemp()
-      this.dialogStatus = 'create'
+      this.dialogStatus = '新增方案計畫'
       this.dialogFormVisible = true
     },
-    create() {
-      console.log(this.temp)
+    createData() {
       createCompanyPlan(this.temp).then(response => {
         this.dialogFormVisible = false
         this.$notify({
@@ -212,11 +189,29 @@ export default {
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row) // copy obj
-      this.temp.timestamp = new Date(this.temp.timestamp)
-      this.dialogStatus = 'update'
+      this.dialogStatus = '編輯方案計畫'
       this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
+    },
+    updateData() {
+      const filter_temp = {
+        plan_id: this.temp.plan_id,
+        plan_name: this.temp.plan_name,
+        area_name: this.temp.area_name,
+        service_start_date: this.temp.service_start_date,
+        service_end_date: this.temp.service_end_date,
+        price: this.temp.price,
+        description: this.temp.description
+      }
+      const tempData = Object.assign({}, filter_temp)
+      updateCompanyPlan(tempData, this.temp.plan_id).then(() => {
+        this.fetchData()
+        this.dialogFormVisible = false
+        this.$notify({
+          title: '成功',
+          message: '更新成功',
+          type: 'success',
+          duration: 2000
+        })
       })
     },
     handleDelete(row) {

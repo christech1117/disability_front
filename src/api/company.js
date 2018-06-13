@@ -17,25 +17,23 @@ export function updateCompanyBasic(params, id) {
 }
 
 // 方案管理
-export function getCompanyPlanList(params) {
+export function getCompanyPlanList(id) {
   return request({
-    url: '/company/plan',
-    method: 'get',
-    params
+    url: '/company/plan/' + id,
+    method: 'get'
   })
 }
 // 新增方案
-export function createCompanyPlan(params) {
+export function createCompanyPlan() {
   return request({
     url: '/company/plan',
-    method: 'post',
-    params
+    method: 'post'
   })
 }
 // 修改方案
-export function updateCompanyPlan(params) {
+export function updateCompanyPlan(params, id) {
   return request({
-    url: '/company/plan/:id',
+    url: '/company/plan/' + id,
     method: 'put',
     params
   })

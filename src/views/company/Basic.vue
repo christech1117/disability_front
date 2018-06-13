@@ -184,7 +184,6 @@ export default {
       item: null,
       listLoading: true,
       temp: {
-        compony_id: undefined,
         company_name: '',
         tel: '',
         email: '',
@@ -201,23 +200,13 @@ export default {
       dialogStatus: ''
     }
   },
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        published: 'success',
-        draft: 'gray',
-        deleted: 'danger'
-      }
-      return statusMap[status]
-    }
-  },
   created() {
     this.fetchData()
   },
   methods: {
     fetchData() {
       this.listLoading = true
-      getCompanyBasic(1, this.listQuery).then(response => {
+      getCompanyBasic(1).then(response => {
         this.item = response.data
         this.listLoading = false
       })
@@ -230,7 +219,7 @@ export default {
     updateData(item) {
       const tempData = Object.assign({}, this.temp)
       updateCompanyBasic(tempData, 1).then(() => {
-        this.item = tempData
+        this.fetchData()
         this.dialogFormVisible = false
         this.$notify({
           title: '成功',
