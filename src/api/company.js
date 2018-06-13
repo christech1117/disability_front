@@ -16,6 +16,14 @@ export function updateCompanyBasic(params, id) {
   })
 }
 
+// 取得人員資料
+export function getUserList() {
+  return request({
+    url: '/company/user',
+    method: 'get'
+  })
+}
+
 // 方案管理
 export function getCompanyPlanList(id) {
   return request({

@@ -66,33 +66,50 @@
         <tr>
           <th>計畫承辦人</th>
           <td colspan="3">
-            <el-input v-model="temp.username"></el-input>
+            <el-autocomplete
+              class="inline-input"
+              v-model="temp.username"
+              :fetch-suggestions="querySearch"
+              placeholder="請輸入承辦人"
+              @select="handleSelect"
+            ></el-autocomplete>
           </td>
         </tr>
         <tr>
           <th>電話</th>
-          <td colspan="3">
-          </td>
+          <td colspan="3">{{ temp.phone }}</td>
         </tr>
         <tr>
           <th>E-mail</th>
-          <td colspan="3">
-          </td>
+          <td colspan="3">{{ temp.email }}</td>
         </tr>
         <tr>
           <th>服務開辦日期</th>
           <td>
-            <el-input v-model="temp.service_start_date"></el-input>
+            <div class="block">
+              <el-date-picker
+                value-format="yyyy-MM-dd"
+                v-model="temp.service_start_date"
+                type="date"
+                placeholder="選擇日期">
+              </el-date-picker>
+            </div>
           </td>
           <th>服務結束日期</th>
           <td>
-            <el-input v-model="temp.service_end_date"></el-input>
+            <div class="block">
+              <el-date-picker
+                value-format="yyyy-MM-dd"
+                v-model="temp.service_end_date"
+                type="date"
+                placeholder="選擇日期">
+              </el-date-picker>
+            </div>
           </td>
         </tr>
         <tr>
           <th>服務時間</th>
           <td colspan="3">
-            <!-- <el-input v-model="temp.service_time"></el-input> -->
           </td>
         </tr>
         <tr>
@@ -122,17 +139,19 @@
 </template>
 
 <script>
-import { getCompanyPlanList, createCompanyPlan, updateCompanyPlan } from '@/api/company'
+import { getCompanyPlanList, createCompanyPlan, updateCompanyPlan, getUserList } from '@/api/company'
 
 export default {
   data() {
     return {
       item: null,
+      users: [],
       listLoading: true,
       temp: {
         plan_name: '',
         area_name: '',
         username: '',
+        user_id: '',
         phone: '',
         email: '',
         service_start_date: '',
@@ -149,11 +168,30 @@ export default {
     this.fetchData()
   },
   methods: {
+    querySearch(queryString, cb) {
+      var users = this.users
+      var results = queryString ? users.filter(this.createFilter(queryString)) : users
+      // 调用 callback 返回建议列表的数据
+      cb(results)
+    },
+    createFilter(queryString) {
+      return (users) => {
+        return (users.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
+      };
+    },
+    handleSelect(item) {
+      this.temp.user_id = item.user_id
+      this.temp.phone = item.phone
+      this.temp.email = item.email
+    },
     fetchData() {
       this.listLoading = true
       getCompanyPlanList(1).then(response => {
         this.item = response.data
         this.listLoading = false
+      }),
+      getUserList().then(response => {
+        this.users = response.data
       })
     },
     resetTemp() {
@@ -161,6 +199,7 @@ export default {
         plan_name: '',
         area_name: '',
         username: '',
+        user_id: '',
         phone: '',
         email: '',
         service_start_date: '',
@@ -197,6 +236,7 @@ export default {
         plan_id: this.temp.plan_id,
         plan_name: this.temp.plan_name,
         area_name: this.temp.area_name,
+        user_id: this.temp.user_id,
         service_start_date: this.temp.service_start_date,
         service_end_date: this.temp.service_end_date,
         price: this.temp.price,
