@@ -16,14 +16,6 @@ export function updateCompanyBasic(params, id) {
   })
 }
 
-// 取得人員資料
-export function getUserList() {
-  return request({
-    url: '/company/user',
-    method: 'get'
-  })
-}
-
 // 方案管理
 export function getCompanyPlanList(id) {
   return request({
@@ -89,33 +81,33 @@ export function deleteCompanyDepartment(params) {
 }
 
 // 人員管理
-export function getCompanyMemberList(params) {
+export function getUserList(params) {
   return request({
-    url: '/company/member',
+    url: '/company/user',
     method: 'get',
     params
   })
 }
 // 新增人員
-export function createCompanyMember(params) {
+export function createUser(params) {
   return request({
-    url: '/company/member',
+    url: '/company/user',
     method: 'put',
     params
   })
 }
 // 修改人員
-export function updateCompanyMember(params) {
+export function updateUser(params) {
   return request({
-    url: '/company/member/:id',
+    url: '/company/user/:id',
     method: 'patch',
     params
   })
 }
 // 刪除人員
-export function deleteCompanyMember(params) {
+export function deleteUser(params) {
   return request({
-    url: '/company/member/:id',
+    url: '/company/user/:id',
     method: 'delete',
     params
   })

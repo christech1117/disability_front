@@ -84,9 +84,9 @@ export const asyncRouterMap = [
         }
       },
       {
-        path: 'member',
-        name: 'Member',
-        component: () => import('@/views/company/Member'),
+        path: 'user',
+        name: 'User',
+        component: () => import('@/views/company/User'),
         meta: {
           title: '人員管理',
           icon: 'tree',

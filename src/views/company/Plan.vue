@@ -109,14 +109,11 @@
         </tr>
         <tr>
           <th>服務時間</th>
-          <td colspan="3">
-          </td>
+          <td colspan="3">{{temp.service_date}}</td>
         </tr>
         <tr>
           <th>服務人數(最多)</th>
-          <td colspan="3">
-            <el-input v-model="temp.service_count"></el-input>
-          </td>
+          <td colspan="3"> {{temp.service_count}} </td>
         </tr>
         <tr>
           <th>收費(每月)</th>
@@ -156,6 +153,7 @@ export default {
         email: '',
         service_start_date: '',
         service_end_date: '',
+        serviece_date: '',
         service_count: '',
         price: '',
         description: ''
@@ -204,6 +202,7 @@ export default {
         email: '',
         service_start_date: '',
         service_end_date: '',
+        serviece_date: '',
         service_count: '',
         price: '',
         description: ''
