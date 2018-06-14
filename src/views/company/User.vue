@@ -54,7 +54,7 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog :title="dialogStatus" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
       <table class="table">
           <tr>
             <th>姓名</th>
@@ -101,7 +101,13 @@
           <tr>
             <th>部門或單位</th>
             <td>
-              <el-input v-model="temp.depart_name"></el-input>
+              <el-autocomplete
+                class="inline-input"
+                v-model="temp.depart_name"
+                :fetch-suggestions="querySearch"
+                placeholder="請選擇部門或單位"
+                @select="handleSelect"
+              ></el-autocomplete>
             </td>
             <th>職稱</th>
             <td>
@@ -121,49 +127,50 @@
             </td>
           </tr>
           <tr>
-            <th colspan="4" class="bg-grap">權限</th>
+            <th colspan="4" class="bg-gray">權限</th>
           </tr>
           <tr>
             <th>角色</th>
             <td colspan="3">
-              <p-radio class="p-default p-smooth p-bigger" color="warning" value="company_admin" v-model="temp.role">組織管理員</p-radio>
-              <p-radio class="p-default p-smooth p-bigger" color="warning" value="company_leader" v-model="temp.role">組織主管</p-radio>
-              <p-radio class="p-default p-smooth p-bigger" color="warning" value="department_leader" v-model="temp.role">部門主管</p-radio>
-              <p-radio class="p-default p-smooth p-bigger" color="warning" value="group_leader" v-model="temp.role">組/科/室主管</p-radio>
-              <p-radio class="p-default p-smooth p-bigger" color="warning" value="isp" v-model="temp.role">ISP促進者</p-radio>
-              <p-radio class="p-default p-smooth p-bigger" color="warning" value="supervisor" v-model="temp.role">執行監督者</p-radio>
-              <p-radio class="p-default p-smooth p-bigger" color="warning" value="supporter" v-model="temp.role">支持者</p-radio>
-              <p-radio class="p-default p-smooth p-bigger" color="warning" value="oees" v-model="temp.role">OEES訪員</p-radio>
-              <p-radio class="p-default p-smooth p-bigger" color="warning" value="sis" v-model="temp.role">SIS訪員</p-radio>
-              <p-radio class="p-default p-smooth p-bigger" color="warning" value="pos" v-model="temp.role">POS訪員</p-radio>
-              <p-radio class="p-default p-smooth p-bigger" color="warning" value="family" v-model="temp.role">服務對象/家屬</p-radio>
+              <p-radio class="p-default p-smooth p-bigger" color="warning" value="2" v-model="temp.role_id">組織管理員</p-radio>
+              <p-radio class="p-default p-smooth p-bigger" color="warning" value="3" v-model="temp.role_id">組織主管</p-radio>
+              <p-radio class="p-default p-smooth p-bigger" color="warning" value="4" v-model="temp.role_id">部門主管</p-radio>
+              <p-radio class="p-default p-smooth p-bigger" color="warning" value="5" v-model="temp.role_id">組/科/室主管</p-radio>
+              <p-radio class="p-default p-smooth p-bigger" color="warning" value="6" v-model="temp.role_id">ISP促進者</p-radio>
+              <p-radio class="p-default p-smooth p-bigger" color="warning" value="7" v-model="temp.role_id">執行監督者</p-radio>
+              <p-radio class="p-default p-smooth p-bigger" color="warning" value="8" v-model="temp.role_id">支持者</p-radio>
+              <p-radio class="p-default p-smooth p-bigger" color="warning" value="9" v-model="temp.role_id">OEES訪員</p-radio>
+              <p-radio class="p-default p-smooth p-bigger" color="warning" value="10" v-model="temp.role_id">SIS訪員</p-radio>
+              <p-radio class="p-default p-smooth p-bigger" color="warning" value="11" v-model="temp.role_id">POS訪員</p-radio>
+              <p-radio class="p-default p-smooth p-bigger" color="warning" value="12" v-model="temp.role_id">服務對象/家屬</p-radio>
             </td>
           </tr>
           <tr>
             <th>審核</th>
             <td>
-              <p-check class="p-default p-smooth p-bigger" color="warning" value="no" v-model="temp.income">SIS</p-check>
-              <p-check class="p-default p-smooth p-bigger" color="warning" value="no" v-model="temp.income">POS</p-check>
-              <p-check class="p-default p-smooth p-bigger" color="warning" value="no" v-model="temp.income">社區生活技能</p-check>
-              <p-check class="p-default p-smooth p-bigger" color="warning" value="no" v-model="temp.income">ISP及會議紀錄</p-check>
+              <p-check class="p-default p-smooth p-bigger" color="warning" value="no" v-model="temp.approve_status">SIS</p-check>
+              <p-check class="p-default p-smooth p-bigger" color="warning" value="no" v-model="temp.approve_status">POS</p-check>
+              <p-check class="p-default p-smooth p-bigger" color="warning" value="no" v-model="temp.approve_status">社區生活技能</p-check>
+              <p-check class="p-default p-smooth p-bigger" color="warning" value="no" v-model="temp.approve_status">ISP及會議紀錄</p-check>
             </td>
             <th>個人收入</th>
             <td>
-              <p-radio class="p-default p-smooth p-bigger" color="warning" value="no" v-model="temp.approve_status">無</p-radio>
-              <p-radio class="p-default p-smooth p-bigger" color="warning" value="look" v-model="temp.approve_status">檢視</p-radio>
-              <p-radio class="p-default p-smooth p-bigger" color="warning" value="edit" v-model="temp.approve_status">編輯</p-radio>
+              <p-radio class="p-default p-smooth p-bigger" color="warning" value="no" v-model="temp.income">無</p-radio>
+              <p-radio class="p-default p-smooth p-bigger" color="warning" value="look" v-model="temp.income">檢視</p-radio>
+              <p-radio class="p-default p-smooth p-bigger" color="warning" value="edit" v-model="temp.income">編輯</p-radio>
             </td>
           </tr>
         </table>
       <span slot="footer" class="dialog-footer">
-        <el-button type="warning" @click="updateData()">儲存</el-button>
+        <el-button v-if="dialogStatus=='create'" type="warning" @click="createData()">儲存</el-button>
+        <el-button v-else type="warning" @click="updateData()">儲存</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { getUserList } from '@/api/company'
+import { getUserList, createUser, updateUser } from '@/api/company'
 
 export default {
   data() {
@@ -171,24 +178,30 @@ export default {
       item: null,
       listLoading: true,
       temp: {
-        username: '',
+        user_id: '',
+        value: '', // avatar
         email: '',
         avatar: '',
         work_start_date: '',
         phone: '',
         adress: '',
         depart_id: '',
+        depart_name: '',
         work_title: '',
-        plan_id: '',
         team_id: '',
-        role_id: [],
-        role: '',
+        role_id: '',
         income: '',
         approve_status: '',
-        active: ''
+        active: '',
+        company_id: '1',
+        password: ''
       },
       dialogFormVisible: false,
-      dialogStatus: ''
+      dialogStatus: '',
+      textMap: {
+        create: '新增人員',
+        update: '編輯人員'
+      },
     }
   },
   filters: {
@@ -237,67 +250,77 @@ export default {
     },
     resetTemp() {
       this.temp = {
-        username: '',
+        user_id: '',
+        value: '', // username
         email: '',
         avatar: '',
         work_start_date: '',
         phone: '',
         adress: '',
         depart_id: '',
+        depart_name: '',
         work_title: '',
-        plan_id: '',
         team_id: '',
-        role_id: [],
-        role: '',
+        role_id: '',
         income: '',
         approve_status: '',
-        active: ''
+        active: '',
+        company_id: '1',
+        password: ''
       }
     },
     handleCreate() {
       this.resetTemp()
-      this.dialogStatus = '新增人員'
+      this.dialogStatus = 'create'
       this.dialogFormVisible = true
     },
     createData() {
-      // createCompanyPlan(this.temp).then(response => {
-      //   this.dialogFormVisible = false
-      //   this.$notify({
-      //     title: '成功',
-      //     message: '新增成功',
-      //     type: 'success',
-      //     duration: 2000
-      //   })
-      //   this.fetchData()
-      // })
+      createUser(this.temp).then(response => {
+        this.dialogFormVisible = false
+        this.$notify({
+          title: '成功',
+          message: '新增成功',
+          type: 'success',
+          duration: 2000
+        })
+        this.fetchData()
+      })
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row) // copy obj
-      this.dialogStatus = '編輯人員'
+      this.dialogStatus = 'update'
       this.dialogFormVisible = true
     },
     updateData() {
-      // const filter_temp = {
-        // plan_id: this.temp.plan_id,
-        // plan_name: this.temp.plan_name,
-        // area_name: this.temp.area_name,
-        // user_id: this.temp.user_id,
-        // service_start_date: this.temp.service_start_date,
-        // service_end_date: this.temp.service_end_date,
-        // price: this.temp.price,
-        // description: this.temp.description
-      // }
-      // const tempData = Object.assign({}, filter_temp)
-      // updateCompanyPlan(tempData, this.temp.plan_id).then(() => {
-      //   this.fetchData()
-      //   this.dialogFormVisible = false
-      //   this.$notify({
-      //     title: '成功',
-      //     message: '更新成功',
-      //     type: 'success',
-      //     duration: 2000
-      //   })
-      // })
+      const filter_temp = {
+        user_id: this.temp.user_id,
+        username: this.temp.value,
+        avatar: this.temp.avatar,
+        work_start_date: this.temp.work_start_date,
+        phone: this.temp.phone,
+        email: this.temp.email,
+        address: this.temp.address,
+        depart_id: this.temp.depart_id,
+        work_title: this.temp.work_title,
+        plan_name: this.temp.plan_name,
+        team_id: this.temp.team_id,
+        role_id: this.temp.role_id,
+        approve_status: this.temp.approve_status,
+        income: this.temp.income,
+        active: this.temp.active
+      }
+      const tempData = Object.assign({}, filter_temp)
+      console.log(tempData)
+      updateUser(tempData, this.temp.user_id).then(() => {
+        this.fetchData()
+        this.dialogFormVisible = false
+        this.$notify({
+          title: '成功',
+          message: '更新成功',
+          type: 'success',
+          duration: 2000
+        })
+      })
     },
     handleDelete(row) {
 

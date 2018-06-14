@@ -92,22 +92,22 @@ export function getUserList(params) {
 export function createUser(params) {
   return request({
     url: '/company/user',
-    method: 'put',
+    method: 'post',
     params
   })
 }
 // 修改人員
-export function updateUser(params) {
+export function updateUser(params, id) {
   return request({
-    url: '/company/user/:id',
-    method: 'patch',
+    url: '/company/user/' + id,
+    method: 'put',
     params
   })
 }
 // 刪除人員
 export function deleteUser(params) {
   return request({
-    url: '/company/user/:id',
+    url: '/company/user/',
     method: 'delete',
     params
   })

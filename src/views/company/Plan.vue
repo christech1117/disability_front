@@ -49,7 +49,7 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog :title="dialogStatus" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
       <table class="table day" border="1">
         <tr>
           <th>方案計畫名稱</th>
@@ -70,7 +70,7 @@
               class="inline-input"
               v-model="temp.username"
               :fetch-suggestions="querySearch"
-              placeholder="請輸入承辦人"
+              placeholder="請選擇承辦人"
               @select="handleSelect"
             ></el-autocomplete>
           </td>
@@ -125,11 +125,13 @@
           <th>說明</th>
           <td colspan="3">
             <el-input v-model="temp.description"></el-input>
+            {{temp}}
           </td>
         </tr>
       </table>
       <span slot="footer" class="dialog-footer">
-        <el-button type="warning" @click="updateData()">儲存</el-button>
+        <el-button v-if="dialogStatus=='create'" type="warning" @click="createData()">儲存</el-button>
+        <el-button v-else type="warning" @click="updateData()">儲存</el-button>
       </span>
     </el-dialog>
   </div>
@@ -150,16 +152,20 @@ export default {
         username: '',
         user_id: '',
         phone: '',
-        email: '',
         service_start_date: '',
         service_end_date: '',
         serviece_date: '',
         service_count: '',
         price: '',
-        description: ''
+        description: '',
+        company_id: '1'
       },
       dialogFormVisible: false,
-      dialogStatus: ''
+      dialogStatus: '',
+      textMap: {
+        create: '新增方案計畫',
+        update: '編輯方案計畫'
+      },
     }
   },
   created() {
@@ -199,22 +205,34 @@ export default {
         username: '',
         user_id: '',
         phone: '',
-        email: '',
         service_start_date: '',
         service_end_date: '',
         serviece_date: '',
         service_count: '',
         price: '',
-        description: ''
+        description: '',
+        company_id: '1'
       }
     },
     handleCreate() {
       this.resetTemp()
-      this.dialogStatus = '新增方案計畫'
+      this.dialogStatus = 'create'
       this.dialogFormVisible = true
     },
     createData() {
-      createCompanyPlan(this.temp).then(response => {
+      console.log(this.temp)
+      // const filter_temp = {
+      //   company_id: this.temp.company_id,
+      //   user_id: this.temp.user_id,
+      //   plan_name: this.temp.plan_name,
+      //   area_name: this.temp.area_name,
+      //   service_start_date: this.temp.service_start_date,
+      //   service_end_date: this.temp.service_end_date,
+      //   price: this.temp.price,
+      //   description: this.temp.description
+      // }
+      const tempData = Object.assign({}, this.temp)
+      createCompanyPlan(tempData).then(response => {
         this.dialogFormVisible = false
         this.$notify({
           title: '成功',
@@ -227,7 +245,7 @@ export default {
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row) // copy obj
-      this.dialogStatus = '編輯方案計畫'
+      this.dialogStatus = 'update'
       this.dialogFormVisible = true
     },
     updateData() {
