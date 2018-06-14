@@ -117,12 +117,12 @@ export const asyncRouterMap = [
       roles: ['super_admin', 'admin', 'company_leader', 'department_leader', 'group_leader', 'isp', 'supervisor', 'supporter']
     },
     children: [
-      {
-        path: 'user',
-        name: 'User',
-        component: () => import('@/views/person/User'),
-        meta: { title: '個人層級', icon: 'form' }
-      },
+      // {
+      //   path: 'user',
+      //   name: 'User',
+      //   component: () => import('@/views/person/User'),
+      //   meta: { title: '個人層級', icon: 'form' }
+      // },
       {
         path: 'basic',
         name: 'PersonBasic',
@@ -256,23 +256,23 @@ export const asyncRouterMap = [
             'group_leader'
           ]
         }
-      },
-      {
-        path: 'statistic',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: {
-          title: '統計分析',
-          icon: 'tree',
-          roles: [
-            'super_admin',
-            'admin',
-            'company_leader',
-            'department_leader',
-            'group_leader'
-          ]
-        }
       }
+      // {
+      //   path: 'statistic',
+      //   name: 'Tree',
+      //   component: () => import('@/views/tree/index'),
+      //   meta: {
+      //     title: '統計分析',
+      //     icon: 'tree',
+      //     roles: [
+      //       'super_admin',
+      //       'admin',
+      //       'company_leader',
+      //       'department_leader',
+      //       'group_leader'
+      //     ]
+      //   }
+      // }
     ]
   },
 
@@ -288,19 +288,19 @@ export const asyncRouterMap = [
         name: 'Table',
         component: () => import('@/views/table/index'),
         meta: { title: '個人層級', icon: 'table' }
-      },
-      {
-        path: 'team',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: '團隊層級', icon: 'tree' }
-      },
-      {
-        path: 'organization',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: '組織層級', icon: 'tree' }
       }
+      // {
+      //   path: 'team',
+      //   name: 'Tree',
+      //   component: () => import('@/views/tree/index'),
+      //   meta: { title: '團隊層級', icon: 'tree' }
+      // },
+      // {
+      //   path: 'organization',
+      //   name: 'Tree',
+      //   component: () => import('@/views/tree/index'),
+      //   meta: { title: '組織層級', icon: 'tree' }
+      // }
     ]
   },
 

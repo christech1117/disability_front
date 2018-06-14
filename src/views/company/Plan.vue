@@ -175,7 +175,7 @@ export default {
     createFilter(queryString) {
       return (users) => {
         return (users.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
-      };
+      }
     },
     handleSelect(item) {
       this.temp.user_id = item.user_id
@@ -187,7 +187,7 @@ export default {
       getCompanyPlanList(1).then(response => {
         this.item = response.data
         this.listLoading = false
-      }),
+      })
       getUserList().then(response => {
         this.users = response.data
       })

@@ -18,10 +18,10 @@
       </el-table-column>
       <el-table-column label="照片" align="center">
         <template slot-scope="scope">
-          {{scope.row.avatar}}
+          <!-- {{scope.row.avatar}} -->
         </template>
       </el-table-column>
-      <el-table-column label="部門" align="center">
+      <el-table-column label="單位" align="center">
         <template slot-scope="scope">
           {{scope.row.depart_name}}
         </template>
@@ -31,11 +31,6 @@
           {{scope.row.work_title}}
         </template>
       </el-table-column>
-      <el-table-column label="計畫" align="center">
-        <template slot-scope="scope">
-          {{scope.row.plan_name}}
-        </template>
-      </el-table-column>
       <el-table-column label="團隊" align="center">
         <template slot-scope="scope">
           {{scope.row.team_name}}
@@ -43,7 +38,7 @@
       </el-table-column>
       <el-table-column label="工作狀態" align="center">
         <template slot-scope="scope">
-          {{scope.row.work_status}}
+          <el-tag :type="scope.row.active | statusFilter">{{scope.row.active | valueFilter}}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="就職日期" align="center">
@@ -60,11 +55,11 @@
     </el-table>
 
     <el-dialog :title="dialogStatus" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
-      <table border="1" class="table">
+      <table class="table">
           <tr>
             <th>姓名</th>
             <td>
-              <input type="text" class="form-control">
+              <el-input v-model="temp.value"></el-input>
             </td>
             <th>照片</th>
             <td> </td>
@@ -72,56 +67,57 @@
           <tr>
             <th>就職日期</th>
             <td>
-              <input type="text" class="form-control">
+              <div class="block">
+                <el-date-picker
+                  value-format="yyyy-MM-dd"
+                  v-model="temp.work_start_date"
+                  type="date"
+                  placeholder="選擇日期">
+                </el-date-picker>
+              </div>
             </td>
             <th>工作狀態</th>
             <td>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                <label class="form-check-label" for="inlineRadio1">就職</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                <label class="form-check-label" for="inlineRadio2">離職</label>
-              </div>
+              <p-radio class="p-default p-smooth p-bigger" color="warning" value="1" v-model="temp.active">就職</p-radio>
+              <p-radio class="p-default p-smooth p-bigger" color="warning" value="0" v-model="temp.active">離職</p-radio>
             </td>
           </tr>
           <tr>
             <th>電話</th>
             <td>
-                <input type="text" class="form-control">
+              <el-input v-model="temp.phone"></el-input>
             </td>
             <th>E-mail</th>
             <td>
-              <input type="text" class="form-control">
+              <el-input v-model="temp.email"></el-input>
             </td>
           </tr>
           <tr>
             <th>聯絡住址</th>
             <td colspan="3">
-              <input type="text" class="form-control">
+              <el-input v-model="temp.address"></el-input>
             </td>
           </tr>
           <tr>
             <th>部門或單位</th>
             <td>
-              <input type="text" class="form-control">
+              <el-input v-model="temp.depart_name"></el-input>
             </td>
             <th>職稱</th>
             <td>
-              <input type="text" class="form-control">
+              <el-input v-model="temp.work_title"></el-input>
             </td>
           </tr>
           <tr>
             <th>方案計畫名稱</th>
             <td colspan="3">
-              <input type="text" class="form-control">
+              <el-input v-model="temp.plan_name"></el-input>
             </td>
           </tr>
           <tr>
             <th>所屬團隊</th>
             <td colspan="3">
-              <input type="text" class="form-control">
+              <el-input v-model="temp.team_name"></el-input>
             </td>
           </tr>
           <tr>
@@ -130,81 +126,32 @@
           <tr>
             <th>角色</th>
             <td colspan="3">
-              <div class="d-inline-block">
-                <vuestic-checkbox :label="'組織管理員' | translate" :id="'checkbox2'" v-model="checkboxTwoModel"></vuestic-checkbox>
-              </div>
-              <div class="d-inline-block">
-                <vuestic-checkbox :label="'組織主管' | translate" :id="'checkbox2'" v-model="checkboxTwoModel"></vuestic-checkbox>
-              </div>
-              <div class="d-inline-block">
-                <vuestic-checkbox :label="'部門主管' | translate" :id="'checkbox2'" v-model="checkboxTwoModel"></vuestic-checkbox>
-              </div>
-              <div class="d-inline-block">
-                <vuestic-checkbox :label="'組/科/室主管' | translate" :id="'checkbox2'" v-model="checkboxTwoModel"></vuestic-checkbox>
-              </div>
-              <div class="d-inline-block">
-                <vuestic-checkbox :label="'ISP促進者' | translate" :id="'checkbox2'" v-model="checkboxTwoModel"></vuestic-checkbox>
-              </div>
-              <div class="d-inline-block">
-                <vuestic-checkbox :label="'執行監督者' | translate" :id="'checkbox2'" v-model="checkboxTwoModel"></vuestic-checkbox>
-              </div>
-              <div class="d-inline-block">
-                <vuestic-checkbox :label="'支持者' | translate" :id="'checkbox2'" v-model="checkboxTwoModel"></vuestic-checkbox>
-              </div>
-              <div class="d-inline-block">
-                <vuestic-checkbox :label="'OEES訪員' | translate" :id="'checkbox2'" v-model="checkboxTwoModel"></vuestic-checkbox>
-              </div>
-              <div class="d-inline-block">
-                <vuestic-checkbox :label="'SIS訪員' | translate" :id="'checkbox2'" v-model="checkboxTwoModel"></vuestic-checkbox>
-              </div>
-              <div class="d-inline-block">
-                <vuestic-checkbox :label="'POS訪員' | translate" :id="'checkbox2'" v-model="checkboxTwoModel"></vuestic-checkbox>
-              </div>
-              <div class="d-inline-block">
-                <vuestic-checkbox :label="'服務對象/家屬' | translate" :id="'checkbox2'" v-model="checkboxTwoModel"></vuestic-checkbox>
-              </div>
-
-              <!-- <div class="d-inline-block"> -->
-                <!-- <vuestic-checkbox :label="'組織管理員' | translate" :id="'checkbox1'" v-model="checkboxOneModel"></vuestic-checkbox> -->
-                  <!-- <div class="radio abc-radio abc-radio-primary">
-                    <input type="radio" name="radio1" id="radio1" value="option1" checked>
-                    <label for="radio1">
-                          <span class="abc-label-text">Radio</span>
-                    </label>
-                </div> -->
-              <!-- </div> -->
+              <p-radio class="p-default p-smooth p-bigger" color="warning" value="company_admin" v-model="temp.role">組織管理員</p-radio>
+              <p-radio class="p-default p-smooth p-bigger" color="warning" value="company_leader" v-model="temp.role">組織主管</p-radio>
+              <p-radio class="p-default p-smooth p-bigger" color="warning" value="department_leader" v-model="temp.role">部門主管</p-radio>
+              <p-radio class="p-default p-smooth p-bigger" color="warning" value="group_leader" v-model="temp.role">組/科/室主管</p-radio>
+              <p-radio class="p-default p-smooth p-bigger" color="warning" value="isp" v-model="temp.role">ISP促進者</p-radio>
+              <p-radio class="p-default p-smooth p-bigger" color="warning" value="supervisor" v-model="temp.role">執行監督者</p-radio>
+              <p-radio class="p-default p-smooth p-bigger" color="warning" value="supporter" v-model="temp.role">支持者</p-radio>
+              <p-radio class="p-default p-smooth p-bigger" color="warning" value="oees" v-model="temp.role">OEES訪員</p-radio>
+              <p-radio class="p-default p-smooth p-bigger" color="warning" value="sis" v-model="temp.role">SIS訪員</p-radio>
+              <p-radio class="p-default p-smooth p-bigger" color="warning" value="pos" v-model="temp.role">POS訪員</p-radio>
+              <p-radio class="p-default p-smooth p-bigger" color="warning" value="family" v-model="temp.role">服務對象/家屬</p-radio>
             </td>
           </tr>
           <tr>
             <th>審核</th>
             <td>
-              <div class="d-inline-block">
-                <vuestic-checkbox :label="'SIS' | translate" :id="'checkbox2'" v-model="checkboxTwoModel"></vuestic-checkbox>
-              </div>
-              <div class="d-inline-block">
-                <vuestic-checkbox :label="'POS' | translate" :id="'checkbox2'" v-model="checkboxTwoModel"></vuestic-checkbox>
-              </div>
-              <div class="d-inline-block">
-                <vuestic-checkbox :label="'社區生活技能' | translate" :id="'checkbox2'" v-model="checkboxTwoModel"></vuestic-checkbox>
-              </div>
-              <div class="d-inline-block">
-                <vuestic-checkbox :label="'ISP及會議紀錄' | translate" :id="'checkbox2'" v-model="checkboxTwoModel"></vuestic-checkbox>
-              </div>
+              <p-check class="p-default p-smooth p-bigger" color="warning" value="no" v-model="temp.income">SIS</p-check>
+              <p-check class="p-default p-smooth p-bigger" color="warning" value="no" v-model="temp.income">POS</p-check>
+              <p-check class="p-default p-smooth p-bigger" color="warning" value="no" v-model="temp.income">社區生活技能</p-check>
+              <p-check class="p-default p-smooth p-bigger" color="warning" value="no" v-model="temp.income">ISP及會議紀錄</p-check>
             </td>
             <th>個人收入</th>
             <td>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                <label class="form-check-label" for="inlineRadio1">無</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                <label class="form-check-label" for="inlineRadio2">檢視</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
-                <label class="form-check-label" for="inlineRadio3">編輯</label>
-              </div>
+              <p-radio class="p-default p-smooth p-bigger" color="warning" value="no" v-model="temp.approve_status">無</p-radio>
+              <p-radio class="p-default p-smooth p-bigger" color="warning" value="look" v-model="temp.approve_status">檢視</p-radio>
+              <p-radio class="p-default p-smooth p-bigger" color="warning" value="edit" v-model="temp.approve_status">編輯</p-radio>
             </td>
           </tr>
         </table>
@@ -235,12 +182,29 @@ export default {
         plan_id: '',
         team_id: '',
         role_id: [],
-        approve_status: '',
+        role: '',
         income: '',
+        approve_status: '',
         active: ''
       },
       dialogFormVisible: false,
       dialogStatus: ''
+    }
+  },
+  filters: {
+    statusFilter(status) {
+      const statusMap = {
+        '1': 'success',
+        '0': 'danger'
+      }
+      return statusMap[status]
+    },
+    valueFilter(value) {
+      const valueMap = {
+        '1': '就職',
+        '0': '離職'
+      }
+      return valueMap[value]
     }
   },
   created() {
@@ -256,7 +220,7 @@ export default {
     createFilter(queryString) {
       return (users) => {
         return (users.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
-      };
+      }
     },
     handleSelect(item) {
       this.temp.user_id = item.user_id
@@ -284,8 +248,9 @@ export default {
         plan_id: '',
         team_id: '',
         role_id: [],
-        approve_status: '',
+        role: '',
         income: '',
+        approve_status: '',
         active: ''
       }
     },
@@ -295,16 +260,16 @@ export default {
       this.dialogFormVisible = true
     },
     createData() {
-      createCompanyPlan(this.temp).then(response => {
-        this.dialogFormVisible = false
-        this.$notify({
-          title: '成功',
-          message: '新增成功',
-          type: 'success',
-          duration: 2000
-        })
-        this.fetchData()
-      })
+      // createCompanyPlan(this.temp).then(response => {
+      //   this.dialogFormVisible = false
+      //   this.$notify({
+      //     title: '成功',
+      //     message: '新增成功',
+      //     type: 'success',
+      //     duration: 2000
+      //   })
+      //   this.fetchData()
+      // })
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row) // copy obj
@@ -312,27 +277,27 @@ export default {
       this.dialogFormVisible = true
     },
     updateData() {
-      const filter_temp = {
-        plan_id: this.temp.plan_id,
-        plan_name: this.temp.plan_name,
-        area_name: this.temp.area_name,
-        user_id: this.temp.user_id,
-        service_start_date: this.temp.service_start_date,
-        service_end_date: this.temp.service_end_date,
-        price: this.temp.price,
-        description: this.temp.description
-      }
-      const tempData = Object.assign({}, filter_temp)
-      updateCompanyPlan(tempData, this.temp.plan_id).then(() => {
-        this.fetchData()
-        this.dialogFormVisible = false
-        this.$notify({
-          title: '成功',
-          message: '更新成功',
-          type: 'success',
-          duration: 2000
-        })
-      })
+      // const filter_temp = {
+        // plan_id: this.temp.plan_id,
+        // plan_name: this.temp.plan_name,
+        // area_name: this.temp.area_name,
+        // user_id: this.temp.user_id,
+        // service_start_date: this.temp.service_start_date,
+        // service_end_date: this.temp.service_end_date,
+        // price: this.temp.price,
+        // description: this.temp.description
+      // }
+      // const tempData = Object.assign({}, filter_temp)
+      // updateCompanyPlan(tempData, this.temp.plan_id).then(() => {
+      //   this.fetchData()
+      //   this.dialogFormVisible = false
+      //   this.$notify({
+      //     title: '成功',
+      //     message: '更新成功',
+      //     type: 'success',
+      //     duration: 2000
+      //   })
+      // })
     },
     handleDelete(row) {
 
