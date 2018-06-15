@@ -1,9 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <!-- <el-button class="filter-item" type="primary" v-waves icon="el-icon-search">搜索</el-button> -->
       <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate()" type="warning" icon="el-icon-plus">新增</el-button>
-      <!-- <el-button class="filter-item" type="primary" :loading="downloadLoading" v-waves icon="el-icon-download" @click="handleDownload">下載</el-button> -->
     </div>
     <el-table :data="item" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row>
       <el-table-column align="center" label='編號' width="95">
@@ -124,8 +122,8 @@
         <tr>
           <th>說明</th>
           <td colspan="3">
-            <el-input v-model="temp.description"></el-input>
             {{temp}}
+            <el-input v-model="temp.description"></el-input>
           </td>
         </tr>
       </table>
@@ -138,7 +136,7 @@
 </template>
 
 <script>
-import { getCompanyPlanList, createCompanyPlan, updateCompanyPlan, getUserList } from '@/api/company'
+import { getCompanyPlanList, createCompanyPlan, updateCompanyPlan, deleteCompanyPlan, getUserList } from '@/api/company'
 
 export default {
   data() {
@@ -175,7 +173,6 @@ export default {
     querySearch(queryString, cb) {
       var users = this.users
       var results = queryString ? users.filter(this.createFilter(queryString)) : users
-      // 调用 callback 返回建议列表的数据
       cb(results)
     },
     createFilter(queryString) {
@@ -220,31 +217,28 @@ export default {
       this.dialogFormVisible = true
     },
     createData() {
-      console.log(this.temp)
-      // const filter_temp = {
-      //   company_id: this.temp.company_id,
-      //   user_id: this.temp.user_id,
-      //   plan_name: this.temp.plan_name,
-      //   area_name: this.temp.area_name,
-      //   service_start_date: this.temp.service_start_date,
-      //   service_end_date: this.temp.service_end_date,
-      //   price: this.temp.price,
-      //   description: this.temp.description
-      // }
-      const tempData = Object.assign({}, this.temp)
+      const filter_temp = {
+        company_id: this.temp.company_id,
+        user_id: this.temp.user_id,
+        plan_name: this.temp.plan_name,
+        area_name: this.temp.area_name,
+        service_start_date: this.temp.service_start_date,
+        service_end_date: this.temp.service_end_date,
+        price: this.temp.price,
+        description: this.temp.description
+      }
+      const tempData = Object.assign({}, filter_temp)
       createCompanyPlan(tempData).then(response => {
         this.dialogFormVisible = false
-        this.$notify({
-          title: '成功',
-          message: '新增成功',
+        this.$message({
           type: 'success',
-          duration: 2000
+          message: '新增成功'
         })
         this.fetchData()
       })
     },
     handleUpdate(row) {
-      this.temp = Object.assign({}, row) // copy obj
+      this.temp = Object.assign({}, row)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
     },
@@ -263,16 +257,31 @@ export default {
       updateCompanyPlan(tempData, this.temp.plan_id).then(() => {
         this.fetchData()
         this.dialogFormVisible = false
-        this.$notify({
-          title: '成功',
-          message: '更新成功',
+        this.$message({
           type: 'success',
-          duration: 2000
+          message: '更新成功'
         })
       })
     },
     handleDelete(row) {
-
+      this.$confirm('是否刪除?', '提示', {
+        confirmButtonText: '確定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deleteCompanyPlan(row.plan_id).then(() => {
+          this.fetchData()
+        })
+        this.$message({
+          type: 'success',
+          message: '刪除成功!'
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消刪除'
+        });
+      });
     }
   }
 }

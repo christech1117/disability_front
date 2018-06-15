@@ -19,15 +19,17 @@ export function updateCompanyBasic(params, id) {
 // 方案管理
 export function getCompanyPlanList(id) {
   return request({
-    url: '/company/plan/' + id,
-    method: 'get'
+    url: '/company/plan',
+    method: 'get',
+    params: { id }
   })
 }
 // 新增方案
-export function createCompanyPlan() {
+export function createCompanyPlan(params) {
   return request({
     url: '/company/plan',
-    method: 'post'
+    method: 'post',
+    params
   })
 }
 // 修改方案
@@ -39,11 +41,10 @@ export function updateCompanyPlan(params, id) {
   })
 }
 // 刪除方案
-export function deleteCompanyPlan(params) {
+export function deleteCompanyPlan(id) {
   return request({
-    url: '/company/plan/:id',
-    method: 'delete',
-    params
+    url: '/company/plan/' + id,
+    method: 'put'
   })
 }
 
