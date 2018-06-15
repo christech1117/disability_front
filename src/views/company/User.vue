@@ -170,7 +170,7 @@
 </template>
 
 <script>
-import { getUserList, createUser, updateUser } from '@/api/company'
+import { getUserList, createUser, updateUser, deleteUser } from '@/api/company'
 
 export default {
   data() {
@@ -245,7 +245,6 @@ export default {
       getUserList().then(response => {
         this.item = response.data
         this.listLoading = false
-        console.log(this.item)
       })
     },
     resetTemp() {
@@ -287,7 +286,7 @@ export default {
       })
     },
     handleUpdate(row) {
-      this.temp = Object.assign({}, row) // copy obj
+      this.temp = Object.assign({}, row)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
     },
@@ -310,20 +309,34 @@ export default {
         active: this.temp.active
       }
       const tempData = Object.assign({}, filter_temp)
-      console.log(tempData)
       updateUser(tempData, this.temp.user_id).then(() => {
         this.fetchData()
         this.dialogFormVisible = false
-        this.$notify({
-          title: '成功',
-          message: '更新成功',
+        this.$message({
           type: 'success',
-          duration: 2000
+          message: '更新成功'
         })
       })
     },
     handleDelete(row) {
-
+      this.$confirm('是否刪除?', '提示', {
+        confirmButtonText: '確定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deleteUser(row.user_id).then(() => {
+          this.fetchData()
+        })
+        this.$message({
+          type: 'success',
+          message: '刪除成功!'
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消刪除'
+        });
+      });
     }
   }
 }

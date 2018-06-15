@@ -122,7 +122,6 @@
         <tr>
           <th>說明</th>
           <td colspan="3">
-            {{temp}}
             <el-input v-model="temp.description"></el-input>
           </td>
         </tr>

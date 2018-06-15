@@ -43,7 +43,7 @@ export function updateCompanyPlan(params, id) {
 // 刪除方案
 export function deleteCompanyPlan(id) {
   return request({
-    url: '/company/plan/' + id,
+    url: '/company/plan/del/' + id,
     method: 'put'
   })
 }
@@ -109,7 +109,7 @@ export function updateUser(params, id) {
 export function deleteUser(params, id) {
   return request({
     url: '/company/user/' + id,
-    method: 'delete',
+    method: 'put',
     params
   })
 }
