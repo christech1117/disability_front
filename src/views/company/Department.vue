@@ -1,11 +1,9 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-button class="filter-item" type="primary" v-waves icon="el-icon-search">搜索</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="warning" icon="el-icon-plus">新增</el-button>
-      <!-- <el-button class="filter-item" type="primary" :loading="downloadLoading" v-waves icon="el-icon-download" @click="handleDownload">下載</el-button> -->
     </div>
-    <el-table :data="list" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row>
+    <el-table :data="item" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row>
       <el-table-column align="center" label='編號' width="95">
         <template slot-scope="scope">
           {{scope.$index + 1}}
@@ -23,17 +21,12 @@
       </el-table-column>
       <el-table-column label="主責人" align="center">
         <template slot-scope="scope">
-          {{scope.row.member_name}}
-        </template>
-      </el-table-column>
-      <el-table-column label="地址" align="center">
-        <template slot-scope="scope">
-          {{scope.row.adress}}
+          {{scope.row.username}}
         </template>
       </el-table-column>
       <el-table-column label="電話" align="center">
         <template slot-scope="scope">
-          {{scope.row.tel}}
+          {{scope.row.phone}}
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center">
@@ -191,7 +184,7 @@
 </template>
 
 <script>
-import { getCompanyDepartmentList } from '@/api/company'
+import { getCompanyDepartmentList, createCompanyDepartment, updateCompanyDepartment } from '@/api/company'
 
 const depart_type = [
   { key: 'day', display_name: '日間' },
@@ -253,43 +246,104 @@ export default {
     this.fetchData()
   },
   methods: {
+    querySearch(queryString, cb) {
+      var users = this.users
+      var results = queryString ? users.filter(this.createFilter(queryString)) : users
+      // 调用 callback 返回建议列表的数据
+      cb(results)
+    },
+    createFilter(queryString) {
+      return (users) => {
+        return (users.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
+      }
+    },
+    handleSelect(item) {
+      this.temp.user_id = item.user_id
+      this.temp.phone = item.phone
+      this.temp.email = item.email
+    },
     fetchData() {
       this.listLoading = true
-      getCompanyDepartmentList(this.listQuery).then(response => {
-        this.list = response.data.items
+      getCompanyDepartmentList().then(response => {
+        this.item = response.data
         this.listLoading = false
       })
     },
     resetTemp() {
       this.temp = {
-        depart_id: undefined,
-        depart_type: 'day',
-        service_type: null,
-        depart_name: '',
         plan_name: '',
-        member_name: '',
-        adress: '',
-        tel: '',
-        created_at: new Date(),
-        updated_at: new Date()
+        area_name: '',
+        username: '',
+        user_id: '',
+        phone: '',
+        service_start_date: '',
+        service_end_date: '',
+        serviece_date: '',
+        service_count: '',
+        price: '',
+        description: '',
+        company_id: '1'
       }
     },
     handleCreate() {
       this.resetTemp()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
+    },
+    createData() {
+      console.log(this.temp)
+      // const filter_temp = {
+      //   company_id: this.temp.company_id,
+      //   user_id: this.temp.user_id,
+      //   plan_name: this.temp.plan_name,
+      //   area_name: this.temp.area_name,
+      //   service_start_date: this.temp.service_start_date,
+      //   service_end_date: this.temp.service_end_date,
+      //   price: this.temp.price,
+      //   description: this.temp.description
+      // }
+      const tempData = Object.assign({}, this.temp)
+      createCompanyDepartment(tempData).then(response => {
+        this.dialogFormVisible = false
+        this.$notify({
+          title: '成功',
+          message: '新增成功',
+          type: 'success',
+          duration: 2000
+        })
+        this.fetchData()
       })
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row) // copy obj
-      this.temp.timestamp = new Date(this.temp.timestamp)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
+    },
+    updateData() {
+      const filter_temp = {
+        plan_id: this.temp.plan_id,
+        plan_name: this.temp.plan_name,
+        area_name: this.temp.area_name,
+        user_id: this.temp.user_id,
+        service_start_date: this.temp.service_start_date,
+        service_end_date: this.temp.service_end_date,
+        price: this.temp.price,
+        description: this.temp.description
+      }
+      const tempData = Object.assign({}, filter_temp)
+      updateCompanyDepartment(tempData, this.temp.plan_id).then(() => {
+        this.fetchData()
+        this.dialogFormVisible = false
+        this.$notify({
+          title: '成功',
+          message: '更新成功',
+          type: 'success',
+          duration: 2000
+        })
       })
+    },
+    handleDelete(row) {
+
     }
   }
 }

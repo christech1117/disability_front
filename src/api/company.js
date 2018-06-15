@@ -64,17 +64,17 @@ export function createCompanyDepartment(params) {
   })
 }
 // 修改單位
-export function updateCompanyDepartment(params) {
+export function updateCompanyDepartment(params, id) {
   return request({
-    url: '/company/department/:id',
+    url: '/company/department/' + id,
     method: 'put',
     params
   })
 }
 // 刪除單位
-export function deleteCompanyDepartment(params) {
+export function deleteCompanyDepartment(params, id) {
   return request({
-    url: '/company/department/:id',
+    url: '/company/department/' + id,
     method: 'delete',
     params
   })
@@ -105,9 +105,9 @@ export function updateUser(params, id) {
   })
 }
 // 刪除人員
-export function deleteUser(params) {
+export function deleteUser(params, id) {
   return request({
-    url: '/company/user/',
+    url: '/company/user/' + id,
     method: 'delete',
     params
   })

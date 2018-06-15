@@ -165,7 +165,7 @@ export default {
       textMap: {
         create: '新增方案計畫',
         update: '編輯方案計畫'
-      },
+      }
     }
   },
   created() {

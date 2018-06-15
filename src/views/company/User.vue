@@ -201,7 +201,7 @@ export default {
       textMap: {
         create: '新增人員',
         update: '編輯人員'
-      },
+      }
     }
   },
   filters: {
