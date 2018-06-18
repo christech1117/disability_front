@@ -218,7 +218,6 @@ export default {
     createData() {
       const filter_temp = {
         company_id: this.temp.company_id,
-        user_id: this.temp.user_id,
         plan_name: this.temp.plan_name,
         area_name: this.temp.area_name,
         service_start_date: this.temp.service_start_date,
@@ -274,13 +273,13 @@ export default {
         this.$message({
           type: 'success',
           message: '刪除成功!'
-        });
+        })
       }).catch(() => {
         this.$message({
           type: 'info',
           message: '已取消刪除'
-        });
-      });
+        })
+      })
     }
   }
 }

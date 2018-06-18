@@ -32,23 +32,29 @@
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">編輯</el-button>
-          <el-button type="danger" size="mini" @click="handleUpdate(scope.row)">刪除</el-button>
+          <el-button type="danger" size="mini" @click="handleDelete(scope.row)">刪除</el-button>
         </template>
       </el-table-column>
     </el-table>
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-select class="filter-item" v-model="temp.depart_type" placeholder="Please select">
-        <el-option v-for="item in depart_type" :key="item.key" :label="item.display_name" :value="item.key">
-        </el-option>
+      <el-select v-if="dialogStatus=='create'" class="filter-item" v-model="temp.depart_type" placeholder="請選擇服務類型">
+        <el-option
+          v-for="item in depart_type"
+          :key="item.key"
+          :label="item.display_name"
+          :value="item.key"
+        ></el-option>
       </el-select>
       <table class="table day" border="1" v-if="temp.depart_type === 'day'">
         <tr>
           <th>服務類型</th>
           <td>
-            <el-checkbox-group v-model="temp.service_type">
-              <el-checkbox v-for="item in day_service_type" :key="item.key" :label="item">{{item}}</el-checkbox>
-            </el-checkbox-group>
+            <p-radio class="p-default p-smooth p-bigger" color="warning" value="day_care" v-model="temp.service_type">日間照顧</p-radio>
+            <p-radio class="p-default p-smooth p-bigger" color="warning" value="day_active" v-model="temp.service_type">日間活動(含休閒、工作)</p-radio>
+            <p-radio class="p-default p-smooth p-bigger" color="warning" value="community" v-model="temp.service_type">社區日間作業設施</p-radio>
+            <p-radio class="p-default p-smooth p-bigger" color="warning" value="group_work" v-model="temp.service_type">小組工作安置</p-radio>
+            <p-radio class="p-default p-smooth p-bigger" color="warning" value="other" v-model="temp.service_type">其他</p-radio>
           </td>
         </tr>
         <tr>
@@ -60,25 +66,18 @@
         <tr>
           <th>方案</th>
           <td>
-            <el-select class="filter-item" v-model="temp.depart_type" placeholder="Please select">
-              <el-option v-for="item in depart_type" :key="item.key" :label="item.display_name" :value="item.key">
-              </el-option>
-            </el-select>
           </td>
         </tr>
         <tr>
           <th>主責人</th>
           <td>
-            <el-select class="filter-item" v-model="temp.depart_type" placeholder="Please select">
-              <el-option v-for="item in depart_type" :key="item.key" :label="item.display_name" :value="item.key">
-              </el-option>
-            </el-select>
           </td>
         </tr>
         <tr>
           <th>地址</th>
           <td>
             <el-input v-model="temp.adress"></el-input>
+            {{temp}}
           </td>
         </tr>
         <tr>
@@ -92,7 +91,22 @@
         <tr>
           <th>服務類型</th>
           <td>
-            <el-radio v-for="item in live_service_type" :key="item.key" :label="item" v-model="temp.service_type">{{item}}</el-radio>
+            <!-- <p-radio class="p-default p-smooth p-bigger" color="warning" value="city" v-model="temp.job">庇護性就業</p-radio> -->
+            <!-- <p-radio
+              class="p-default p-smooth p-bigger"
+              color="warning"
+              v-for="item in live_service_type"
+              :key="item.key"
+              v-model="temp.service_type"
+              value=""
+            >{{item}}</p-radio> -->
+            <p-radio class="p-default p-smooth p-bigger" color="warning" value="large" v-model="temp.service_type">大型機構(>200人)</p-radio>
+            <p-radio class="p-default p-smooth p-bigger" color="warning" value="small" v-model="temp.service_type">小型機構(30人~200人)</p-radio>
+            <p-radio class="p-default p-smooth p-bigger" color="warning" value="night" v-model="temp.service_type">夜間型住宿機構(<29人)</p-radio>
+            <p-radio class="p-default p-smooth p-bigger" color="warning" value="community" v-model="temp.service_type">小組工作安置</p-radio>
+            <p-radio class="p-default p-smooth p-bigger" color="warning" value="family" v-model="temp.service_type">與家人同住(<6人)</p-radio>
+            <p-radio class="p-default p-smooth p-bigger" color="warning" value="outside" v-model="temp.service_type">自己在外面居住</p-radio>
+            <p-radio class="p-default p-smooth p-bigger" color="warning" value="other" v-model="temp.service_type">其他(</p-radio>
           </td>
         </tr>
         <tr>
@@ -123,6 +137,7 @@
           <th>地址</th>
           <td>
             <el-input v-model="temp.adress"></el-input>
+            {{temp}}
           </td>
         </tr>
         <tr>
@@ -136,7 +151,10 @@
         <tr>
           <th>服務類型</th>
           <td>
-            <el-radio v-for="item in job_service_type" :key="item.key" :label="item" v-model="temp.service_type">{{item}}</el-radio>
+            <p-radio class="p-default p-smooth p-bigger" color="warning" value="sheltered" v-model="temp.service_type">庇護性就業</p-radio>
+            <p-radio class="p-default p-smooth p-bigger" color="warning" value="supportive" v-model="temp.service_type">支持性就業</p-radio>
+            <p-radio class="p-default p-smooth p-bigger" color="warning" value="general" v-model="temp.service_type">一般性就業</p-radio>
+            <p-radio class="p-default p-smooth p-bigger" color="warning" value="other" v-model="temp.service_type">其他</p-radio>
           </td>
         </tr>
         <tr>
@@ -148,25 +166,32 @@
         <tr>
           <th>方案</th>
           <td>
-            <el-select class="filter-item" v-model="temp.depart_type" placeholder="Please select">
-              <el-option v-for="item in depart_type" :key="item.key" :label="item.display_name" :value="item.key">
-              </el-option>
-            </el-select>
+            <el-autocomplete
+              class="inline-input"
+              v-model="temp.plan_name"
+              :fetch-suggestions="querySearch"
+              placeholder="請選擇方案"
+              @select="handleSelectPlan"
+            ></el-autocomplete>
           </td>
         </tr>
         <tr>
           <th>主責人</th>
           <td>
-            <el-select class="filter-item" v-model="temp.depart_type" placeholder="Please select">
-              <el-option v-for="item in depart_type" :key="item.key" :label="item.display_name" :value="item.key">
-              </el-option>
-            </el-select>
+            <el-autocomplete
+              class="inline-input"
+              v-model="temp.username"
+              :fetch-suggestions="querySearch"
+              placeholder="請選擇主責人"
+              @select="handleSelectUser"
+            ></el-autocomplete>
           </td>
         </tr>
         <tr>
           <th>地址</th>
           <td>
             <el-input v-model="temp.adress"></el-input>
+            {{temp}}
           </td>
         </tr>
         <tr>
@@ -184,12 +209,13 @@
 </template>
 
 <script>
-import { getCompanyDepartmentList, createCompanyDepartment, updateCompanyDepartment } from '@/api/company'
+import { getCompanyDepartmentList, createCompanyDepartment, updateCompanyDepartment, deleteCompanyDepartment } from '@/api/company'
+import { getCompanyPlanList, getUserList } from '@/api/company'
 
 const depart_type = [
-  { key: 'day', display_name: '日間' },
-  { key: 'live', display_name: '居住' },
-  { key: 'job', display_name: '就業' }
+  { key: 'day', display_name: '日間服務' },
+  { key: 'live', display_name: '居住服務' },
+  { key: 'job', display_name: '就業服務' }
 ]
 const day_service_type = ['日間照顧', '日間活動(含休閒、工作)', '社區日間作業設施', '小組工作安置', '其他']
 const live_service_type = ['大型機構(>200人)', '小型機構(30人~200人)', '夜間型住宿機構(<29人)', '社區居住(<6人)', '與家人同住', '自己在外面居住', '其他']
@@ -207,20 +233,16 @@ export default {
       temp: {
         depart_id: undefined,
         depart_type: 'day',
-        service_type: null,
         depart_name: '',
         plan_name: '',
-        member_name: '',
-        adress: '',
-        tel: '',
-        created_at: new Date(),
-        updated_at: new Date()
+        username: '',
+        adress: ''
       },
       dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
-        update: '編輯',
-        create: '新增'
+        create: '新增單位',
+        update: '編輯單位'
       }
     }
   },
@@ -257,7 +279,12 @@ export default {
         return (users.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
       }
     },
-    handleSelect(item) {
+    handleSelectPlan(item) {
+      this.temp.user_id = item.user_id
+      this.temp.phone = item.phone
+      this.temp.email = item.email
+    },
+    handleSelectUser(item) {
       this.temp.user_id = item.user_id
       this.temp.phone = item.phone
       this.temp.email = item.email
@@ -266,29 +293,31 @@ export default {
       this.listLoading = true
       getCompanyDepartmentList().then(response => {
         this.item = response.data
+        console.log(this.item)
         this.listLoading = false
+      })
+      getCompanyPlanList().then(response => {
+        this.plans = response.data
+      })
+      getUserList().then(response => {
+        this.users = response.data
       })
     },
     resetTemp() {
       this.temp = {
+        depart_id: undefined,
+        depart_type: 'day',
+        depart_name: '',
         plan_name: '',
-        area_name: '',
         username: '',
-        user_id: '',
-        phone: '',
-        service_start_date: '',
-        service_end_date: '',
-        serviece_date: '',
-        service_count: '',
-        price: '',
-        description: '',
-        company_id: '1'
+        adress: ''
       }
     },
     handleCreate() {
       this.resetTemp()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
+      // this.temp.depart_type = 'day'
     },
     createData() {
       console.log(this.temp)
@@ -343,7 +372,24 @@ export default {
       })
     },
     handleDelete(row) {
-
+      this.$confirm('是否刪除?', '提示', {
+        confirmButtonText: '確定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deleteCompanyDepartment(row.company_id).then(() => {
+          this.fetchData()
+        })
+        this.$message({
+          type: 'success',
+          message: '刪除成功!'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消刪除'
+        })
+      })
     }
   }
 }

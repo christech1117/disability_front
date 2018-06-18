@@ -124,6 +124,7 @@
             <th>所屬團隊</th>
             <td colspan="3">
               <el-input v-model="temp.team_name"></el-input>
+              {{temp}}
             </td>
           </tr>
           <tr>
@@ -274,13 +275,29 @@ export default {
       this.dialogFormVisible = true
     },
     createData() {
-      createUser(this.temp).then(response => {
+      const filter_temp = {
+        user_id: this.temp.user_id,
+        username: this.temp.value,
+        avatar: this.temp.avatar,
+        work_start_date: this.temp.work_start_date,
+        phone: this.temp.phone,
+        email: this.temp.email,
+        address: this.temp.address,
+        depart_id: this.temp.depart_id,
+        work_title: this.temp.work_title,
+        plan_name: this.temp.plan_name,
+        team_id: this.temp.team_id,
+        role_id: this.temp.role_id,
+        approve_status: this.temp.approve_status,
+        income: this.temp.income,
+        active: this.temp.active
+      }
+      const tempData = Object.assign({}, filter_temp)
+      createUser(tempData).then(response => {
         this.dialogFormVisible = false
-        this.$notify({
-          title: '成功',
-          message: '新增成功',
+        this.$message({
           type: 'success',
-          duration: 2000
+          message: '新增成功'
         })
         this.fetchData()
       })
@@ -324,19 +341,20 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
+        console.log(row.user_id)
         deleteUser(row.user_id).then(() => {
           this.fetchData()
         })
         this.$message({
           type: 'success',
           message: '刪除成功!'
-        });
+        })
       }).catch(() => {
         this.$message({
           type: 'info',
           message: '已取消刪除'
-        });
-      });
+        })
+      })
     }
   }
 }
