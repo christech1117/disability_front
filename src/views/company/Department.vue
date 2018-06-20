@@ -16,7 +16,7 @@
       </el-table-column>
       <el-table-column label="單位名稱" align="center">
         <template slot-scope="scope">
-          {{scope.row.depart_name}}
+          {{scope.row.value}}
         </template>
       </el-table-column>
       <el-table-column label="主責人" align="center">
@@ -26,7 +26,7 @@
       </el-table-column>
       <el-table-column label="電話" align="center">
         <template slot-scope="scope">
-          {{scope.row.phone}}
+          {{scope.row.tel}}
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center">
@@ -60,24 +60,38 @@
         <tr>
           <th>單位名稱</th>
           <td>
-            <el-input v-model="temp.depart_name"></el-input>
+            <el-input v-model="temp.value"></el-input>
+            {{temp}}
           </td>
         </tr>
         <tr>
           <th>方案</th>
           <td>
+            <el-autocomplete
+              class="inline-input"
+              v-model="temp.plan_name"
+              :fetch-suggestions="querySearchPlan"
+              placeholder="請選擇方案"
+              @select="handleSelectPlan"
+            ></el-autocomplete>
           </td>
         </tr>
         <tr>
           <th>主責人</th>
           <td>
+            <el-autocomplete
+              class="inline-input"
+              v-model="temp.username"
+              :fetch-suggestions="querySearch"
+              placeholder="請選擇主責人"
+              @select="handleSelectUser"
+            ></el-autocomplete>
           </td>
         </tr>
         <tr>
           <th>地址</th>
           <td>
-            <el-input v-model="temp.adress"></el-input>
-            {{temp}}
+            <el-input v-model="temp.address"></el-input>
           </td>
         </tr>
         <tr>
@@ -90,7 +104,7 @@
       <table class="table day" border="1" v-else-if="temp.depart_type === 'live'">
         <tr>
           <th>服務類型</th>
-          <td>
+          <td colspan="7">
             <!-- <p-radio class="p-default p-smooth p-bigger" color="warning" value="city" v-model="temp.job">庇護性就業</p-radio> -->
             <!-- <p-radio
               class="p-default p-smooth p-bigger"
@@ -111,13 +125,13 @@
         </tr>
         <tr>
           <th>單位名稱</th>
-          <td>
-            <el-input v-model="temp.depart_name"></el-input>
+          <td colspan="7">
+            <el-input v-model="temp.value"></el-input>
           </td>
         </tr>
         <tr>
           <th>方案</th>
-          <td>
+          <td colspan="7">
             <el-select class="filter-item" v-model="temp.depart_type" placeholder="Please select">
               <el-option v-for="item in depart_type" :key="item.key" :label="item.display_name" :value="item.key">
               </el-option>
@@ -126,7 +140,7 @@
         </tr>
         <tr>
           <th>主責人</th>
-          <td>
+          <td colspan="7">
             <el-select class="filter-item" v-model="temp.depart_type" placeholder="Please select">
               <el-option v-for="item in depart_type" :key="item.key" :label="item.display_name" :value="item.key">
               </el-option>
@@ -135,16 +149,51 @@
         </tr>
         <tr>
           <th>地址</th>
-          <td>
+          <td colspan="7">
             <el-input v-model="temp.adress"></el-input>
-            {{temp}}
           </td>
         </tr>
         <tr>
           <th>電話</th>
+          <td colspan="7">
+            <el-input v-model="temp.tel"></el-input>
+          </td>
+        </tr>
+        <tr>
+          <th>房舍類型</th>
+          <td colspan="4">
+            <el-input v-model="temp.tel"></el-input>
+          </td>
+          <th>電梯</th>
+          <td colspan="2"></td>
+        </tr>
+        <tr>
+          <th>房舍性質</th>
+          <td colspan="4">
+            <el-input v-model="temp.tel"></el-input>
+          </td>
+          <th>每月租金</th>
+          <td colspan="2"></td>
+        </tr>
+        <tr>
+          <th>樓層</th>
+          <td colspan="4">
+            <el-input v-model="temp.tel"></el-input>
+          </td>
+          <th>樓地板面積</th>
+          <td colspan="2"></td>
+        </tr>
+        <tr>
+          <th>客廳數</th>
           <td>
             <el-input v-model="temp.tel"></el-input>
           </td>
+          <th>衛浴數</th>
+          <td></td>
+          <th>房間數</th>
+          <td></td>
+          <th>床位數</th>
+          <td></td>
         </tr>
       </table>
       <table class="table day" border="1" v-else-if="temp.depart_type === 'job'">
@@ -169,7 +218,7 @@
             <el-autocomplete
               class="inline-input"
               v-model="temp.plan_name"
-              :fetch-suggestions="querySearch"
+              :fetch-suggestions="querySearchPlan"
               placeholder="請選擇方案"
               @select="handleSelectPlan"
             ></el-autocomplete>
@@ -191,7 +240,6 @@
           <th>地址</th>
           <td>
             <el-input v-model="temp.adress"></el-input>
-            {{temp}}
           </td>
         </tr>
         <tr>
@@ -200,9 +248,34 @@
             <el-input v-model="temp.tel"></el-input>
           </td>
         </tr>
+        <tr>
+          <th>工作時間</th>
+          <td>
+            <el-input v-model="temp.work_time"></el-input>
+          </td>
+        </tr>
+        <tr>
+          <th>工作時數</th>
+          <td>
+            <el-input v-model="temp.work_hour"></el-input>
+          </td>
+        </tr>
+        <tr>
+          <th>工資</th>
+          <td>
+            <el-input v-model="temp.salary"></el-input>
+          </td>
+        </tr>
+        <tr>
+          <th>工作內容</th>
+          <td>
+            <el-input v-model="temp.content"></el-input>
+          </td>
+        </tr>
       </table>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogFormVisible = false">儲存</el-button>
+        <el-button v-if="dialogStatus=='create'" type="warning" @click="createData()">儲存</el-button>
+        <el-button v-else type="warning" @click="updateData()">儲存</el-button>
       </span>
     </el-dialog>
   </div>
@@ -224,8 +297,10 @@ const job_service_type = ['庇護性就業', '支持性就業', '一般性就業
 export default {
   data() {
     return {
-      list: null,
+      item: null,
       listLoading: true,
+      users: [],
+      plans: [],
       depart_type,
       day_service_type,
       live_service_type,
@@ -236,7 +311,8 @@ export default {
         depart_name: '',
         plan_name: '',
         username: '',
-        adress: ''
+        adress: '',
+        tel: ''
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -271,21 +347,36 @@ export default {
     querySearch(queryString, cb) {
       var users = this.users
       var results = queryString ? users.filter(this.createFilter(queryString)) : users
+
       // 调用 callback 返回建议列表的数据
       cb(results)
+      // cb(plan_results)
     },
     createFilter(queryString) {
       return (users) => {
         return (users.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
       }
     },
-    handleSelectPlan(item) {
+    querySearchPlan(queryString, cb) {
+      var plans = this.plans
+      var results = queryString ? plans.filter(this.createFilter(queryString)) : plans
+
+      // 调用 callback 返回建议列表的数据
+      cb(results)
+      // cb(plan_results)
+    },
+    handleSelectUser(item) {
       this.temp.user_id = item.user_id
       this.temp.phone = item.phone
       this.temp.email = item.email
     },
-    handleSelectUser(item) {
-      this.temp.user_id = item.user_id
+    createFilterPlan(queryString) {
+      return (plans) => {
+        return (plans.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
+      }
+    },
+    handleSelectPlan(item) {
+      this.temp.plan_id = item.plan_id
       this.temp.phone = item.phone
       this.temp.email = item.email
     },
@@ -293,10 +384,9 @@ export default {
       this.listLoading = true
       getCompanyDepartmentList().then(response => {
         this.item = response.data
-        console.log(this.item)
         this.listLoading = false
       })
-      getCompanyPlanList().then(response => {
+      getCompanyPlanList(1).then(response => {
         this.plans = response.data
       })
       getUserList().then(response => {
@@ -310,7 +400,8 @@ export default {
         depart_name: '',
         plan_name: '',
         username: '',
-        adress: ''
+        adress: '',
+        tel: ''
       }
     },
     handleCreate() {
@@ -320,54 +411,57 @@ export default {
       // this.temp.depart_type = 'day'
     },
     createData() {
-      console.log(this.temp)
-      // const filter_temp = {
-      //   company_id: this.temp.company_id,
-      //   user_id: this.temp.user_id,
-      //   plan_name: this.temp.plan_name,
-      //   area_name: this.temp.area_name,
-      //   service_start_date: this.temp.service_start_date,
-      //   service_end_date: this.temp.service_end_date,
-      //   price: this.temp.price,
-      //   description: this.temp.description
-      // }
-      const tempData = Object.assign({}, this.temp)
+      const filter_temp = {
+        depart_id: this.temp.depart_id,
+        sub_company_id: this.temp.sub_company_id,
+        service_type: this.temp.service_type,
+        depart_name: this.temp.value,
+        plan_id: this.temp.plan_id,
+        plan_name: this.temp.plan_name,
+        user_id: this.temp.user_id,
+        address: this.temp.address,
+        tel: this.temp.tel,
+        live_id: this.temp.live_id,
+        job_id: this.temp.job_id
+      }
+      const tempData = Object.assign({}, filter_temp)
       createCompanyDepartment(tempData).then(response => {
         this.dialogFormVisible = false
-        this.$notify({
-          title: '成功',
-          message: '新增成功',
+        this.$message({
           type: 'success',
-          duration: 2000
+          message: '新增成功'
         })
         this.fetchData()
       })
     },
     handleUpdate(row) {
-      this.temp = Object.assign({}, row) // copy obj
+      this.temp = Object.assign({}, row)
+      console.log(this.temp)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
     },
     updateData() {
       const filter_temp = {
+        depart_id: this.temp.depart_id,
+        sub_company_id: this.temp.sub_company_id,
+        service_type: this.temp.service_type,
+        depart_name: this.temp.value,
         plan_id: this.temp.plan_id,
         plan_name: this.temp.plan_name,
-        area_name: this.temp.area_name,
         user_id: this.temp.user_id,
-        service_start_date: this.temp.service_start_date,
-        service_end_date: this.temp.service_end_date,
-        price: this.temp.price,
-        description: this.temp.description
+        address: this.temp.address,
+        tel: this.temp.tel,
+        live_id: this.temp.live_id,
+        job_id: this.temp.job_id
       }
       const tempData = Object.assign({}, filter_temp)
-      updateCompanyDepartment(tempData, this.temp.plan_id).then(() => {
+      updateCompanyDepartment(tempData, this.temp.depart_id).then(() => {
+        console.log(filter_temp)
         this.fetchData()
         this.dialogFormVisible = false
-        this.$notify({
-          title: '成功',
-          message: '更新成功',
+        this.$message({
           type: 'success',
-          duration: 2000
+          message: '更新成功'
         })
       })
     },
@@ -377,7 +471,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        deleteCompanyDepartment(row.company_id).then(() => {
+        deleteCompanyDepartment(row.depart_id).then(() => {
           this.fetchData()
         })
         this.$message({

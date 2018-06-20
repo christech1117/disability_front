@@ -11,7 +11,7 @@
       </el-table-column>
       <el-table-column label="方案計畫名稱" align="center">
         <template slot-scope="scope">
-          {{scope.row.plan_name}}
+          {{scope.row.value}}
         </template>
       </el-table-column>
       <el-table-column label="服務據點名稱" align="center">
@@ -52,7 +52,7 @@
         <tr>
           <th>方案計畫名稱</th>
           <td colspan="3">
-            <el-input v-model="temp.plan_name"></el-input>
+            <el-input v-model="temp.value"></el-input>
           </td>
         </tr>
         <tr>
@@ -144,7 +144,7 @@ export default {
       users: [],
       listLoading: true,
       temp: {
-        plan_name: '',
+        value: '', // 方案計畫名稱
         area_name: '',
         username: '',
         user_id: '',
@@ -196,7 +196,7 @@ export default {
     },
     resetTemp() {
       this.temp = {
-        plan_name: '',
+        value: '', // 方案計畫名稱
         area_name: '',
         username: '',
         user_id: '',
@@ -218,7 +218,7 @@ export default {
     createData() {
       const filter_temp = {
         company_id: this.temp.company_id,
-        plan_name: this.temp.plan_name,
+        plan_name: this.temp.value,
         area_name: this.temp.area_name,
         service_start_date: this.temp.service_start_date,
         service_end_date: this.temp.service_end_date,
@@ -237,13 +237,14 @@ export default {
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row)
+      console.log(this.temp)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
     },
     updateData() {
       const filter_temp = {
         plan_id: this.temp.plan_id,
-        plan_name: this.temp.plan_name,
+        plan_name: this.temp.value,
         area_name: this.temp.area_name,
         user_id: this.temp.user_id,
         service_start_date: this.temp.service_start_date,
@@ -252,6 +253,7 @@ export default {
         description: this.temp.description
       }
       const tempData = Object.assign({}, filter_temp)
+      console.log(tempData)
       updateCompanyPlan(tempData, this.temp.plan_id).then(() => {
         this.fetchData()
         this.dialogFormVisible = false
