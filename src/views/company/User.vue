@@ -124,7 +124,6 @@
             <th>所屬團隊</th>
             <td colspan="3">
               <el-input v-model="temp.team_name"></el-input>
-              {{temp}}
             </td>
           </tr>
           <tr>
@@ -149,10 +148,10 @@
           <tr>
             <th>審核</th>
             <td>
-              <p-check class="p-default p-smooth p-bigger" color="warning" value="no" v-model="temp.approve_status">SIS</p-check>
-              <p-check class="p-default p-smooth p-bigger" color="warning" value="no" v-model="temp.approve_status">POS</p-check>
-              <p-check class="p-default p-smooth p-bigger" color="warning" value="no" v-model="temp.approve_status">社區生活技能</p-check>
-              <p-check class="p-default p-smooth p-bigger" color="warning" value="no" v-model="temp.approve_status">ISP及會議紀錄</p-check>
+              <p-radio class="p-default p-smooth p-bigger" color="warning" value="sis" v-model="temp.approve_status">SIS</p-radio>
+              <p-radio class="p-default p-smooth p-bigger" color="warning" value="pos" v-model="temp.approve_status">POS</p-radio>
+              <p-radio class="p-default p-smooth p-bigger" color="warning" value="community" v-model="temp.approve_status">社區生活技能</p-radio>
+              <p-radio class="p-default p-smooth p-bigger" color="warning" value="isp" v-model="temp.approve_status">ISP及會議紀錄</p-radio>
             </td>
             <th>個人收入</th>
             <td>

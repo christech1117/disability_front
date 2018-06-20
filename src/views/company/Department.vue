@@ -150,7 +150,7 @@
         <tr>
           <th>地址</th>
           <td colspan="7">
-            <el-input v-model="temp.adress"></el-input>
+            <el-input v-model="temp.address"></el-input>
           </td>
         </tr>
         <tr>
@@ -162,38 +162,51 @@
         <tr>
           <th>房舍類型</th>
           <td colspan="4">
-            <el-input v-model="temp.tel"></el-input>
+            <el-input v-model="temp.house_type"></el-input>
           </td>
           <th>電梯</th>
-          <td colspan="2"></td>
+          <td colspan="2">
+            <p-radio class="p-default p-smooth p-bigger" color="warning" value="yes" v-model="temp.have_elevator">有</p-radio>
+            <p-radio class="p-default p-smooth p-bigger" color="warning" value="no" v-model="temp.have_elevator">無</p-radio>
+          </td>
         </tr>
         <tr>
           <th>房舍性質</th>
           <td colspan="4">
-            <el-input v-model="temp.tel"></el-input>
+            <el-input v-model="temp.house_nature"></el-input>
           </td>
           <th>每月租金</th>
-          <td colspan="2"></td>
+          <td colspan="2">
+            <el-input v-model="temp.rent"></el-input>
+          </td>
         </tr>
         <tr>
           <th>樓層</th>
           <td colspan="4">
-            <el-input v-model="temp.tel"></el-input>
+            <el-input v-model="temp.floor"></el-input>
           </td>
           <th>樓地板面積</th>
-          <td colspan="2"></td>
+          <td colspan="2">
+            <el-input v-model="temp.floor_area"></el-input>
+          </td>
         </tr>
         <tr>
           <th>客廳數</th>
           <td>
-            <el-input v-model="temp.tel"></el-input>
+            <el-input v-model="temp.parlor_count"></el-input>
           </td>
           <th>衛浴數</th>
-          <td></td>
+          <td>
+            <el-input v-model="temp.bathroom_count"></el-input>
+          </td>
           <th>房間數</th>
-          <td></td>
+          <td>
+            <el-input v-model="temp.room_count"></el-input>
+          </td>
           <th>床位數</th>
-          <td></td>
+          <td>
+            <el-input v-model="temp.bed_count"></el-input>
+          </td>
         </tr>
       </table>
       <table class="table day" border="1" v-else-if="temp.depart_type === 'job'">
@@ -209,7 +222,7 @@
         <tr>
           <th>單位名稱</th>
           <td>
-            <el-input v-model="temp.depart_name"></el-input>
+            <el-input v-model="temp.value"></el-input>
           </td>
         </tr>
         <tr>
@@ -239,7 +252,8 @@
         <tr>
           <th>地址</th>
           <td>
-            <el-input v-model="temp.adress"></el-input>
+            <el-input v-model="temp.address"></el-input>
+            {{temp}}
           </td>
         </tr>
         <tr>
@@ -312,7 +326,11 @@ export default {
         plan_name: '',
         username: '',
         adress: '',
-        tel: ''
+        tel: '',
+        work_time: '',
+        work_hour: '',
+        salary: '',
+        content: ''
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -401,14 +419,17 @@ export default {
         plan_name: '',
         username: '',
         adress: '',
-        tel: ''
+        tel: '',
+        work_time: '',
+        work_hour: '',
+        salary: '',
+        content: ''
       }
     },
     handleCreate() {
       this.resetTemp()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
-      // this.temp.depart_type = 'day'
     },
     createData() {
       const filter_temp = {

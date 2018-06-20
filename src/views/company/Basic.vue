@@ -88,17 +88,31 @@
       <table class="table">
         <tr>
           <th>組織\單位名稱</th>
-          <td colspan="3">{{ temp.company_name }}</td>
+          <td colspan="3">
+            <el-input v-model="temp.company_name"></el-input>
+          </td>
         </tr>
         <tr>
           <th>聯絡人姓名</th>
-          <td>{{ temp.username }}</td>
+          <td>
+            <el-autocomplete
+              class="inline-input"
+              v-model="temp.username"
+              :fetch-suggestions="querySearch"
+              placeholder="請選擇聯絡人"
+              @select="handleSelect"
+            ></el-autocomplete>
+          </td>
           <th>電話</th>
-          <td>{{ temp.tel }}</td>
+          <td>
+            <el-input v-model="temp.tel"></el-input>
+          </td>
         </tr>
         <tr>
           <th>Email</th>
-          <td colspan="3">{{ temp.email }}</td>
+          <td colspan="3">
+            <el-input v-model="temp.email"></el-input>
+          </td>
         </tr>
         <tr colspan="4">
           <th>服務地區類別</th>
@@ -136,7 +150,9 @@
         </tr>
         <tr>
           <th>年度預算</th>
-          <td colspan="3">{{ item.budget }}</td>
+          <td colspan="3">
+            <el-input v-model="temp.budget"></el-input>
+          </td>
         </tr>
         <tr>
           <th>組織服務內容</th>
@@ -162,7 +178,6 @@
               </li>
               <li>
                 <span>其他</span>
-                {{temp}}
               </li>
             </ol>
           </td>
@@ -176,12 +191,12 @@
 </template>
 
 <script>
-import { getCompanyBasic, updateCompanyBasic } from '@/api/company'
+import { getCompanyBasic, updateCompanyBasic, getUserList } from '@/api/company'
 
 export default {
   data() {
     return {
-      item: null,
+      item: [],
       listLoading: true,
       temp: {
         company_name: '',
@@ -204,11 +219,29 @@ export default {
     this.fetchData()
   },
   methods: {
+    querySearch(queryString, cb) {
+      var users = this.users
+      var results = queryString ? users.filter(this.createFilter(queryString)) : users
+      cb(results)
+    },
+    createFilter(queryString) {
+      return (users) => {
+        return (users.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
+      }
+    },
+    handleSelect(item) {
+      this.temp.user_id = item.user_id
+      this.temp.phone = item.phone
+      this.temp.email = item.email
+    },
     fetchData() {
       this.listLoading = true
       getCompanyBasic(1).then(response => {
         this.item = response.data
         this.listLoading = false
+      })
+      getUserList().then(response => {
+        this.users = response.data
       })
     },
     handleUpdate() {
@@ -221,11 +254,9 @@ export default {
       updateCompanyBasic(tempData, 1).then(() => {
         this.fetchData()
         this.dialogFormVisible = false
-        this.$notify({
-          title: '成功',
-          message: '更新成功',
+        this.$message({
           type: 'success',
-          duration: 2000
+          message: '更新成功'
         })
       })
     }
