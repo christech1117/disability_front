@@ -117,12 +117,12 @@ export const asyncRouterMap = [
       roles: ['super_admin', 'admin', 'company_leader', 'department_leader', 'group_leader', 'isp', 'supervisor', 'supporter']
     },
     children: [
-      // {
-      //   path: 'user',
-      //   name: 'User',
-      //   component: () => import('@/views/person/User'),
-      //   meta: { title: '個人層級', icon: 'form' }
-      // },
+      {
+        path: 'serviceUser',
+        name: 'ServiceUser',
+        component: () => import('@/views/person/ServiceUser'),
+        meta: { title: '服務人員管理', icon: 'form' }
+      },
       {
         path: 'basic',
         name: 'PersonBasic',
