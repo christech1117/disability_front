@@ -13,41 +13,33 @@
       </el-table-column>
       <el-table-column label="姓名" align="center">
         <template slot-scope="scope">
-          {{scope.row.value}}
+          {{scope.row.name}}
+          <el-tag :type="scope.row.sex | statusFilter">{{scope.row.sex | valueFilter}}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="照片" align="center">
         <template slot-scope="scope">
-          <!-- {{scope.row.avatar}} -->
+          {{scope.row.avatar}}
         </template>
       </el-table-column>
-      <el-table-column label="單位" align="center">
+      <el-table-column label="生日" align="center">
         <template slot-scope="scope">
-          {{scope.row.depart_name}}
+          {{scope.row.birthday}}
         </template>
       </el-table-column>
-      <el-table-column label="職稱" align="center">
+      <el-table-column label="手冊核發日期" align="center">
         <template slot-scope="scope">
-          {{scope.row.work_title}}
+          {{scope.row.publish_date}}
         </template>
       </el-table-column>
-      <el-table-column label="團隊" align="center">
+      <el-table-column label="後續鑑定日期" align="center">
         <template slot-scope="scope">
-          {{scope.row.team_name}}
+          {{scope.row.identify_date}}
         </template>
       </el-table-column>
-      <el-table-column label="工作狀態" align="center">
+      <el-table-column label="操作" align="center" width="230px">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.active | statusFilter">{{scope.row.active | valueFilter}}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column label="就職日期" align="center">
-        <template slot-scope="scope">
-          {{scope.row.work_start_date}}
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" align="center" width="180px">
-        <template slot-scope="scope">
+          <el-button type="success" size="mini" @click="handleUpdate(scope.row)">選擇</el-button>
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">編輯</el-button>
           <el-button type="danger" size="mini" @click="handleDelete(scope.row)">刪除</el-button>
         </template>
@@ -207,15 +199,15 @@ export default {
   filters: {
     statusFilter(status) {
       const statusMap = {
-        '1': 'success',
-        '0': 'danger'
+        'male': 'success',
+        'female': 'danger'
       }
       return statusMap[status]
     },
     valueFilter(value) {
       const valueMap = {
-        '1': '就職',
-        '0': '離職'
+        'male': '男',
+        'female': '女'
       }
       return valueMap[value]
     }
