@@ -104,9 +104,9 @@
               <el-autocomplete
                 class="inline-input"
                 v-model="temp.depart_name"
-                :fetch-suggestions="querySearch"
+                :fetch-suggestions="querySearchDepart"
                 placeholder="請選擇部門或單位"
-                @select="handleSelect"
+                @select="handleSelectDepart"
               ></el-autocomplete>
             </td>
             <th>職稱</th>
@@ -117,7 +117,13 @@
           <tr>
             <th>方案計畫名稱</th>
             <td colspan="3">
-              <el-input v-model="temp.plan_name"></el-input>
+              <el-autocomplete
+                class="inline-input"
+                v-model="temp.plan_name"
+                :fetch-suggestions="querySearchPlan"
+                placeholder="請選擇方案"
+                @select="handleSelectPlan"
+              ></el-autocomplete>
             </td>
           </tr>
           <tr>
@@ -171,6 +177,7 @@
 
 <script>
 import { getUserList, createUser, updateUser, deleteUser } from '@/api/company'
+import { getCompanyDepartmentList, getCompanyPlanList } from '@/api/company'
 
 export default {
   data() {
@@ -224,27 +231,46 @@ export default {
     this.fetchData()
   },
   methods: {
-    querySearch(queryString, cb) {
-      var users = this.users
-      var results = queryString ? users.filter(this.createFilter(queryString)) : users
-      // 调用 callback 返回建议列表的数据
+    querySearchDepart(queryString, cb) {
+      var departs = this.departs
+      var results = queryString ? departs.filter(this.createFilter(queryString)) : departs
+
       cb(results)
     },
     createFilter(queryString) {
-      return (users) => {
-        return (users.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
+      return (departs) => {
+        return (departs.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
       }
     },
-    handleSelect(item) {
-      this.temp.user_id = item.user_id
-      this.temp.phone = item.phone
-      this.temp.email = item.email
+    handleSelectDpeart(item) {
+      this.temp.depart_id = item.depart_id
+    },
+    querySearchPlan(queryString, cb) {
+      var plans = this.plans
+      var results = queryString ? plans.filter(this.createFilter(queryString)) : plans
+
+      cb(results)
+    },
+    createFilterPlan(queryString) {
+      return (plans) => {
+        return (plans.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
+      }
+    },
+    handleSelectPlan(item) {
+      this.temp.plan_id = item.plan_id
     },
     fetchData() {
       this.listLoading = true
       getUserList().then(response => {
         this.item = response.data
         this.listLoading = false
+      })
+      getCompanyDepartmentList().then(response => {
+        this.departs = response.data
+        this.listLoading = false
+      })
+      getCompanyPlanList(1).then(response => {
+        this.plans = response.data
       })
     },
     resetTemp() {
@@ -316,6 +342,7 @@ export default {
         email: this.temp.email,
         address: this.temp.address,
         depart_id: this.temp.depart_id,
+        depart_name: this.temp.depart_name,
         work_title: this.temp.work_title,
         plan_name: this.temp.plan_name,
         team_id: this.temp.team_id,
