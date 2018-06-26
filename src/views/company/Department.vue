@@ -61,7 +61,6 @@
           <th>單位名稱</th>
           <td>
             <el-input v-model="temp.value"></el-input>
-            {{temp}}
           </td>
         </tr>
         <tr>
@@ -253,7 +252,6 @@
           <th>地址</th>
           <td>
             <el-input v-model="temp.address"></el-input>
-            {{temp}}
           </td>
         </tr>
         <tr>
