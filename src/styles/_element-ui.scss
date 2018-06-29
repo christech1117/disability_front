@@ -65,3 +65,9 @@
 .el-dialog__body {
   padding: 5px 20px;
 }
+
+.el-button--warning, .el-button--warning:hover, .el-button--warning:active, .el-button--warning:focus {
+  color: #fff;
+  background-color: #FFB320;
+  border-color: #FFB320;
+}
