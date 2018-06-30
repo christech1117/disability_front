@@ -37,14 +37,14 @@ export default {
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!isvalidUsername(value)) {
-        callback(new Error('请输入正确的用户名'))
+        callback(new Error('請輸入正確的用戶名'))
       } else {
         callback()
       }
     }
     const validatePass = (rule, value, callback) => {
       if (value.length < 5) {
-        callback(new Error('密码不能小于5位'))
+        callback(new Error('密碼不能小於5位'))
       } else {
         callback()
       }
@@ -82,7 +82,7 @@ export default {
           })
         } else {
           console.log('error submit!!')
-          return false
+          return 'false'
         }
       })
     }

@@ -35,8 +35,10 @@ $breadcrumbs-gray: #b4b4b4;
 
 //sidebar
 $menuBg          : #304156;
-$subMenuBg       : #1f2d3d;
-$menuHover       : #001528;
+$subMenuBg       : #FFB320;
+$menuHover       : rgb(186, 131, 41);
+
+$pretty--color-warning:#FFB320;
 
 $colors-map: (
   brand-danger : $brand-danger,

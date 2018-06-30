@@ -81,9 +81,8 @@
       }
     }
   }
-  .el-submenu__title {
-    // background-color: $menuBg !important;
-    // color: $white !important;
+  .el-submenu__title, .el-submenu__title i{
+    color: $white !important;
     font-size: 16px;
   }
   .el-menu-item {
@@ -93,7 +92,6 @@
   .sidebar-container .el-submenu .el-menu-item {
     min-width: 180px !important;
     background-color: $subMenuBg !important;
-    color: $white;
     &:hover {
       background-color: $menuHover !important;
     }

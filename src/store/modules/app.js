@@ -36,12 +36,12 @@ const app = {
     toggleSideBar({ commit }) {
       commit('TOGGLE_SIDEBAR')
     },
-    // closeSideBar({ commit }, { withoutAnimation }) {
-    //   commit('CLOSE_SIDEBAR', withoutAnimation)
-    // },
-    // toggleDevice({ commit }, device) {
-    //   commit('TOGGLE_DEVICE', device)
-    // },
+    closeSideBar({ commit }, { withoutAnimation }) {
+      commit('CLOSE_SIDEBAR', withoutAnimation)
+    },
+    toggleDevice({ commit }, device) {
+      commit('TOGGLE_DEVICE', device)
+    },
     setLanguage({ commit }, language) {
       commit('SET_LANGUAGE', language)
     }
