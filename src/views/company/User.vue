@@ -178,6 +178,7 @@
 <script>
 import { getUserList, createUser, updateUser, deleteUser } from '@/api/company'
 import { getCompanyDepartmentList, getCompanyPlanList } from '@/api/company'
+import { mapGetters } from 'vuex'
 
 export default {
   data() {
@@ -227,6 +228,11 @@ export default {
       return valueMap[value]
     }
   },
+  computed: {
+    ...mapGetters([
+      'id'
+    ])
+  },
   created() {
     this.fetchData()
   },
@@ -242,7 +248,7 @@ export default {
         return (departs.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
       }
     },
-    handleSelectDpeart(item) {
+    handleSelectDepart(item) {
       this.temp.depart_id = item.depart_id
     },
     querySearchPlan(queryString, cb) {
@@ -261,15 +267,15 @@ export default {
     },
     fetchData() {
       this.listLoading = true
-      getUserList().then(response => {
+      getUserList(this.id).then(response => {
         this.item = response.data
         this.listLoading = false
       })
-      getCompanyDepartmentList().then(response => {
+      getCompanyDepartmentList(this.id).then(response => {
         this.departs = response.data
         this.listLoading = false
       })
-      getCompanyPlanList(1).then(response => {
+      getCompanyPlanList(this.id).then(response => {
         this.plans = response.data
       })
     },

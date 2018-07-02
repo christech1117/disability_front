@@ -192,6 +192,7 @@
 
 <script>
 import { getCompanyBasic, updateCompanyBasic, getUserList } from '@/api/company'
+import { mapGetters } from 'vuex'
 
 export default {
   data() {
@@ -215,6 +216,11 @@ export default {
       dialogStatus: ''
     }
   },
+  computed: {
+    ...mapGetters([
+      'id'
+    ])
+  },
   created() {
     this.fetchData()
   },
@@ -236,11 +242,11 @@ export default {
     },
     fetchData() {
       this.listLoading = true
-      getCompanyBasic(1).then(response => {
+      getCompanyBasic(this.id).then(response => {
         this.item = response.data
         this.listLoading = false
       })
-      getUserList().then(response => {
+      getUserList(this.id).then(response => {
         this.users = response.data
       })
     },
@@ -251,7 +257,7 @@ export default {
     },
     updateData(item) {
       const tempData = Object.assign({}, this.temp)
-      updateCompanyBasic(tempData, 1).then(() => {
+      updateCompanyBasic(tempData, this.id).then(() => {
         this.fetchData()
         this.dialogFormVisible = false
         this.$message({

@@ -1,11 +1,10 @@
 import request from '@/utils/request'
 
 // 服務人員列表
-export function getServiceUserList(params) {
+export function getServiceUserList(id) {
   return request({
-    url: '/person/serviceuser',
-    method: 'get',
-    params
+    url: '/person/serviceuser/' + id,
+    method: 'get'
   })
 }
 // 新增人員
@@ -27,8 +26,8 @@ export function updateServiceUser(params, id) {
 // 刪除人員
 export function deleteServiceUser(id) {
   return request({
-    url: '/person/serviceuser/del/' + id,
-    method: 'put'
+    url: '/person/serviceuser/' + id,
+    method: 'delete'
   })
 }
 

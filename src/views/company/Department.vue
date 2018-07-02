@@ -296,6 +296,7 @@
 <script>
 import { getCompanyDepartmentList, createCompanyDepartment, updateCompanyDepartment, deleteCompanyDepartment } from '@/api/company'
 import { getCompanyPlanList, getUserList } from '@/api/company'
+import { mapGetters } from 'vuex'
 
 const depart_type = [
   { key: 'day', display_name: '日間服務' },
@@ -356,6 +357,11 @@ export default {
       return valueMap[value]
     }
   },
+  computed: {
+    ...mapGetters([
+      'id'
+    ])
+  },
   created() {
     this.fetchData()
   },
@@ -398,14 +404,14 @@ export default {
     },
     fetchData() {
       this.listLoading = true
-      getCompanyDepartmentList().then(response => {
+      getCompanyDepartmentList(this.id).then(response => {
         this.item = response.data
         this.listLoading = false
       })
-      getCompanyPlanList(1).then(response => {
+      getCompanyPlanList(this.id).then(response => {
         this.plans = response.data
       })
-      getUserList().then(response => {
+      getUserList(this.id).then(response => {
         this.users = response.data
       })
     },

@@ -28,7 +28,7 @@ service.interceptors.response.use(
   * code為非20000是拋錯 可结合自己業務進行修改
   */
     const res = response.data
-    console.log(res)
+    // console.log(res)
     if (res.code !== 20000) {
       Message({
         message: res.message,

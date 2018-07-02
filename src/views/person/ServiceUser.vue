@@ -171,6 +171,7 @@
 
 <script>
 import { getServiceUserList, createServiceUser, updateServiceUser, deleteServiceUser } from '@/api/person'
+import { mapGetters } from 'vuex'
 
 export default {
   data() {
@@ -220,6 +221,11 @@ export default {
       return valueMap[value]
     }
   },
+  computed: {
+    ...mapGetters([
+      'id'
+    ])
+  },
   created() {
     this.fetchData()
   },
@@ -242,7 +248,7 @@ export default {
     },
     fetchData() {
       this.listLoading = true
-      getServiceUserList().then(response => {
+      getServiceUserList(this.id).then(response => {
         this.item = response.data
         this.listLoading = false
       })

@@ -136,6 +136,7 @@
 
 <script>
 import { getCompanyPlanList, createCompanyPlan, updateCompanyPlan, deleteCompanyPlan, getUserList } from '@/api/company'
+import { mapGetters } from 'vuex'
 
 export default {
   data() {
@@ -165,6 +166,11 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapGetters([
+      'id'
+    ])
+  },
   created() {
     this.fetchData()
   },
@@ -186,11 +192,11 @@ export default {
     },
     fetchData() {
       this.listLoading = true
-      getCompanyPlanList(1).then(response => {
+      getCompanyPlanList(this.id).then(response => {
         this.item = response.data
         this.listLoading = false
       })
-      getUserList().then(response => {
+      getUserList(this.id).then(response => {
         this.users = response.data
       })
     },
@@ -237,7 +243,6 @@ export default {
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row)
-      console.log(this.temp)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
     },

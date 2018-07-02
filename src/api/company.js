@@ -19,9 +19,8 @@ export function updateCompanyBasic(params, id) {
 // 方案管理
 export function getCompanyPlanList(id) {
   return request({
-    url: '/company/plan',
-    method: 'get',
-    params: { id }
+    url: '/company/plan/' + id,
+    method: 'get'
   })
 }
 // 新增方案
@@ -43,25 +42,23 @@ export function updateCompanyPlan(params, id) {
 // 刪除方案
 export function deleteCompanyPlan(id) {
   return request({
-    url: '/company/plan/del/' + id,
-    method: 'put'
+    url: '/company/plan/' + id,
+    method: 'delete'
   })
 }
 
 // 單位管理
-export function getCompanyDepartmentList(params) {
+export function getCompanyDepartmentList(id) {
   return request({
-    url: '/company/department',
-    method: 'get',
-    params
+    url: '/company/department/' + id,
+    method: 'get'
   })
 }
 // 新增單位
-export function createCompanyDepartment(params) {
+export function createCompanyDepartment() {
   return request({
     url: '/company/department',
-    method: 'post',
-    params
+    method: 'post'
   })
 }
 // 修改單位
@@ -75,17 +72,16 @@ export function updateCompanyDepartment(params, id) {
 // 刪除單位
 export function deleteCompanyDepartment(id) {
   return request({
-    url: '/company/department/del/' + id,
-    method: 'put'
+    url: '/company/department/' + id,
+    method: 'delete'
   })
 }
 
 // 人員管理
-export function getUserList(params) {
+export function getUserList(id) {
   return request({
-    url: '/company/user',
-    method: 'get',
-    params
+    url: '/company/user/' + id,
+    method: 'get'
   })
 }
 // 新增人員
@@ -107,7 +103,7 @@ export function updateUser(params, id) {
 // 刪除人員
 export function deleteUser(id) {
   return request({
-    url: '/company/user/del/' + id,
-    method: 'put'
+    url: '/company/user/' + id,
+    method: 'delete'
   })
 }

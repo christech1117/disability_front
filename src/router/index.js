@@ -283,24 +283,24 @@ export const asyncRouterMap = [
     name: 'Work',
     meta: { title: '工作管理', icon: 'example' },
     children: [
-      {
-        path: 'person',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: '個人層級', icon: 'table' }
-      },
-      {
-        path: 'team',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: '團隊層級', icon: 'tree' }
-      },
-      {
-        path: 'organization',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: '組織層級', icon: 'tree' }
-      }
+      // {
+      //   path: 'person',
+      //   name: 'Table',
+      //   component: () => import('@/views/table/index'),
+      //   meta: { title: '個人層級', icon: 'table' }
+      // },
+      // {
+      //   path: 'team',
+      //   name: 'Tree',
+      //   component: () => import('@/views/tree/index'),
+      //   meta: { title: '團隊層級', icon: 'tree' }
+      // },
+      // {
+      //   path: 'organization',
+      //   name: 'Tree',
+      //   component: () => import('@/views/tree/index'),
+      //   meta: { title: '組織層級', icon: 'tree' }
+      // }
     ]
   },
 
