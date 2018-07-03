@@ -47,7 +47,7 @@
 
 .el-input {
   input {
-    border: 1px white solid;
+    border: 1px $white solid;
   }
   input:focus, input:active, input:hover {
     border: 1px $theme-orange solid;

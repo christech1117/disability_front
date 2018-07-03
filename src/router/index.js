@@ -109,7 +109,7 @@ export const asyncRouterMap = [
   {
     path: '/person',
     component: Layout,
-    redirect: '/person/basic/User',
+    redirect: '/person/serviceUser',
     name: 'Person',
     meta: {
       title: '個人層級',
@@ -121,12 +121,12 @@ export const asyncRouterMap = [
         path: 'serviceUser',
         name: 'ServiceUser',
         component: () => import('@/views/person/ServiceUser'),
-        meta: { title: '服務人員管理', icon: 'form' }
+        meta: { title: '個人層級', icon: 'form' }
       },
       {
-        path: 'basic',
-        name: 'PersonBasic',
-        component: () => import('@/views/person/PersonBasic'),
+        path: 'index',
+        name: 'index',
+        component: () => import('@/views/person/index'),
         meta: { title: '個案基本資料', icon: 'form' }
       }
     ]
