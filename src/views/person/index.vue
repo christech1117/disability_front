@@ -1,7 +1,6 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">搜索</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="warning" icon="el-icon-edit">編輯</el-button>
     </div>
     <el-tabs :tab-position="tabPosition">
@@ -11,11 +10,11 @@
       <el-tab-pane label="個別化支持服務計畫"><support-service></support-service></el-tab-pane>
       <el-tab-pane label="ISP會議記錄"><isp></isp></el-tab-pane>
       <el-tab-pane label="個人成果量表(POS)"><pos></pos></el-tab-pane>
-      <el-tab-pane label="社區生活技能評量表"><comminity></comminity></el-tab-pane>
+      <el-tab-pane label="社區生活技能評量表"><community></community></el-tab-pane>
       <el-tab-pane label="統計分析"><statistic></statistic></el-tab-pane>
       <el-tab-pane label="個案管理"><case></case></el-tab-pane>
     </el-tabs>
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+    <!-- <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <table class="table day" border="1">
         <tr>
           <th>姓名</th>
@@ -101,12 +100,12 @@
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogFormVisible = false">儲存</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 
 <script>
-import { getSisData } from '@/api/person'
+// import { getSisData } from '@/api/person'
 import Basic from './Basic'
 import Sis from './Sis'
 import SupportPlan from './SupportPlan'
@@ -141,6 +140,12 @@ export default {
     }
   },
   components: { Basic, Sis, SupportPlan, SupportService, Isp, Pos, Community, Statistic, Case },
+  props: {
+    isEdit: {
+      type: Boolean,
+      default: false
+    }
+  },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -151,16 +156,22 @@ export default {
     }
   },
   created() {
-    this.fetchData()
+    console.log()
+    // if (this.isEdit) {
+    //   const id = this.$route.params && this.$route.params.id
+    //   this.fetchData(id)
+    // } else {
+    //   this.postForm = Object.assign({}, defaultForm)
+    // }
   },
   methods: {
     fetchData() {
       this.listLoading = true
-      getSisData(this.listQuery).then(response => {
-        this.list = response.data.items
-        this.total = response.data.total
-        this.listLoading = false
-      })
+      // getSisData(this.listQuery).then(response => {
+      //   this.list = response.data.items
+      //   this.total = response.data.total
+      //   this.listLoading = false
+      // })
     },
     resetTemp() {
       this.temp = {

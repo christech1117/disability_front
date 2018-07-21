@@ -29,7 +29,7 @@ export const constantRouterMap = [
       path: 'dashboard',
       component: () => import('@/views/dashboard/index'),
       name: 'dashboard',
-      meta: { title: '首頁', icon: 'example', noCache: true }
+      meta: { title: 'dashboard', icon: 'example', noCache: true }
     }]
   }
 ]
@@ -48,7 +48,7 @@ export const asyncRouterMap = [
     alwaysShow: true,
     name: 'Company',
     meta: {
-      title: '組織管理',
+      title: 'company_manage',
       icon: 'example',
       roles: ['super_admin', 'admin', 'company_leader', 'department_leader', 'group_leader', 'isp', 'supervisor', 'supporter']
     },
@@ -58,9 +58,19 @@ export const asyncRouterMap = [
         name: 'Basic',
         component: () => import('@/views/company/Basic'),
         meta: {
-          title: '組織基本資料',
+          title: 'company_basic',
           icon: 'tree',
           roles: ['super_admin', 'admin', 'company_leader']
+        }
+      },
+      {
+        path: 'subCompany',
+        name: 'SubCompany',
+        component: () => import('@/views/company/SubCompany'),
+        meta: {
+          title: 'sub_company_manage',
+          icon: 'tree',
+          roles: ['super_admin', 'admin', 'company_leader', 'department_leader']
         }
       },
       {
@@ -68,7 +78,7 @@ export const asyncRouterMap = [
         name: 'Department',
         component: () => import('@/views/company/department'),
         meta: {
-          title: '部門/單位管理',
+          title: 'depart_manage',
           icon: 'tree',
           roles: ['super_admin', 'admin', 'company_leader', 'department_leader']
         }
@@ -78,7 +88,7 @@ export const asyncRouterMap = [
         name: 'Plan',
         component: () => import('@/views/company/Plan'),
         meta: {
-          title: '方案管理',
+          title: 'plan_manage',
           icon: 'tree',
           roles: ['super_admin', 'admin', 'company_leader', 'department_leader']
         }
@@ -88,7 +98,7 @@ export const asyncRouterMap = [
         name: 'User',
         component: () => import('@/views/company/User'),
         meta: {
-          title: '人員管理',
+          title: 'user_manage',
           icon: 'tree',
           roles: ['super_admin', 'admin', 'company_leader']
         }
@@ -98,7 +108,7 @@ export const asyncRouterMap = [
         name: 'File',
         component: () => import('@/views/company/File'),
         meta: {
-          title: '檔案管理',
+          title: 'file_manage',
           icon: 'tree',
           roles: ['super_admin', 'admin', 'company_leader', 'department_leader', 'group_leader', 'isp', 'supervisor', 'supporter']
         }
@@ -112,7 +122,7 @@ export const asyncRouterMap = [
     redirect: '/person/serviceUser',
     name: 'Person',
     meta: {
-      title: '個人層級',
+      title: 'person_manage',
       icon: 'example',
       roles: ['super_admin', 'admin', 'company_leader', 'department_leader', 'group_leader', 'isp', 'supervisor', 'supporter']
     },
@@ -121,13 +131,14 @@ export const asyncRouterMap = [
         path: 'serviceUser',
         name: 'ServiceUser',
         component: () => import('@/views/person/ServiceUser'),
-        meta: { title: '個人層級', icon: 'form' }
+        meta: { title: 'person_manage', icon: 'example' }
       },
       {
-        path: 'index',
+        path: 'serviceUser/:id',
         name: 'index',
         component: () => import('@/views/person/index'),
-        meta: { title: '個案基本資料', icon: 'form' }
+        meta: { title: '個案基本資料', noCache: true },
+        hidden: true
       }
     ]
   },
@@ -138,7 +149,7 @@ export const asyncRouterMap = [
     redirect: '/team/basic',
     name: 'Team',
     meta: {
-      title: '團隊層級',
+      title: 'team_manage',
       icon: 'example',
       roles: ['super_admin', 'admin', 'company_leader', 'department_leader', 'group_leader', 'isp', 'supervisor', 'supporter']
     },
@@ -219,7 +230,7 @@ export const asyncRouterMap = [
     redirect: '/organization/OEES',
     name: 'Organization',
     meta: {
-      title: '組織層級',
+      title: 'organization_manage',
       icon: 'example',
       roles: ['super_admin', 'admin', 'company_leader', 'department_leader', 'group_leader', 'oees']
     },
@@ -281,7 +292,7 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/example/table',
     name: 'Work',
-    meta: { title: '工作管理', icon: 'example' },
+    meta: { title: 'work_manage', icon: 'example' },
     children: [
       // {
       //   path: 'person',

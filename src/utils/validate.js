@@ -1,33 +1,42 @@
-/**
- * Created by jiachenpan on 16/11/18.
- */
+import Vue from 'vue'
+import VeeValidate, { Validator } from 'vee-validate'
+import zh from 'vee-validate/dist/locale/zh_CN' // 引入中文文件
 
-export function isvalidUsername(str) {
-  const valid_map = ['admin', 'editor']
-  return valid_map.indexOf(str.trim()) >= 0
+// 配置中文
+Validator.addLocale(zh)
+
+const config = {
+  locale: 'zh_CN'
 }
 
-/* 合法uri*/
-export function validateURL(textval) {
-  const urlregex = /^(https?|ftp):\/\/([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/
-  return urlregex.test(textval)
+Vue.use(VeeValidate, config)
+
+// 自定義validate
+const dictionary = {
+  zh_CN: {
+    messages: {
+      required: () => '欄位為必填',
+      numeric: (field) => field + '必須為數字',
+      email: (field) => field + '格式錯誤',
+      min: (field, value) => field + '至少需輸入' + value + '個字'
+    },
+    attributes: {
+      email: '信箱',
+      password: '密碼',
+      username: '帳號',
+      phone: '電話'
+    }
+  }
 }
 
-/* 小写字母*/
-export function validateLowerCase(str) {
-  const reg = /^[a-z]+$/
-  return reg.test(str)
-}
+Validator.updateDictionary(dictionary)
 
-/* 大写字母*/
-export function validateUpperCase(str) {
-  const reg = /^[A-Z]+$/
-  return reg.test(str)
-}
-
-/* 大小写字母*/
-export function validatAlphabets(str) {
-  const reg = /^[A-Za-z]+$/
-  return reg.test(str)
-}
-
+Validator.extend('phone', {
+  messages: {
+    zh_CN: field => field + '手機號碼必須為10碼'
+  },
+  validate: value => {
+    return value.length === 10
+    // && /^09\d{2}-?\d{3}-?\d{3}$/.test(value) 手機格式檢查
+  }
+})
