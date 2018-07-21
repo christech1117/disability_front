@@ -9,34 +9,9 @@
           {{scope.$index + 1}}
         </template>
       </el-table-column>
-      <el-table-column label="方案計畫名稱" align="center">
+      <el-table-column label="子公司名稱" align="center">
         <template slot-scope="scope">
           {{scope.row.value}}
-        </template>
-      </el-table-column>
-      <el-table-column label="服務據點名稱" align="center">
-        <template slot-scope="scope">
-          {{scope.row.area_name}}
-        </template>
-      </el-table-column>
-      <el-table-column label="計畫承辦人" align="center">
-        <template slot-scope="scope">
-          {{scope.row.username}}
-        </template>
-      </el-table-column>
-      <el-table-column label="服務開辦日期" align="center">
-        <template slot-scope="scope">
-          {{scope.row.service_start_date}}
-        </template>
-      </el-table-column>
-      <el-table-column label="服務結束日期" align="center">
-        <template slot-scope="scope">
-          {{scope.row.service_end_date}}
-        </template>
-      </el-table-column>
-      <el-table-column label="服務人數" align="center">
-        <template slot-scope="scope">
-          {{scope.row.service_count}}
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.actions')" align="center" width="180px">
@@ -50,83 +25,10 @@
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
       <table class="table day" border="1">
         <tr>
-          <th>方案計畫名稱</th>
+          <th>子公司名稱</th>
           <td colspan="3">
             <input class="c-input" v-model="temp.value" v-validate="'required'" name="plan" type="text">
             <span class="error-message" v-show="errors.has('plan')"  >{{ errors.first('plan') }}</span>
-          </td>
-        </tr>
-        <tr>
-          <th>服務據點名稱</th>
-          <td colspan="3">
-            <input class="c-input" v-model="temp.area_name" v-validate="'required'" name="area_name" type="text">
-            <span class="error-message" v-show="errors.has('area_name')"  >{{ errors.first('area_name') }}</span>
-          </td>
-        </tr>
-        <tr>
-          <th>計畫承辦人</th>
-          <td colspan="3">
-            <el-autocomplete
-              class="inline-input"
-              v-model="temp.username"
-              :fetch-suggestions="querySearch"
-              placeholder="請選擇承辦人"
-              @select="handleSelect"
-            ></el-autocomplete>
-          </td>
-        </tr>
-        <tr>
-          <th>電話</th>
-          <td colspan="3">{{ temp.phone }}</td>
-        </tr>
-        <tr>
-          <th>E-mail</th>
-          <td colspan="3">{{ temp.email }}</td>
-        </tr>
-        <tr>
-          <th>服務開辦日期</th>
-          <td>
-            <div class="block">
-              <el-date-picker
-                value-format="yyyy-MM-dd"
-                v-model="temp.service_start_date"
-                type="date"
-                placeholder="選擇日期">
-              </el-date-picker>
-            </div>
-          </td>
-          <th>服務結束日期</th>
-          <td>
-            <div class="block">
-              <el-date-picker
-                value-format="yyyy-MM-dd"
-                v-model="temp.service_end_date"
-                type="date"
-                placeholder="選擇日期">
-              </el-date-picker>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <th>服務時間</th>
-          <td colspan="3">{{temp.service_date}}</td>
-        </tr>
-        <tr>
-          <th>服務人數(最多)</th>
-          <td colspan="3"> {{temp.service_count}} </td>
-        </tr>
-        <tr>
-          <th>收費(每月)</th>
-          <td colspan="3">
-            <input class="c-input" v-model="temp.price" v-validate="'required|numeric'" name="price" type="text">
-            <span class="error-message" v-show="errors.has('price')"  >{{ errors.first('price') }}</span>
-          </td>
-        </tr>
-        <tr>
-          <th>說明</th>
-          <td colspan="3">
-            <input class="c-input" v-model="temp.description" v-validate="'required'" name="description" type="text">
-            <span class="error-message" v-show="errors.has('description')"  >{{ errors.first('description') }}</span>
           </td>
         </tr>
       </table>
