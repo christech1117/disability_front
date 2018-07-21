@@ -1,17 +1,17 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-button class="filter-item" style="margin-left: 10px;" @click="handleUpdate()" type="warning" icon="el-icon-edit">編輯</el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" @click="handleUpdate()" type="warning" icon="el-icon-edit">{{ $t('table.edit') }}</el-button>
     </div>
     <table class="table">
       <tr>
-        <th>組織\單位名稱</th>
+        <th>{{ $t('company_basic.company_name') }}</th>
         <td colspan="3">{{ item.company_name }}</td>
       </tr>
       <tr>
-        <th>聯絡人姓名</th>
+        <th>{{ $t('company_basic.user_name') }}</th>
         <td>{{ item.username }}</td>
-        <th>電話</th>
+        <th>{{ $t('company_basic.tel') }}</th>
         <td>{{ item.tel }}</td>
       </tr>
       <tr>
@@ -19,7 +19,7 @@
         <td colspan="3">{{ item.email }}</td>
       </tr>
       <tr colspan="4">
-        <th>服務地區類別</th>
+        <th>{{ $t('company_basic.service_area') }}</th>
         <td colspan="3">
           <p-radio class="p-default p-smooth p-bigger p-locked" color="warning" value="city" v-model="item.service_area">都市</p-radio>
           <p-radio class="p-default p-smooth p-bigger p-locked" color="warning" value="suburb" v-model="item.service_area">郊區</p-radio>
@@ -27,23 +27,23 @@
         </td>
       </tr>
       <tr>
-        <th>服務人數</th>
+        <th>{{ $t('company_basic.serviceUser_count') }}</th>
         <td>{{ item.service_count }}</td>
-        <th>全職人員數量</th>
+        <th>{{ $t('company_basic.user_count') }}</th>
         <td>{{ item.user_count }}</td>
       </tr>
       <tr>
-        <th>服務對象類型</th>
+        <th>{{ $t('company_basic.service_people') }}</th>
         <td colspan="3">
           <p-radio class="p-default p-smooth p-bigger p-locked" color="warning" value="obstacles" v-model="item.service_people">智能/發展障礙</p-radio>
           <p-radio class="p-default p-smooth p-bigger p-locked" color="warning" value="old" v-model="item.service_people">高齡</p-radio>
           <p-radio class="p-default p-smooth p-bigger p-locked" color="warning" value="spirit" v-model="item.service_people">精神/行為健康</p-radio>
           <p-radio class="p-default p-smooth p-bigger p-locked" color="warning" value="Special" v-model="item.service_people">特殊教育</p-radio>
-          其他<input class="v-form-group" required/>
+          <span>{{ $t('company_basic.other') }}<span class="bottom-line">{{ item.service_other }}</span></span>
         </td>
       </tr>
       <tr>
-        <th>服務對象年齡層百分比</th>
+        <th>{{ $t('company_basic.age_percentage') }}</th>
         <td colspan="3">
           <p>兒童 0 ~ 12 歲：</p>
           <p>青少年 13 ~ 18 歲：</p>
@@ -52,11 +52,11 @@
         </td>
       </tr>
       <tr>
-        <th>年度預算</th>
+        <th>{{ $t('company_basic.budget') }}</th>
         <td colspan="3">{{ item.budget }}</td>
       </tr>
       <tr>
-        <th>組織服務內容</th>
+        <th>{{ $t('company_basic.service_content') }}</th>
         <td colspan="3">
           <ol>
             <li>
@@ -78,7 +78,7 @@
               <p-check class="p-default p-smooth p-bigger p-locked" color="warning" value="education" v-model="item.education">教育(學校)</p-check>
             </li>
             <li>
-              <span>其他</span>
+              <span>{{ $t('company_basic.other') }}<span class="bottom-line">{{ item.other }}</span></span>
             </li>
           </ol>
         </td>
@@ -87,13 +87,14 @@
     <el-dialog :title="dialogStatus" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
       <table class="table">
         <tr>
-          <th>組織\單位名稱</th>
+          <th>{{ $t('company_basic.company_name') }}</th>
           <td colspan="3">
-            <el-input v-model="temp.company_name"></el-input>
+            <input class="c-input" v-model="temp.company_name" v-validate="'required'" maxlength="20" name="company_name" type="text">
+            <span class="error-message" v-show="errors.has('company_name')"  >{{ errors.first('company_name') }}</span>
           </td>
         </tr>
         <tr>
-          <th>聯絡人姓名</th>
+          <th>{{ $t('company_basic.user_name') }}</th>
           <td>
             <el-autocomplete
               class="inline-input"
@@ -103,44 +104,47 @@
               @select="handleSelect"
             ></el-autocomplete>
           </td>
-          <th>電話</th>
+          <th>{{ $t('company_basic.tel') }}</th>
           <td>
-            <el-input v-model="temp.tel"></el-input>
+            <input class="c-input" v-model="temp.tel" v-validate="'required|phone'" maxlength="10" name="phone" type="text">
+            <span class="error-message" v-show="errors.has('phone')"  >{{ errors.first('phone') }}</span>
           </td>
         </tr>
         <tr>
           <th>Email</th>
           <td colspan="3">
-            <el-input v-model="temp.email"></el-input>
+            <input class="c-input" v-model="temp.email" v-validate="'required|email'" name="email" type="text">
+            <span class="error-message" v-show="errors.has('email')"  >{{ errors.first('email') }}</span>
           </td>
         </tr>
         <tr colspan="4">
-          <th>服務地區類別</th>
+          <th>{{ $t('company_basic.service_area') }}</th>
           <td colspan="3">
             <p-radio class="p-default p-smooth p-bigger" color="warning" value="city" v-model="temp.service_area">都市</p-radio>
             <p-radio class="p-default p-smooth p-bigger" color="warning" value="suburb" v-model="temp.service_area">郊區</p-radio>
             <p-radio class="p-default p-smooth p-bigger" color="warning" value="complex" v-model="temp.service_area">綜合</p-radio>
-
           </td>
         </tr>
         <tr>
-          <th>服務人數</th>
+          <th>{{ $t('company_basic.serviceUser_count') }}</th>
           <td>{{ item.service_count }}</td>
-          <th>全職人員數量</th>
+          <th>{{ $t('company_basic.user_count') }}</th>
           <td>{{ item.user_count }}</td>
         </tr>
         <tr>
-          <th>服務對象類型</th>
+          <th>{{ $t('company_basic.service_people') }}</th>
           <td colspan="3">
             <p-radio class="p-default p-smooth p-bigger" color="warning" value="obstacles" v-model="temp.service_people">智能/發展障礙</p-radio>
             <p-radio class="p-default p-smooth p-bigger" color="warning" value="old" v-model="temp.service_people">高齡</p-radio>
             <p-radio class="p-default p-smooth p-bigger" color="warning" value="spirit" v-model="temp.service_people">精神/行為健康</p-radio>
             <p-radio class="p-default p-smooth p-bigger" color="warning" value="Special" v-model="temp.service_people">特殊教育</p-radio>
-            其他<input class="v-form-group" required/>
+            <label for="service_other">{{ $t('company_basic.other') }}</label>
+            <input id="service_other" class="c-other-input" v-model="temp.service_other" v-validate="'required'" maxlength="100" name="service_other" type="text">
+            <div class="error-message" v-show="errors.has('service_other')"  >{{ errors.first('service_other') }}</div>
           </td>
         </tr>
         <tr>
-          <th>服務對象年齡層百分比</th>
+          <th>{{ $t('company_basic.age_percentage') }}</th>
           <td colspan="3">
             <p>兒童 0 ~ 12 歲：</p>
             <p>青少年 13 ~ 18 歲：</p>
@@ -149,13 +153,14 @@
           </td>
         </tr>
         <tr>
-          <th>年度預算</th>
+          <th>{{ $t('company_basic.budget') }}</th>
           <td colspan="3">
-            <el-input v-model="temp.budget"></el-input>
+            <input class="c-input" v-model="temp.budget" v-validate="'required|numeric'" name="budget" type="text">
+            <span class="error-message" v-show="errors.has('budget')"  >{{ errors.first('budget') }}</span>
           </td>
         </tr>
         <tr>
-          <th>組織服務內容</th>
+          <th>{{ $t('company_basic.service_content') }}</th>
           <td colspan="3">
             <ol>
               <li>
@@ -177,14 +182,16 @@
                 <p-check class="p-default p-smooth p-bigger" color="warning" value="education" v-model="temp.education">教育(學校)</p-check>
               </li>
               <li>
-                <span>其他</span>
+                <label for="other">{{ $t('company_basic.other') }}</label>
+                <input id="other" class="c-other-input" v-model="temp.other" v-validate="'required'" maxlength="100" name="other" type="text">
+                <span class="error-message" v-show="errors.has('other')"  >{{ errors.first('other') }}</span>
               </li>
             </ol>
           </td>
         </tr>
       </table>
       <span slot="footer" class="dialog-footer">
-        <el-button type="warning" @click="updateData()">儲存</el-button>
+        <el-button type="warning" @click="updateData()">{{ $t('table.save') }}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -205,8 +212,9 @@ export default {
         email: '',
         service_area: '',
         service_people: '',
+        service_other: '',
         budget: '',
-        daytime: [],
+        daytime: '',
         live: '',
         job: '',
         education: '',
@@ -252,19 +260,22 @@ export default {
     },
     handleUpdate() {
       this.temp = Object.assign({}, this.item) // copy obj
-      this.dialogStatus = '編輯組織基本資料'
+      this.dialogStatus = this.$t('table.edit') + ' ' + this.$t('route.company_basic')
       this.dialogFormVisible = true
     },
-    updateData(item) {
-      const tempData = Object.assign({}, this.temp)
-      updateCompanyBasic(tempData, this.id).then(() => {
-        this.fetchData()
-        this.dialogFormVisible = false
-        this.$message({
-          type: 'success',
-          message: '更新成功'
+    updateData() {
+      const errors = this.errors.items
+      if (errors.length === 0) {
+        const tempData = Object.assign({}, this.temp)
+        updateCompanyBasic(tempData, this.id).then(() => {
+          this.fetchData()
+          this.dialogFormVisible = false
+          this.$message({
+            type: 'success',
+            message: this.$t('table.save')
+          })
         })
-      })
+      }
     }
   }
 }

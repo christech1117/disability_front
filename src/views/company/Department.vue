@@ -1,15 +1,15 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="warning" icon="el-icon-plus">新增</el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="warning" icon="el-icon-plus">{{ $t('table.add') }}</el-button>
     </div>
     <el-table :data="item" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row>
-      <el-table-column align="center" label='編號' width="95">
+      <el-table-column align="center" :label="$t('table.id')" width="95">
         <template slot-scope="scope">
           {{scope.$index + 1}}
         </template>
       </el-table-column>
-      <el-table-column label="單位種類" align="center">
+      <el-table-column :label="$t('company_department.depart_type')" align="center">
         <template slot-scope="scope">
           <el-tag :type="scope.row.depart_type | statusFilter">{{scope.row.depart_type | valueFilter}}</el-tag>
         </template>
@@ -31,8 +31,8 @@
       </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">編輯</el-button>
-          <el-button type="danger" size="mini" @click="handleDelete(scope.row)">刪除</el-button>
+          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
+          <el-button type="danger" size="mini" @click="handleDelete(scope.row)">{{ $t('table.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -115,9 +115,9 @@
             >{{item}}</p-radio> -->
             <p-radio class="p-default p-smooth p-bigger" color="warning" value="large" v-model="temp.service_type">大型機構(>200人)</p-radio>
             <p-radio class="p-default p-smooth p-bigger" color="warning" value="small" v-model="temp.service_type">小型機構(30人~200人)</p-radio>
-            <p-radio class="p-default p-smooth p-bigger" color="warning" value="night" v-model="temp.service_type">夜間型住宿機構(<29人)</p-radio>
+            <p-radio class="p-default p-smooth p-bigger" color="warning" value="night" v-model="temp.service_type">夜間型住宿機構(&lt;29人)</p-radio>
             <p-radio class="p-default p-smooth p-bigger" color="warning" value="community" v-model="temp.service_type">小組工作安置</p-radio>
-            <p-radio class="p-default p-smooth p-bigger" color="warning" value="family" v-model="temp.service_type">與家人同住(<6人)</p-radio>
+            <p-radio class="p-default p-smooth p-bigger" color="warning" value="family" v-model="temp.service_type">與家人同住(&lt;6人)</p-radio>
             <p-radio class="p-default p-smooth p-bigger" color="warning" value="outside" v-model="temp.service_type">自己在外面居住</p-radio>
             <p-radio class="p-default p-smooth p-bigger" color="warning" value="other" v-model="temp.service_type">其他(</p-radio>
           </td>
@@ -286,8 +286,8 @@
         </tr>
       </table>
       <span slot="footer" class="dialog-footer">
-        <el-button v-if="dialogStatus=='create'" type="warning" @click="createData()">儲存</el-button>
-        <el-button v-else type="warning" @click="updateData()">儲存</el-button>
+        <el-button v-if="dialogStatus=='create'" type="warning" @click="createData()">{{ $t('table.save') }}</el-button>
+        <el-button v-else type="warning" @click="updateData()">{{ $t('table.save') }}</el-button>
       </span>
     </el-dialog>
   </div>

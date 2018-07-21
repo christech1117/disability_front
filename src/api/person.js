@@ -7,6 +7,13 @@ export function getServiceUserList(id) {
     method: 'get'
   })
 }
+// 選擇人員
+export function getServuceUser(id) {
+  return request({
+    url: '/person/basic/' + id,
+    method: 'get'
+  })
+}
 // 新增人員
 export function createServiceUser(params) {
   return request({

@@ -6,10 +6,6 @@ body {
   font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
 }
 
-label {
-  font-weight: 700;
-}
-
 html {
   height: 100%;
   box-sizing: border-box;
@@ -60,6 +56,33 @@ a:hover {
     clear: both;
     height: 0;
   }
+}
+.bottom-line {
+  margin-left: 5px;
+  border-bottom: 1px $almost-black solid;
+}
+
+.c-input {
+  width: 100%;
+  height: 40px;
+  border-radius: 4px;
+  border: 1px $lighter-gray solid;
+  padding: 0 15px;
+  &:focus, &:active, &:hover {
+    border: 1px $theme-orange solid;
+  }
+}
+.c-other-input {
+  height: 40px;
+  border-radius: 4px;
+  border: 1px $lighter-gray solid;
+  padding: 0 15px;
+  &:focus, &:active, &:hover {
+    border: 1px $theme-orange solid;
+  }
+}
+.error-message {
+  color: $theme-red;
 }
 
 //main-container全局样式

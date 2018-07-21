@@ -1,9 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <!-- <el-button class="filter-item" type="primary" v-waves icon="el-icon-search">搜索</el-button> -->
       <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate()" type="warning" icon="el-icon-plus">新增</el-button>
-      <!-- <el-button class="filter-item" type="primary" :loading="downloadLoading" v-waves icon="el-icon-download" @click="handleDownload">下載</el-button> -->
     </div>
     <el-table :data="item" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row>
       <el-table-column align="center" label='編號' width="95">
@@ -19,7 +17,7 @@
       </el-table-column>
       <el-table-column label="照片" align="center">
         <template slot-scope="scope">
-          {{scope.row.avatar}}
+          <!-- {{scope.row.avatar}} -->
         </template>
       </el-table-column>
       <el-table-column label="生日" align="center">
@@ -39,7 +37,9 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="230px">
         <template slot-scope="scope">
-          <el-button type="success" size="mini" @click="handleUpdate(scope.row)">選擇</el-button>
+          <router-link :to="'/person/serviceUser/'+scope.row.id">
+            <el-button type="success" size="mini">選擇</el-button>
+          </router-link>
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">編輯</el-button>
           <el-button type="danger" size="mini" @click="handleDelete(scope.row)">刪除</el-button>
         </template>
@@ -162,7 +162,7 @@
 </template>
 
 <script>
-import { getServiceUserList, createServiceUser, updateServiceUser, deleteServiceUser } from '@/api/person'
+import { getServiceUserList, createServiceUser, updateServiceUser, deleteServiceUser, getServuceUser } from '@/api/person'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -265,6 +265,11 @@ export default {
         company_id: '1',
         password: ''
       }
+    },
+    handleSelectUser(row) {
+      getServuceUser(row.id).then(response => {
+        console.log(response.data)
+      })
     },
     handleCreate() {
       this.resetTemp()
