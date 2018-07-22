@@ -13,10 +13,18 @@ export default {
     person_manage: '個人層級',
     // 團隊層級
     team_manage: '團隊層級',
+    team_basic: '團隊管理',
+    trait_chart: '團隊特質量表-CFI',
+    team_develop_plan: '團隊發展計畫',
+    cfi_statistic: '統計分析',
     // 組織層級
     organization_manage: '組織層級',
+    oees: '組織效益效率-OEES',
+    organization_develop_plan: '組織發展計畫',
+    organization_statistic: '統計分析',
     // 工作管理
     work_manage: '工作管理',
+
     introduction: '简述',
     documentation: '文档',
     guide: '引导页',

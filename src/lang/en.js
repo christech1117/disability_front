@@ -14,8 +14,15 @@ export default {
     person_manage: 'PersonManage',
     // 團隊層級
     team_manage: 'TeamManage',
+    team_basic: 'TeamBasic',
+    trait_chart: 'TraitChart',
+    team_develop_plan: 'DevelopPlan',
+    cfi_statistic: 'Statistic',
     // 組織層級
     organization_manage: 'OrganizationManage',
+    oees: 'OEES',
+    organization_develop_plan: 'DevelopPlan',
+    organization_statistic: 'Statistic',
     // 工作管理
     work_manage: 'WorkManage',
     introduction: 'Introduction',

@@ -159,7 +159,7 @@ export const asyncRouterMap = [
         name: 'TeamBasic',
         component: () => import('@/views/team/TeamBasic'),
         meta: {
-          title: '團隊管理',
+          title: 'team_basic',
           icon: 'table',
           roles: ['super_admin', 'admin', 'company_leader', 'department_leader', 'group_leader']
         }
@@ -169,7 +169,7 @@ export const asyncRouterMap = [
         name: 'TraitChart',
         component: () => import('@/views/team/TraitChart'),
         meta: {
-          title: '團隊特質量表-CFI',
+          title: 'trait_chart',
           icon: 'tree',
           roles: [
             'super_admin',
@@ -188,7 +188,7 @@ export const asyncRouterMap = [
         name: 'DevelopPlan',
         component: () => import('@/views/team/DevelopPlan'),
         meta: {
-          title: '團隊發展計畫',
+          title: 'team_develop_plan',
           icon: 'tree',
           roles: [
             'super_admin',
@@ -207,7 +207,7 @@ export const asyncRouterMap = [
         name: 'CFIstatistic',
         component: () => import('@/views/team/CFIstatistic'),
         meta: {
-          title: '統計分析',
+          title: 'cfi_statistic',
           icon: 'tree',
           roles: [
             'super_admin',
@@ -240,7 +240,7 @@ export const asyncRouterMap = [
         name: 'OEES',
         component: () => import('@/views/organization/OEES'),
         meta: {
-          title: '組織效益效率-OEES',
+          title: 'oees',
           icon: 'table',
           roles: [
             'super_admin',
@@ -257,7 +257,23 @@ export const asyncRouterMap = [
         name: 'DevelopPlans',
         component: () => import('@/views/organization/DevelopPlans'),
         meta: {
-          title: '組織發展計畫',
+          title: 'organization_develop_plan',
+          icon: 'tree',
+          roles: [
+            'super_admin',
+            'admin',
+            'company_leader',
+            'department_leader',
+            'group_leader'
+          ]
+        }
+      },
+      {
+        path: 'statistic',
+        name: 'Tree',
+        component: () => import('@/views/tree/index'),
+        meta: {
+          title: 'organization_statistic',
           icon: 'tree',
           roles: [
             'super_admin',
@@ -268,22 +284,6 @@ export const asyncRouterMap = [
           ]
         }
       }
-      // {
-      //   path: 'statistic',
-      //   name: 'Tree',
-      //   component: () => import('@/views/tree/index'),
-      //   meta: {
-      //     title: '統計分析',
-      //     icon: 'tree',
-      //     roles: [
-      //       'super_admin',
-      //       'admin',
-      //       'company_leader',
-      //       'department_leader',
-      //       'group_leader'
-      //     ]
-      //   }
-      // }
     ]
   },
 
