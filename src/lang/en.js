@@ -140,7 +140,7 @@ export default {
     search: 'Search',
     export: 'Export',
     reviewer: 'reviewer',
-    id: 'ID',
+    id: '＃',
     date: 'Date',
     author: 'Author',
     readings: 'Readings',

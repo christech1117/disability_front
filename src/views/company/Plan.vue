@@ -3,13 +3,13 @@
     <div class="filter-container">
       <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate()" type="warning" icon="el-icon-plus">{{ $t('table.add') }}</el-button>
     </div>
-    <el-table :data="item" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row>
-      <el-table-column align="center" label='編號' width="95">
+    <el-table :data="plans" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row>
+      <el-table-column align="center" :label="$t('table.id')" width="95">
         <template slot-scope="scope">
           {{scope.$index + 1}}
         </template>
       </el-table-column>
-      <el-table-column label="方案計畫名稱" align="center">
+      <el-table-column :label="$t('company.plan_name')" align="center">
         <template slot-scope="scope">
           {{scope.row.value}}
         </template>
@@ -47,7 +47,7 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
+    <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
       <table class="table day" border="1">
         <tr>
           <th>方案計畫名稱</th>
@@ -66,13 +66,14 @@
         <tr>
           <th>計畫承辦人</th>
           <td colspan="3">
-            <el-autocomplete
-              class="inline-input"
-              v-model="temp.username"
-              :fetch-suggestions="querySearch"
-              placeholder="請選擇承辦人"
-              @select="handleSelect"
-            ></el-autocomplete>
+            <el-select v-model="temp.user_id" :placeholder="$t('table.select') + $t('company.undertaker')">
+              <el-option
+                v-for="item in users"
+                :key="item.value"
+                :label="item.value"
+                :value="item.user_id">
+              </el-option>
+            </el-select>
           </td>
         </tr>
         <tr>
@@ -139,15 +140,12 @@
 </template>
 
 <script>
-import { getCompanyPlanList, createCompanyPlan, updateCompanyPlan, deleteCompanyPlan, getUserList } from '@/api/company'
-import { mapGetters } from 'vuex'
+import { createCompanyPlan, updateCompanyPlan, deleteCompanyPlan } from '@/api/company'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   data() {
     return {
-      item: null,
-      users: [],
-      listLoading: true,
       temp: {
         value: '', // 方案計畫名稱
         area_name: '',
@@ -162,46 +160,31 @@ export default {
         description: '',
         company_id: '1'
       },
+      listLoading: true,
       dialogFormVisible: false,
-      dialogStatus: '',
-      textMap: {
-        create: this.$t('table.add') + ' ' + this.$t('company_plan.plan_name'),
-        update: this.$t('table.edit') + ' ' + this.$t('company_plan.plan_name')
-      }
+      dialogTitle: '',
+      dialogStatus: ''
     }
+  },
+  mounted() {
+    this.fetchData()
   },
   computed: {
     ...mapGetters([
-      'id'
+      'id',
+      'users',
+      'plans'
     ])
   },
-  created() {
-    this.fetchData()
-  },
   methods: {
-    querySearch(queryString, cb) {
-      var users = this.users
-      var results = queryString ? users.filter(this.createFilter(queryString)) : users
-      cb(results)
-    },
-    createFilter(queryString) {
-      return (users) => {
-        return (users.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
-      }
-    },
-    handleSelect(item) {
-      this.temp.user_id = item.user_id
-      this.temp.phone = item.phone
-      this.temp.email = item.email
-    },
+    ...mapActions([
+      'GetUserList',
+      'GetCompanyPlanList'
+    ]),
     fetchData() {
-      this.listLoading = true
-      getCompanyPlanList(this.id).then(response => {
-        this.item = response.data
+      this.GetCompanyPlanList(this.id).then(response => {
         this.listLoading = false
-      })
-      getUserList(this.id).then(response => {
-        this.users = response.data
+        this.GetUserList(this.id)
       })
     },
     resetTemp() {
@@ -222,6 +205,7 @@ export default {
     },
     handleCreate() {
       this.resetTemp()
+      this.dialogTitle = this.$t('table.add') + ' ' + this.$t('company.plan')
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
     },
@@ -250,6 +234,7 @@ export default {
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row)
+      this.dialogTitle = this.$t('table.edit') + ' ' + this.$t('company.plan')
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
     },

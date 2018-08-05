@@ -16,24 +16,26 @@ const dictionary = {
   zh_CN: {
     messages: {
       required: () => '欄位為必填',
-      numeric: (field) => field + '必須為數字',
+      numeric: () => '必須為數字',
       email: (field) => field + '格式錯誤',
-      min: (field, value) => field + '至少需輸入' + value + '個字'
+      min: (value) => '至少需輸入' + value + '個字',
+      max: (value) => '最多只能輸入' + value + '個字'
     },
     attributes: {
       email: '信箱',
       password: '密碼',
       username: '帳號',
-      phone: '電話'
+      tel: '電話',
+      phone: '手機'
     }
   }
 }
 
 Validator.updateDictionary(dictionary)
 
-Validator.extend('phone', {
+Validator.extend('tel', {
   messages: {
-    zh_CN: field => field + '手機號碼必須為10碼'
+    zh_CN: field => field + '號碼必須為10碼'
   },
   validate: value => {
     return value.length === 10

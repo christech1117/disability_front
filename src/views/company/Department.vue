@@ -3,33 +3,33 @@
     <div class="filter-container">
       <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="warning" icon="el-icon-plus">{{ $t('table.add') }}</el-button>
     </div>
-    <el-table :data="item" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row>
+    <el-table :data="departs" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row>
       <el-table-column align="center" :label="$t('table.id')" width="95">
         <template slot-scope="scope">
           {{scope.$index + 1}}
         </template>
       </el-table-column>
-      <el-table-column :label="$t('company_department.depart_type')" align="center">
+      <el-table-column :label="$t('company.depart_type')" align="center">
         <template slot-scope="scope">
           <el-tag :type="scope.row.depart_type | statusFilter">{{scope.row.depart_type | valueFilter}}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="單位名稱" align="center">
+      <el-table-column :label="$t('company.depart_name')" align="center">
         <template slot-scope="scope">
           {{scope.row.value}}
         </template>
       </el-table-column>
-      <el-table-column label="主責人" align="center">
+      <el-table-column :label="$t('company.principal')" align="center">
         <template slot-scope="scope">
           {{scope.row.username}}
         </template>
       </el-table-column>
-      <el-table-column label="電話" align="center">
+      <el-table-column :label="$t('company.tel')" align="center">
         <template slot-scope="scope">
           {{scope.row.tel}}
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center">
+      <el-table-column :label="$t('table.actions')" align="center">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
           <el-button type="danger" size="mini" @click="handleDelete(scope.row)">{{ $t('table.delete') }}</el-button>
@@ -37,8 +37,8 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-select v-if="dialogStatus=='create'" class="filter-item" v-model="temp.depart_type" placeholder="請選擇服務類型">
+    <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
+      <el-select v-if="dialogStatus=='create'" class="filter-item" v-model="temp.depart_type" :placeholder="$t('table.select') + $t('company.service_type')">
         <el-option
           v-for="item in depart_type"
           :key="item.key"
@@ -48,7 +48,7 @@
       </el-select>
       <table class="table day" border="1" v-if="temp.depart_type === 'day'">
         <tr>
-          <th>服務類型</th>
+          <th>{{ $t('company.service_type') }}</th>
           <td>
             <p-radio class="p-default p-smooth p-bigger" color="warning" value="day_care" v-model="temp.service_type">日間照顧</p-radio>
             <p-radio class="p-default p-smooth p-bigger" color="warning" value="day_active" v-model="temp.service_type">日間活動(含休閒、工作)</p-radio>
@@ -58,51 +58,56 @@
           </td>
         </tr>
         <tr>
-          <th>單位名稱</th>
+          <th>{{ $t('company.depart_name') }}</th>
           <td>
-            <el-input v-model="temp.value"></el-input>
+            <input class="c-input" v-model="temp.value" v-validate="'required'" maxlength="20" name="depart_name" type="text">
+            <span class="error-message" v-show="errors.has('depart_name')"  >{{ errors.first('depart_name') }}</span>
           </td>
         </tr>
         <tr>
-          <th>方案</th>
+          <th>{{ $t('company.plan') }}</th>
           <td>
-            <el-autocomplete
-              class="inline-input"
-              v-model="temp.plan_name"
-              :fetch-suggestions="querySearchPlan"
-              placeholder="請選擇方案"
-              @select="handleSelectPlan"
-            ></el-autocomplete>
+            <el-select v-model="temp.plan_id" :placeholder="$t('table.select') + $t('company.plan')">
+              <el-option
+                v-for="item in plans"
+                :key="item.value"
+                :label="item.value"
+                :value="item.plan_id">
+              </el-option>
+            </el-select>
           </td>
         </tr>
         <tr>
-          <th>主責人</th>
+          <th>{{ $t('company.principal') }}</th>
           <td>
-            <el-autocomplete
-              class="inline-input"
-              v-model="temp.username"
-              :fetch-suggestions="querySearch"
-              placeholder="請選擇主責人"
-              @select="handleSelectUser"
-            ></el-autocomplete>
+            <el-select v-model="temp.user_id" :placeholder="$t('table.select') + $t('company.service_type')">
+              <el-option
+                v-for="item in users"
+                :key="item.value"
+                :label="item.value"
+                :value="item.user_id">
+              </el-option>
+            </el-select>
           </td>
         </tr>
         <tr>
-          <th>地址</th>
+          <th>{{ $t('company.address') }}</th>
           <td>
-            <el-input v-model="temp.address"></el-input>
+            <input class="c-input" v-model="temp.address" v-validate="'required'" maxlength="20" name="address" type="text">
+            <span class="error-message" v-show="errors.has('address')"  >{{ errors.first('address') }}</span>
           </td>
         </tr>
         <tr>
-          <th>電話</th>
+          <th>{{ $t('company.tel') }}</th>
           <td>
-            <el-input v-model="temp.tel"></el-input>
+            <input class="c-input" v-model="temp.tel" v-validate="'required|numeric|tel'" maxlength="10" name="tel" type="text">
+            <span class="error-message" v-show="errors.has('tel')"  >{{ errors.first('tel') }}</span>
           </td>
         </tr>
       </table>
       <table class="table day" border="1" v-else-if="temp.depart_type === 'live'">
         <tr>
-          <th>服務類型</th>
+          <th>{{ $t('company.service_type') }}</th>
           <td colspan="7">
             <!-- <p-radio class="p-default p-smooth p-bigger" color="warning" value="city" v-model="temp.job">庇護性就業</p-radio> -->
             <!-- <p-radio
@@ -125,23 +130,32 @@
         <tr>
           <th>單位名稱</th>
           <td colspan="7">
-            <el-input v-model="temp.value"></el-input>
+            <input class="c-input" v-model="temp.value" v-validate="'required'" maxlength="10" name="depart_name" type="text">
+            <span class="error-message" v-show="errors.has('depart_name')"  >{{ errors.first('depart_name') }}</span>
           </td>
         </tr>
         <tr>
-          <th>方案</th>
+          <th>{{ $t('company.plan') }}</th>
           <td colspan="7">
-            <el-select class="filter-item" v-model="temp.depart_type" placeholder="Please select">
-              <el-option v-for="item in depart_type" :key="item.key" :label="item.display_name" :value="item.key">
+            <el-select v-model="temp.plan_id" :placeholder="$t('table.select') + $t('company.plan')">
+              <el-option
+                v-for="item in plans"
+                :key="item.value"
+                :label="item.value"
+                :value="item.plan_id">
               </el-option>
             </el-select>
           </td>
         </tr>
         <tr>
-          <th>主責人</th>
+          <th>{{ $t('company.principal') }}</th>
           <td colspan="7">
-            <el-select class="filter-item" v-model="temp.depart_type" placeholder="Please select">
-              <el-option v-for="item in depart_type" :key="item.key" :label="item.display_name" :value="item.key">
+            <el-select v-model="temp.user_id" :placeholder="$t('table.select') + $t('company.principal')">
+              <el-option
+                v-for="item in users"
+                :key="item.value"
+                :label="item.value"
+                :value="item.user_id">
               </el-option>
             </el-select>
           </td>
@@ -149,19 +163,23 @@
         <tr>
           <th>地址</th>
           <td colspan="7">
-            <el-input v-model="temp.address"></el-input>
+            <input class="c-input" v-model="temp.address" v-validate="'required'" maxlength="10" name="address" type="text">
+            <span class="error-message" v-show="errors.has('address')"  >{{ errors.first('address') }}</span>
           </td>
         </tr>
         <tr>
           <th>電話</th>
           <td colspan="7">
-            <el-input v-model="temp.tel"></el-input>
+            <input class="c-input" v-model="temp.tel" v-validate="'required|numeric|tel'" maxlength="10" name="tel" type="text">
+            <span class="error-message" v-show="errors.has('tel')"  >{{ errors.first('tel') }}</span>
+            
           </td>
         </tr>
         <tr>
           <th>房舍類型</th>
           <td colspan="4">
-            <el-input v-model="temp.house_type"></el-input>
+            <input class="c-input" v-model="temp.house_type" v-validate="'required'" maxlength="10" name="house_type" type="text">
+            <span class="error-message" v-show="errors.has('house_type')"  >{{ errors.first('house_type') }}</span>
           </td>
           <th>電梯</th>
           <td colspan="2">
@@ -172,45 +190,53 @@
         <tr>
           <th>房舍性質</th>
           <td colspan="4">
-            <el-input v-model="temp.house_nature"></el-input>
+            <input class="c-input" v-model="temp.house_nature" v-validate="'required'" maxlength="10" name="house_nature" type="text">
+            <span class="error-message" v-show="errors.has('house_nature')"  >{{ errors.first('house_nature') }}</span>
           </td>
           <th>每月租金</th>
           <td colspan="2">
-            <el-input v-model="temp.rent"></el-input>
+            <input class="c-input" v-model="temp.rent" v-validate="'required|numeric'" maxlength="10" name="rent" type="text">
+            <span class="error-message" v-show="errors.has('rent')"  >{{ errors.first('rent') }}</span>
           </td>
         </tr>
         <tr>
           <th>樓層</th>
           <td colspan="4">
-            <el-input v-model="temp.floor"></el-input>
+            <input class="c-input" v-model="temp.floor" v-validate="'required'" maxlength="10" name="floor" type="text">
+            <span class="error-message" v-show="errors.has('floor')"  >{{ errors.first('floor') }}</span>
           </td>
           <th>樓地板面積</th>
           <td colspan="2">
-            <el-input v-model="temp.floor_area"></el-input>
+            <input class="c-input" v-model="temp.floor_area" v-validate="'required'" maxlength="10" name="floor_area" type="text">
+            <span class="error-message" v-show="errors.has('floor_area')"  >{{ errors.first('floor_area') }}</span>
           </td>
         </tr>
         <tr>
           <th>客廳數</th>
           <td>
-            <el-input v-model="temp.parlor_count"></el-input>
+            <input class="c-input" v-model="temp.parlor_count" v-validate="'required'" maxlength="10" name="parlor_count" type="text">
+            <span class="error-message" v-show="errors.has('parlor_count')"  >{{ errors.first('parlor_count') }}</span>
           </td>
           <th>衛浴數</th>
           <td>
-            <el-input v-model="temp.bathroom_count"></el-input>
+            <input class="c-input" v-model="temp.bathroom_count" v-validate="'required'" maxlength="10" name="bathroom_count" type="text">
+            <span class="error-message" v-show="errors.has('bathroom_count')"  >{{ errors.first('bathroom_count') }}</span>
           </td>
           <th>房間數</th>
           <td>
-            <el-input v-model="temp.room_count"></el-input>
+            <input class="c-input" v-model="temp.room_count" v-validate="'required'" maxlength="10" name="room_count" type="text">
+            <span class="error-message" v-show="errors.has('room_count')"  >{{ errors.first('room_count') }}</span>
           </td>
           <th>床位數</th>
           <td>
-            <el-input v-model="temp.bed_count"></el-input>
+            <input class="c-input" v-model="temp.bed_count" v-validate="'required'" maxlength="10" name="bed_count" type="text">
+            <span class="error-message" v-show="errors.has('bed_count')"  >{{ errors.first('bed_count') }}</span>
           </td>
         </tr>
       </table>
       <table class="table day" border="1" v-else-if="temp.depart_type === 'job'">
         <tr>
-          <th>服務類型</th>
+          <th>{{ $t('company.service_type') }}</th>
           <td>
             <p-radio class="p-default p-smooth p-bigger" color="warning" value="sheltered" v-model="temp.service_type">庇護性就業</p-radio>
             <p-radio class="p-default p-smooth p-bigger" color="warning" value="supportive" v-model="temp.service_type">支持性就業</p-radio>
@@ -219,43 +245,45 @@
           </td>
         </tr>
         <tr>
-          <th>單位名稱</th>
+          <th>{{ $t('company.depart_name') }}</th>
           <td>
             <el-input v-model="temp.value"></el-input>
           </td>
         </tr>
         <tr>
-          <th>方案</th>
+          <th>{{ $t('company.plan') }}</th>
           <td>
-            <el-autocomplete
-              class="inline-input"
-              v-model="temp.plan_name"
-              :fetch-suggestions="querySearchPlan"
-              placeholder="請選擇方案"
-              @select="handleSelectPlan"
-            ></el-autocomplete>
+            <el-select v-model="temp.plan_id" :placeholder="$t('table.select') + $t('company.plan')">
+              <el-option
+                v-for="item in plans"
+                :key="item.value"
+                :label="item.value"
+                :value="item.plan_id">
+              </el-option>
+            </el-select>
           </td>
         </tr>
         <tr>
-          <th>主責人</th>
+          <th>{{ $t('company.principal') }}</th>
           <td>
-            <el-autocomplete
-              class="inline-input"
-              v-model="temp.username"
-              :fetch-suggestions="querySearch"
-              placeholder="請選擇主責人"
-              @select="handleSelectUser"
-            ></el-autocomplete>
+            <el-select v-model="temp.user_id" :placeholder="$t('table.select') + $t('company.principal')">
+              <el-option
+                v-for="item in users"
+                :key="item.value"
+                :label="item.value"
+                :value="item.user_id">
+              </el-option>
+            </el-select>
           </td>
         </tr>
         <tr>
-          <th>地址</th>
+          <th>{{ $t('company.address') }}</th>
           <td>
             <el-input v-model="temp.address"></el-input>
           </td>
         </tr>
         <tr>
-          <th>電話</th>
+          <th>{{ $t('company.tel') }}</th>
           <td>
             <el-input v-model="temp.tel"></el-input>
           </td>
@@ -286,7 +314,7 @@
         </tr>
       </table>
       <span slot="footer" class="dialog-footer">
-        <el-button v-if="dialogStatus=='create'" type="warning" @click="createData()">{{ $t('table.save') }}</el-button>
+        <el-button v-if="dialogStatus=='create'" type="warning" @click="createData()">{{ $t('table.add') }}</el-button>
         <el-button v-else type="warning" @click="updateData()">{{ $t('table.save') }}</el-button>
       </span>
     </el-dialog>
@@ -294,9 +322,8 @@
 </template>
 
 <script>
-import { getCompanyDepartmentList, createCompanyDepartment, updateCompanyDepartment, deleteCompanyDepartment } from '@/api/company'
-import { getCompanyPlanList, getUserList } from '@/api/company'
-import { mapGetters } from 'vuex'
+import { createCompanyDepartment, updateCompanyDepartment, deleteCompanyDepartment } from '@/api/company'
+import { mapGetters, mapActions } from 'vuex'
 
 const depart_type = [
   { key: 'day', display_name: '日間服務' },
@@ -310,33 +337,15 @@ const job_service_type = ['庇護性就業', '支持性就業', '一般性就業
 export default {
   data() {
     return {
-      item: null,
+      temp: {},
       listLoading: true,
-      users: [],
-      plans: [],
+      dialogFormVisible: false,
+      dialogTitle: '',
+      dialogStatus: '',
       depart_type,
       day_service_type,
       live_service_type,
-      job_service_type,
-      temp: {
-        depart_id: undefined,
-        depart_type: 'day',
-        depart_name: '',
-        plan_name: '',
-        username: '',
-        adress: '',
-        tel: '',
-        work_time: '',
-        work_hour: '',
-        salary: '',
-        content: ''
-      },
-      dialogFormVisible: false,
-      dialogStatus: '',
-      textMap: {
-        create: '新增單位',
-        update: '編輯單位'
-      }
+      job_service_type
     }
   },
   filters: {
@@ -357,62 +366,28 @@ export default {
       return valueMap[value]
     }
   },
-  computed: {
-    ...mapGetters([
-      'id'
-    ])
-  },
-  created() {
+  mounted() {
     this.fetchData()
   },
+  computed: {
+    ...mapGetters([
+      'id',
+      'users',
+      'plans',
+      'departs'
+    ])
+  },
   methods: {
-    querySearch(queryString, cb) {
-      var users = this.users
-      var results = queryString ? users.filter(this.createFilter(queryString)) : users
-
-      // 调用 callback 返回建议列表的数据
-      cb(results)
-      // cb(plan_results)
-    },
-    createFilter(queryString) {
-      return (users) => {
-        return (users.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
-      }
-    },
-    querySearchPlan(queryString, cb) {
-      var plans = this.plans
-      var results = queryString ? plans.filter(this.createFilter(queryString)) : plans
-
-      // 调用 callback 返回建议列表的数据
-      cb(results)
-      // cb(plan_results)
-    },
-    handleSelectUser(item) {
-      this.temp.user_id = item.user_id
-      this.temp.phone = item.phone
-      this.temp.email = item.email
-    },
-    createFilterPlan(queryString) {
-      return (plans) => {
-        return (plans.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
-      }
-    },
-    handleSelectPlan(item) {
-      this.temp.plan_id = item.plan_id
-      this.temp.phone = item.phone
-      this.temp.email = item.email
-    },
+    ...mapActions([
+      'GetUserList',
+      'GetCompanyPlanList',
+      'GetCompanyDepartmentList'
+    ]),
     fetchData() {
-      this.listLoading = true
-      getCompanyDepartmentList(this.id).then(response => {
-        this.item = response.data
+      this.GetCompanyDepartmentList(this.id).then(response => {
         this.listLoading = false
-      })
-      getCompanyPlanList(this.id).then(response => {
-        this.plans = response.data
-      })
-      getUserList(this.id).then(response => {
-        this.users = response.data
+        this.GetCompanyPlanList(this.id)
+        this.GetUserList(this.id)
       })
     },
     resetTemp() {
@@ -432,6 +407,7 @@ export default {
     },
     handleCreate() {
       this.resetTemp()
+      this.dialogTitle = this.$t('table.add') + ' ' + this.$t('company.depart')
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
     },
@@ -454,14 +430,14 @@ export default {
         this.dialogFormVisible = false
         this.$message({
           type: 'success',
-          message: '新增成功'
+          message: this.$t('table.add')
         })
         this.fetchData()
       })
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row)
-      console.log(this.temp)
+      this.dialogTitle = this.$t('table.edit') + ' ' + this.$t('company.depart')
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
     },
@@ -486,14 +462,14 @@ export default {
         this.dialogFormVisible = false
         this.$message({
           type: 'success',
-          message: '更新成功'
+          message: this.$t('table.save')
         })
       })
     },
     handleDelete(row) {
-      this.$confirm('是否刪除?', '提示', {
-        confirmButtonText: '確定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('errorLog.whether_delete'), this.$t('table.info'), {
+        confirmButtonText: this.$t('table.confirm'),
+        cancelButtonText: this.$t('table.cancel'),
         type: 'warning'
       }).then(() => {
         deleteCompanyDepartment(row.depart_id).then(() => {
@@ -501,12 +477,12 @@ export default {
         })
         this.$message({
           type: 'success',
-          message: '刪除成功!'
+          message: this.$t('table.delete')
         })
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: '已取消刪除'
+          message: this.$t('errorLog.cancel_delete')
         })
       })
     }
