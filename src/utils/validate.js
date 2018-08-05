@@ -3,13 +3,11 @@ import VeeValidate, { Validator } from 'vee-validate'
 import zh from 'vee-validate/dist/locale/zh_CN' // 引入中文文件
 
 // 配置中文
-Validator.addLocale(zh)
+// Validator.addLocale(zh)
 
 const config = {
   locale: 'zh_CN'
 }
-
-Vue.use(VeeValidate, config)
 
 // 自定義validate
 const dictionary = {
@@ -31,8 +29,6 @@ const dictionary = {
   }
 }
 
-Validator.updateDictionary(dictionary)
-
 Validator.extend('tel', {
   messages: {
     zh_CN: field => field + '號碼必須為10碼'
@@ -42,3 +38,7 @@ Validator.extend('tel', {
     // && /^09\d{2}-?\d{3}-?\d{3}$/.test(value) 手機格式檢查
   }
 })
+
+Validator.localize({ zh_CN: zh })
+Validator.localize(dictionary)
+Vue.use(VeeValidate, config)
