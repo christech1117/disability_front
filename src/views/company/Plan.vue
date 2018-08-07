@@ -112,7 +112,6 @@
         </tr>
         <tr>
           <th>服務時間</th>
-          {{temp}}
           <td colspan="3">{{temp.service_date}}</td>
         </tr>
         <tr>
