@@ -384,7 +384,7 @@ export default {
       'GetCompanyDepartmentList'
     ]),
     fetchData() {
-      this.listLoading = true,
+      this.listLoading = true
       this.GetCompanyDepartmentList(this.id).then(response => {
         this.listLoading = false
         this.GetCompanyPlanList(this.id)

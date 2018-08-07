@@ -45,7 +45,7 @@ export default {
       'GetCompanySubCompanyList'
     ]),
     fetchData() {
-      this.listLoading = true,
+      this.listLoading = true
       this.GetCompanySubCompanyList(this.id).then(response => {
         this.listLoading = false
         // this.GetUserList(this.id)

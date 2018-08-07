@@ -227,7 +227,7 @@ export default {
       'GetCompanyBasic'
     ]),
     fetchData() {
-      this.listLoading = true,
+      this.listLoading = true
       this.GetCompanyBasic(this.id).then(response => {
         this.listLoading = false
         this.GetUserList(this.id)

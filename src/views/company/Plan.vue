@@ -194,7 +194,7 @@ export default {
       'GetCompanyPlanList'
     ]),
     fetchData() {
-      this.listLoading = true,
+      this.listLoading = true
       this.GetCompanyPlanList(this.id).then(response => {
         this.listLoading = false
         this.GetUserList(this.id)
