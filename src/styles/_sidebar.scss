@@ -3,12 +3,12 @@
   .main-container {
     min-height: 100%;
     transition: margin-left .28s;
-    margin-left: 250px;
+    margin-left: 230px; // 寬度
   }
   // 側邊欄
   .sidebar-container {
     transition: width 0.28s;
-    width: 250px !important;
+    width: 230px !important; // 寬度
     height: 100%;
     position: fixed;
     font-size: 0px;

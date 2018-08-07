@@ -5,7 +5,7 @@
       <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate()" type="warning" icon="el-icon-plus">新增</el-button>
       <!-- <el-button class="filter-item" type="primary" :loading="downloadLoading" v-waves icon="el-icon-download" @click="handleDownload">下載</el-button> -->
     </div>
-    <el-table :data="item" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row>
+    <el-table :data="users" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row>
       <el-table-column align="center" label='編號' width="95">
         <template slot-scope="scope">
           {{scope.$index + 1}}
@@ -48,13 +48,13 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="180px">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">編輯</el-button>
-          <el-button type="danger" size="mini" @click="handleDelete(scope.row)">刪除</el-button>
+          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)" icon="el-icon-edit" circle></el-button>
+          <el-button type="danger" size="mini" @click="handleDelete(scope.row)" icon="el-icon-delete" circle></el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
+    <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
       <table class="table">
           <tr>
             <th>姓名</th>
@@ -101,13 +101,14 @@
           <tr>
             <th>部門或單位</th>
             <td>
-              <el-autocomplete
-                class="inline-input"
-                v-model="temp.depart_name"
-                :fetch-suggestions="querySearchDepart"
-                placeholder="請選擇部門或單位"
-                @select="handleSelectDepart"
-              ></el-autocomplete>
+              <el-select v-model="temp.depart_id" :placeholder="$t('table.select') + $t('company.department')">
+                <el-option
+                  v-for="item in departs"
+                  :key="item.value"
+                  :label="item.value"
+                  :value="item.user_id">
+                </el-option>
+              </el-select>
             </td>
             <th>職稱</th>
             <td>
@@ -117,19 +118,27 @@
           <tr>
             <th>方案計畫名稱</th>
             <td colspan="3">
-              <el-autocomplete
-                class="inline-input"
-                v-model="temp.plan_name"
-                :fetch-suggestions="querySearchPlan"
-                placeholder="請選擇方案"
-                @select="handleSelectPlan"
-              ></el-autocomplete>
+              <el-select v-model="temp.plan_id" :placeholder="$t('table.select') + $t('company.team')">
+                <el-option
+                  v-for="item in plans"
+                  :key="item.value"
+                  :label="item.value"
+                  :value="item.user_id">
+                </el-option>
+              </el-select>
             </td>
           </tr>
           <tr>
             <th>所屬團隊</th>
             <td colspan="3">
-              <el-input v-model="temp.team_name"></el-input>
+              <el-select v-model="temp.team_id" :placeholder="$t('table.select') + $t('company.department')">
+                <el-option
+                  v-for="item in teams"
+                  :key="item.value"
+                  :label="item.value"
+                  :value="item.user_id">
+                </el-option>
+              </el-select>
             </td>
           </tr>
           <tr>
@@ -168,8 +177,8 @@
           </tr>
         </table>
       <span slot="footer" class="dialog-footer">
-        <el-button v-if="dialogStatus=='create'" type="warning" @click="createData()">儲存</el-button>
-        <el-button v-else type="warning" @click="updateData()">儲存</el-button>
+        <el-button v-if="dialogStatus=='create'" type="success" @click="createData()" icon="el-icon-check" circle></el-button>
+        <el-button v-else type="success" @click="updateData()" icon="el-icon-check" circle></el-button>
       </span>
     </el-dialog>
   </div>
@@ -178,7 +187,7 @@
 <script>
 import { getUserList, createUser, updateUser, deleteUser } from '@/api/company'
 import { getCompanyDepartmentList, getCompanyPlanList } from '@/api/company'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   data() {
@@ -205,11 +214,8 @@ export default {
         password: ''
       },
       dialogFormVisible: false,
-      dialogStatus: '',
-      textMap: {
-        create: '新增人員',
-        update: '編輯人員'
-      }
+      dialogTitle: '',
+      dialogStatus: ''
     }
   },
   filters: {
@@ -228,55 +234,29 @@ export default {
       return valueMap[value]
     }
   },
-  computed: {
-    ...mapGetters([
-      'id'
-    ])
-  },
-  created() {
+    mounted() {
     this.fetchData()
   },
+  computed: {
+    ...mapGetters([
+      'id',
+      'users',
+      'plans',
+      'departs'
+    ])
+  },
   methods: {
-    querySearchDepart(queryString, cb) {
-      var departs = this.departs
-      var results = queryString ? departs.filter(this.createFilter(queryString)) : departs
-
-      cb(results)
-    },
-    createFilter(queryString) {
-      return (departs) => {
-        return (departs.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
-      }
-    },
-    handleSelectDepart(item) {
-      this.temp.depart_id = item.depart_id
-    },
-    querySearchPlan(queryString, cb) {
-      var plans = this.plans
-      var results = queryString ? plans.filter(this.createFilter(queryString)) : plans
-
-      cb(results)
-    },
-    createFilterPlan(queryString) {
-      return (plans) => {
-        return (plans.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
-      }
-    },
-    handleSelectPlan(item) {
-      this.temp.plan_id = item.plan_id
-    },
+    ...mapActions([
+      'GetUserList',
+      'GetCompanyPlanList',
+      'GetCompanyDepartmentList'
+    ]),
     fetchData() {
-      this.listLoading = true
-      getUserList(this.id).then(response => {
-        this.item = response.data
+      this.listLoading = true,
+      this.GetUserList(this.id).then(response => {
         this.listLoading = false
-      })
-      getCompanyDepartmentList(this.id).then(response => {
-        this.departs = response.data
-        this.listLoading = false
-      })
-      getCompanyPlanList(this.id).then(response => {
-        this.plans = response.data
+        this.GetCompanyPlanList(this.id)
+        this.GetCompanyDepartmentList(this.id)
       })
     },
     resetTemp() {
@@ -302,6 +282,7 @@ export default {
     },
     handleCreate() {
       this.resetTemp()
+      this.dialogTitle = this.$t('table.add') + ' ' + this.$t('company.user')
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
     },
@@ -328,13 +309,14 @@ export default {
         this.dialogFormVisible = false
         this.$message({
           type: 'success',
-          message: '新增成功'
+          message: this.$t('table.add')
         })
         this.fetchData()
       })
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row)
+      this.dialogTitle = this.$t('table.edit') + ' ' + this.$t('company.user')
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
     },
@@ -368,23 +350,22 @@ export default {
       })
     },
     handleDelete(row) {
-      this.$confirm('是否刪除?', '提示', {
-        confirmButtonText: '確定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('errorLog.whether_delete'), this.$t('table.info'), {
+        confirmButtonText: this.$t('table.confirm'),
+        cancelButtonText: this.$t('table.cancel'),
         type: 'warning'
       }).then(() => {
-        console.log(row.user_id)
         deleteUser(row.user_id).then(() => {
           this.fetchData()
         })
         this.$message({
           type: 'success',
-          message: '刪除成功!'
+          message: this.$t('table.delete')
         })
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: '已取消刪除'
+          message: this.$t('table.cancel')
         })
       })
     }

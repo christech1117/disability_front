@@ -205,6 +205,8 @@ export default {
     day: '日間',
     live: '居住',
     job: '就業',
-    undertaker: '承辦人'
+    undertaker: '承辦人',
+    department: '部門或單位',
+    user: '人員'
   }
 }

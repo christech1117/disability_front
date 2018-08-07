@@ -31,8 +31,8 @@
       </el-table-column>
       <el-table-column :label="$t('table.actions')" align="center">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
-          <el-button type="danger" size="mini" @click="handleDelete(scope.row)">{{ $t('table.delete') }}</el-button>
+          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)" icon="el-icon-edit" circle></el-button>
+          <el-button type="danger" size="mini" @click="handleDelete(scope.row)" icon="el-icon-delete" circle></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -314,8 +314,8 @@
         </tr>
       </table>
       <span slot="footer" class="dialog-footer">
-        <el-button v-if="dialogStatus=='create'" type="warning" @click="createData()">{{ $t('table.add') }}</el-button>
-        <el-button v-else type="warning" @click="updateData()">{{ $t('table.save') }}</el-button>
+        <el-button v-if="dialogStatus=='create'" type="success" @click="createData()" icon="el-icon-check" circle></el-button>
+        <el-button v-else type="success" @click="updateData()" icon="el-icon-check" circle></el-button>
       </span>
     </el-dialog>
   </div>
@@ -384,6 +384,7 @@ export default {
       'GetCompanyDepartmentList'
     ]),
     fetchData() {
+      this.listLoading = true,
       this.GetCompanyDepartmentList(this.id).then(response => {
         this.listLoading = false
         this.GetCompanyPlanList(this.id)

@@ -3,107 +3,52 @@
     <div class="filter-container">
       <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate()" type="warning" icon="el-icon-plus">{{ $t('table.add') }}</el-button>
     </div>
-    <el-table :data="item" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row>
-      <el-table-column align="center" label='編號' width="95">
-        <template slot-scope="scope">
-          {{scope.$index + 1}}
-        </template>
-      </el-table-column>
-      <el-table-column label="子公司名稱" align="center">
-        <template slot-scope="scope">
-          {{scope.row.value}}
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.actions')" align="center" width="180px">
-        <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
-          <el-button type="danger" size="mini" @click="handleDelete(scope.row)">{{ $t('table.delete') }}</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
-      <table class="table day" border="1">
-        <tr>
-          <th>子公司名稱</th>
-          <td colspan="3">
-            <input class="c-input" v-model="temp.value" v-validate="'required'" name="plan" type="text">
-            <span class="error-message" v-show="errors.has('plan')"  >{{ errors.first('plan') }}</span>
-          </td>
-        </tr>
-      </table>
-      <span slot="footer" class="dialog-footer">
-        <el-button v-if="dialogStatus=='create'" type="warning" @click="createData()">{{ $t('table.save') }}</el-button>
-        <el-button v-else type="warning" @click="updateData()">{{ $t('table.save') }}</el-button>
-      </span>
-    </el-dialog>
+    <el-collapse v-model="activeName" accordion v-for="subCompany in subCompanys">
+      <el-collapse-item :title="subCompany.sub_companpy_name" :name="subCompany.id">
+        {{ subCompany.id }}
+      </el-collapse-item>
+    </el-collapse>
   </div>
 </template>
 
 <script>
-import { getCompanyPlanList, createCompanyPlan, updateCompanyPlan, deleteCompanyPlan, getUserList } from '@/api/company'
-import { mapGetters } from 'vuex'
+import { createCompanyPlan, updateCompanyPlan, deleteCompanyPlan } from '@/api/company'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   data() {
     return {
-      item: null,
-      users: [],
-      listLoading: true,
       temp: {
-        value: '', // 方案計畫名稱
-        area_name: '',
-        username: '',
-        user_id: '',
-        phone: '',
-        service_start_date: '',
-        service_end_date: '',
-        serviece_date: '',
-        service_count: '',
-        price: '',
-        description: '',
-        company_id: '1'
       },
-      dialogFormVisible: false,
-      dialogStatus: '',
       textMap: {
         create: this.$t('table.add') + ' ' + this.$t('company_plan.plan_name'),
         update: this.$t('table.edit') + ' ' + this.$t('company_plan.plan_name')
-      }
+      },
+      listLoading: true,
+      dialogFormVisible: false,
+      dialogTitle: '',
+      dialogStatus: '',
+      activeName: '1'
     }
+  },
+  mounted() {
+    this.fetchData()
   },
   computed: {
     ...mapGetters([
-      'id'
+      'id',
+      'subCompanys'
     ])
   },
-  created() {
-    this.fetchData()
-  },
   methods: {
-    querySearch(queryString, cb) {
-      var users = this.users
-      var results = queryString ? users.filter(this.createFilter(queryString)) : users
-      cb(results)
-    },
-    createFilter(queryString) {
-      return (users) => {
-        return (users.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
-      }
-    },
-    handleSelect(item) {
-      this.temp.user_id = item.user_id
-      this.temp.phone = item.phone
-      this.temp.email = item.email
-    },
+    ...mapActions([
+      'GetCompanySubCompanyList'
+    ]),
     fetchData() {
-      this.listLoading = true
-      getCompanyPlanList(this.id).then(response => {
-        this.item = response.data
+      this.listLoading = true,
+      this.GetCompanySubCompanyList(this.id).then(response => {
         this.listLoading = false
-      })
-      getUserList(this.id).then(response => {
-        this.users = response.data
+        // this.GetUserList(this.id)
       })
     },
     resetTemp() {

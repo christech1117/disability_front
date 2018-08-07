@@ -1,4 +1,8 @@
  //to reset element-ui default css
+.el-button:focus {
+  outline: none;
+}
+
 .el-upload {
   input[type="file"] {
     display: none !important;
@@ -61,4 +65,8 @@
   color: #fff;
   background-color: #FFB320;
   border-color: #FFB320;
+}
+
+.el-range-editor--medium .el-range-separator {
+  padding: 0;
 }

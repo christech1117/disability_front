@@ -192,7 +192,7 @@
         </tr>
       </table>
       <span slot="footer" class="dialog-footer">
-        <el-button type="warning" @click="updateData()">{{ $t('table.save') }}</el-button>
+        <el-button type="success" @click="updateData()" icon="el-icon-check" circle></el-button>
       </span>
     </el-dialog>
   </div>
@@ -227,6 +227,7 @@ export default {
       'GetCompanyBasic'
     ]),
     fetchData() {
+      this.listLoading = true,
       this.GetCompanyBasic(this.id).then(response => {
         this.listLoading = false
         this.GetUserList(this.id)

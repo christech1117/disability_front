@@ -1,11 +1,18 @@
-import { getUserList, getCompanyBasic, getCompanyPlanList, getCompanyDepartmentList } from '@/api/company'
+import {
+  getUserList,
+  getCompanyBasic,
+  getCompanyPlanList,
+  getCompanyDepartmentList,
+  getCompanySubCompanyList
+} from '@/api/company'
 
 const company = {
   state: {
     companyBasic: [],
     users: [],
     plans: [],
-    departs: []
+    departs: [],
+    subCompanys: []
   },
 
   mutations: {
@@ -17,6 +24,9 @@ const company = {
     },
     GET_COMPANY_PLAN_LIST: (state, plans) => {
       state.plans = plans
+    },
+    GET_COMPANY_SUB_COMPANY_LIST: (state, subCompanys) => {
+      state.subCompanys = subCompanys
     },
     GET_COMPANY_DEPARTMENT_LIST: (state, departs) => {
       state.departs = departs
@@ -54,6 +64,18 @@ const company = {
           const data = response.data
 
           commit('GET_COMPANY_PLAN_LIST', data)
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    GetCompanySubCompanyList({ commit }, id) {
+      return new Promise((resolve, reject) => {
+        getCompanySubCompanyList(id).then(response => {
+          const data = response.data
+
+          commit('GET_COMPANY_SUB_COMPANY_LIST', data)
           resolve()
         }).catch(error => {
           reject(error)

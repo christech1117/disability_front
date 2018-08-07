@@ -41,8 +41,8 @@
       </el-table-column>
       <el-table-column :label="$t('table.actions')" align="center" width="180px">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
-          <el-button type="danger" size="mini" @click="handleDelete(scope.row)">{{ $t('table.delete') }}</el-button>
+          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)" icon="el-icon-edit" circle></el-button>
+          <el-button type="danger" size="mini" @click="handleDelete(scope.row)" icon="el-icon-delete" circle></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -92,7 +92,8 @@
                 value-format="yyyy-MM-dd"
                 v-model="temp.service_start_date"
                 type="date"
-                placeholder="選擇日期">
+                placeholder="選擇日期"
+                :picker-options="startDatePicker">
               </el-date-picker>
             </div>
           </td>
@@ -103,13 +104,15 @@
                 value-format="yyyy-MM-dd"
                 v-model="temp.service_end_date"
                 type="date"
-                placeholder="選擇日期">
+                placeholder="選擇日期"
+                :picker-options="endDatePicker">
               </el-date-picker>
             </div>
           </td>
         </tr>
         <tr>
           <th>服務時間</th>
+          {{temp}}
           <td colspan="3">{{temp.service_date}}</td>
         </tr>
         <tr>
@@ -132,8 +135,8 @@
         </tr>
       </table>
       <span slot="footer" class="dialog-footer">
-        <el-button v-if="dialogStatus=='create'" type="warning" @click="createData()">{{ $t('table.save') }}</el-button>
-        <el-button v-else type="warning" @click="updateData()">{{ $t('table.save') }}</el-button>
+        <el-button v-if="dialogStatus=='create'" type="success" @click="createData()" icon="el-icon-check" circle></el-button>
+        <el-button v-else type="success" @click="updateData()" icon="el-icon-check" circle></el-button>
       </span>
     </el-dialog>
   </div>
@@ -146,13 +149,23 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   data() {
     return {
+      startDatePicker: {
+        disabledDate: (time) => {
+          return time.getTime() > new Date(this.temp.service_end_date).getTime();
+        }
+      },
+      endDatePicker: {
+        disabledDate: (time) => {
+          return time.getTime() < new Date(this.temp.service_start_date).getTime();
+        }
+      },
       temp: {
         value: '', // 方案計畫名稱
         area_name: '',
         username: '',
         user_id: '',
         phone: '',
-        service_start_date: '',
+        service_start_date:'',
         service_end_date: '',
         serviece_date: '',
         service_count: '',
@@ -182,6 +195,7 @@ export default {
       'GetCompanyPlanList'
     ]),
     fetchData() {
+      this.listLoading = true,
       this.GetCompanyPlanList(this.id).then(response => {
         this.listLoading = false
         this.GetUserList(this.id)

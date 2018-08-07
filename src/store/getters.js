@@ -19,6 +19,7 @@ const getters = {
   companyBasic: state => state.company.companyBasic,
   users: state => state.company.users,
   plans: state => state.company.plans,
-  departs: state => state.company.departs
+  departs: state => state.company.departs,
+  subCompanys: state => state.company.subCompanys
 }
 export default getters

@@ -46,6 +46,13 @@ export function deleteCompanyPlan(id) {
     method: 'delete'
   })
 }
+// 子公司
+export function getCompanySubCompanyList(id) {
+  return request({
+    url: '/company/sub_company/' + id,
+    method: 'get'
+  })
+}
 
 // 單位管理
 export function getCompanyDepartmentList(id) {
