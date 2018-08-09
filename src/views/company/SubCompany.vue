@@ -3,32 +3,66 @@
     <div class="filter-container">
       <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate()" type="warning" icon="el-icon-plus">{{ $t('table.add') }}</el-button>
     </div>
-    <el-collapse v-model="activeName" accordion v-for="subCompany in subCompanys">
-      <el-collapse-item :title="subCompany.sub_companpy_name" :name="subCompany.id">
-        {{ subCompany.id }}
-      </el-collapse-item>
-    </el-collapse>
+    <el-table :data="subCompanys" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row>
+      <el-table-column align="center" :label="$t('table.id')" width="95">
+        <template slot-scope="scope">
+          {{scope.$index + 1}}
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('company.sub_company_name')" align="center">
+        <template slot-scope="scope">
+          {{scope.row.sub_company_name}}
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('table.created_at')" align="center">
+        <template slot-scope="scope">
+          {{scope.row.created_at}}
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('table.updated_at')" align="center">
+        <template slot-scope="scope">
+          {{scope.row.updated_at}}
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('table.actions')" align="center" width="180px">
+        <template slot-scope="scope">
+          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)" icon="el-icon-edit" circle></el-button>
+          <el-button type="danger" size="mini" @click="handleDelete(scope.row)" icon="el-icon-delete" circle></el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
+      <table class="table day" border="1">
+        <tr>
+          <th>{{ $t('company.sub_company_name') }}</th>
+          <td colspan="3">
+            <input class="c-input" v-model="temp.sub_company_name" v-validate="'required'" name="sub_company" type="text">
+            <span class="error-message" v-show="errors.has('sub_company')"  >{{ errors.first('sub_company') }}</span>
+          </td>
+          {{temp}}
+        </tr>
+      </table>
+      <span slot="footer" class="dialog-footer">
+        <el-button v-if="dialogStatus=='create'" type="success" @click="createData()" icon="el-icon-check" circle></el-button>
+        <el-button v-else type="success" @click="updateData()" icon="el-icon-check" circle></el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { createCompanyPlan, updateCompanyPlan, deleteCompanyPlan } from '@/api/company'
+import { createCompanySubCompany, updateCompanySubCompany, deleteCompanySubCompany } from '@/api/company'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
   data() {
     return {
-      temp: {
-      },
-      textMap: {
-        create: this.$t('table.add') + ' ' + this.$t('company_plan.plan_name'),
-        update: this.$t('table.edit') + ' ' + this.$t('company_plan.plan_name')
-      },
+      temp: {},
       listLoading: true,
       dialogFormVisible: false,
       dialogTitle: '',
-      dialogStatus: '',
-      activeName: '1'
+      dialogStatus: ''
     }
   },
   mounted() {
@@ -48,27 +82,16 @@ export default {
       this.listLoading = true
       this.GetCompanySubCompanyList(this.id).then(response => {
         this.listLoading = false
-        // this.GetUserList(this.id)
       })
     },
     resetTemp() {
       this.temp = {
-        value: '', // 方案計畫名稱
-        area_name: '',
-        username: '',
-        user_id: '',
-        phone: '',
-        service_start_date: '',
-        service_end_date: '',
-        serviece_date: '',
-        service_count: '',
-        price: '',
-        description: '',
-        company_id: '1'
+        sub_company_name: ''
       }
     },
     handleCreate() {
       this.resetTemp()
+      this.dialogTitle = this.$t('table.add') + ' ' + this.$t('company.sub_company')
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
     },
@@ -76,16 +99,11 @@ export default {
       const errors = this.errors.items
       if (errors.length === 0) {
         const filter_temp = {
-          company_id: this.temp.company_id,
-          plan_name: this.temp.value,
-          area_name: this.temp.area_name,
-          service_start_date: this.temp.service_start_date,
-          service_end_date: this.temp.service_end_date,
-          price: this.temp.price,
-          description: this.temp.description
+          company_id: this.id,
+          sub_company_name: this.temp.sub_company_name
         }
         const tempData = Object.assign({}, filter_temp)
-        createCompanyPlan(tempData).then(response => {
+        createCompanySubCompany(tempData).then(response => {
           this.dialogFormVisible = false
           this.$message({
             type: 'success',
@@ -97,25 +115,15 @@ export default {
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row)
+      this.dialogTitle = this.$t('table.edit') + ' ' + this.$t('company.sub_company')
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
     },
     updateData() {
       const errors = this.errors.items
       if (errors.length === 0) {
-        const filter_temp = {
-          plan_id: this.temp.plan_id,
-          plan_name: this.temp.value,
-          area_name: this.temp.area_name,
-          user_id: this.temp.user_id,
-          service_start_date: this.temp.service_start_date,
-          service_end_date: this.temp.service_end_date,
-          price: this.temp.price,
-          description: this.temp.description
-        }
-        const tempData = Object.assign({}, filter_temp)
-        console.log(tempData)
-        updateCompanyPlan(tempData, this.temp.plan_id).then(() => {
+        const tempData = Object.assign({}, this.temp)
+        updateCompanySubCompany(tempData, this.temp.id).then(() => {
           this.fetchData()
           this.dialogFormVisible = false
           this.$message({
@@ -131,7 +139,7 @@ export default {
         cancelButtonText: this.$t('table.cancel'),
         type: 'warning'
       }).then(() => {
-        deleteCompanyPlan(row.plan_id).then(() => {
+        deleteCompanySubCompany(row.id).then(() => {
           this.fetchData()
         })
         this.$message({

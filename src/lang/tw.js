@@ -152,7 +152,9 @@ export default {
     status: '狀態',
     actions: '操作',
     publish: '发布',
-    draft: '草稿'
+    draft: '草稿',
+    created_at: '創造時間',
+    updated_at: '最後更新時間'
   },
   errorLog: {
     tips: '请点击右上角bug小图标',
@@ -207,6 +209,9 @@ export default {
     job: '就業',
     undertaker: '承辦人',
     department: '部門或單位',
-    user: '人員'
+    user: '人員',
+    team: '團隊',
+    sub_company: '子公司',
+    sub_company_name: '子公司名稱'
   }
 }

@@ -6,42 +6,42 @@
     <el-table :data="item" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row>
       <el-table-column align="center" label='編號' width="95">
         <template slot-scope="scope">
-          {{scope.$index + 1}}
+          {{ scope.$index + 1 }}
         </template>
       </el-table-column>
       <el-table-column label="姓名" align="center">
         <template slot-scope="scope">
-          {{scope.row.name}}
+          {{ scope.row.name }}
           <el-tag :type="scope.row.sex | statusFilter">{{scope.row.sex | valueFilter}}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="照片" align="center">
         <template slot-scope="scope">
-          <!-- {{scope.row.avatar}} -->
+          <img class="user-avatar" :src="scope.row.avatar" alt="">
         </template>
       </el-table-column>
       <el-table-column label="生日" align="center">
         <template slot-scope="scope">
-          {{scope.row.birthday}}
+          {{ scope.row.birthday }}
         </template>
       </el-table-column>
       <el-table-column label="手冊核發日期" align="center">
         <template slot-scope="scope">
-          {{scope.row.publish_date}}
+          {{ scope.row.publish_date }}
         </template>
       </el-table-column>
       <el-table-column label="後續鑑定日期" align="center">
         <template slot-scope="scope">
-          {{scope.row.identify_date}}
+          {{ scope.row.identify_date }}
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="230px">
         <template slot-scope="scope">
           <router-link :to="'/person/serviceUser/'+scope.row.id">
-            <el-button type="success" size="mini">選擇</el-button>
+            <el-button type="success" size="mini" icon="el-icon-view" circle></el-button>
           </router-link>
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">編輯</el-button>
-          <el-button type="danger" size="mini" @click="handleDelete(scope.row)">刪除</el-button>
+          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)" icon="el-icon-edit" circle></el-button>
+          <el-button type="danger" size="mini" @click="handleDelete(scope.row)" icon="el-icon-delete" circle></el-button>
         </template>
       </el-table-column>
     </el-table>

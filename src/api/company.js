@@ -46,11 +46,35 @@ export function deleteCompanyPlan(id) {
     method: 'delete'
   })
 }
-// 子公司
+
+// 子公司管理
 export function getCompanySubCompanyList(id) {
   return request({
     url: '/company/sub_company/' + id,
     method: 'get'
+  })
+}
+// 新增子公司
+export function createCompanySubCompany(params) {
+  return request({
+    url: '/company/sub_company',
+    method: 'post',
+    params
+  })
+}
+// 修改子公司
+export function updateCompanySubCompany(params, id) {
+  return request({
+    url: '/company/sub_company/' + id,
+    method: 'put',
+    params
+  })
+}
+// 刪除子公司
+export function deleteCompanySubCompany(id) {
+  return request({
+    url: '/company/sub_company/' + id,
+    method: 'delete'
   })
 }
 

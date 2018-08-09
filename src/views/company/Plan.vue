@@ -150,12 +150,12 @@ export default {
     return {
       startDatePicker: {
         disabledDate: (time) => {
-          return time.getTime() > new Date(this.temp.service_end_date).getTime();
+          return time.getTime() > new Date(this.temp.service_end_date).getTime()
         }
       },
       endDatePicker: {
         disabledDate: (time) => {
-          return time.getTime() < new Date(this.temp.service_start_date).getTime();
+          return time.getTime() < new Date(this.temp.service_start_date).getTime()
         }
       },
       temp: {
@@ -164,7 +164,7 @@ export default {
         username: '',
         user_id: '',
         phone: '',
-        service_start_date:'',
+        service_start_date: '',
         service_end_date: '',
         serviece_date: '',
         service_count: '',
@@ -213,7 +213,7 @@ export default {
         service_count: '',
         price: '',
         description: '',
-        company_id: '1'
+        company_id: ''
       }
     },
     handleCreate() {
@@ -226,7 +226,8 @@ export default {
       const errors = this.errors.items
       if (errors.length === 0) {
         const filter_temp = {
-          company_id: this.temp.company_id,
+          company_id: this.id,
+          user_id: this.temp.user_id,
           plan_name: this.temp.value,
           area_name: this.temp.area_name,
           service_start_date: this.temp.service_start_date,

@@ -6,7 +6,7 @@
       <!-- <el-button class="filter-item" type="primary" :loading="downloadLoading" v-waves icon="el-icon-download" @click="handleDownload">下載</el-button> -->
     </div>
     <el-table :data="users" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row>
-      <el-table-column align="center" label='編號' width="95">
+      <el-table-column align="center" :label="$t('table.id')" width="95">
         <template slot-scope="scope">
           {{scope.$index + 1}}
         </template>
@@ -18,7 +18,7 @@
       </el-table-column>
       <el-table-column label="照片" align="center">
         <template slot-scope="scope">
-          <!-- {{scope.row.avatar}} -->
+          <img class="user-avatar" :src="scope.row.avatar" alt="">
         </template>
       </el-table-column>
       <el-table-column label="單位" align="center">
@@ -59,10 +59,13 @@
           <tr>
             <th>姓名</th>
             <td>
-              <el-input v-model="temp.value"></el-input>
+              <input class="c-input" v-model="temp.value" v-validate="'required'" maxlength="30" name="username" type="text">
+              <span class="error-message" v-show="errors.has('username')"  >{{ errors.first('username') }}</span>
             </td>
             <th>照片</th>
-            <td> </td>
+            <td>
+              <img class="dialog-user-avatar center" :src="temp.avatar" alt="">
+            </td>
           </tr>
           <tr>
             <th>就職日期</th>
@@ -85,17 +88,20 @@
           <tr>
             <th>電話</th>
             <td>
-              <el-input v-model="temp.phone"></el-input>
+              <input class="c-input" v-model="temp.phone" v-validate="'required|numeric|tel'" maxlength="10" name="tel" type="text">
+              <span class="error-message" v-show="errors.has('tel')"  >{{ errors.first('tel') }}</span>
             </td>
             <th>E-mail</th>
             <td>
-              <el-input v-model="temp.email"></el-input>
+              <input class="c-input" v-model="temp.email" v-validate="'required|email'" maxlength="30" name="email" type="text">
+              <span class="error-message" v-show="errors.has('email')"  >{{ errors.first('email') }}</span>
             </td>
           </tr>
           <tr>
             <th>聯絡住址</th>
             <td colspan="3">
-              <el-input v-model="temp.address"></el-input>
+              <input class="c-input" v-model="temp.address" v-validate="'required'" maxlength="30" name="address" type="text">
+              <span class="error-message" v-show="errors.has('address')"  >{{ errors.first('address') }}</span>
             </td>
           </tr>
           <tr>
@@ -112,13 +118,14 @@
             </td>
             <th>職稱</th>
             <td>
-              <el-input v-model="temp.work_title"></el-input>
+              <input class="c-input" v-model="temp.work_title" v-validate="'required'" maxlength="30" name="work_title" type="text">
+              <span class="error-message" v-show="errors.has('work_title')"  >{{ errors.first('work_title') }}</span>
             </td>
           </tr>
           <tr>
             <th>方案計畫名稱</th>
             <td colspan="3">
-              <el-select v-model="temp.plan_id" :placeholder="$t('table.select') + $t('company.team')">
+              <el-select v-model="temp.plan_id" :placeholder="$t('table.select') + $t('company.plan')">
                 <el-option
                   v-for="item in plans"
                   :key="item.value"
@@ -131,7 +138,7 @@
           <tr>
             <th>所屬團隊</th>
             <td colspan="3">
-              <el-select v-model="temp.team_id" :placeholder="$t('table.select') + $t('company.department')">
+              <el-select v-model="temp.team_id" :placeholder="$t('table.select') + $t('company.team')">
                 <el-option
                   v-for="item in teams"
                   :key="item.value"
@@ -185,34 +192,14 @@
 </template>
 
 <script>
-import { getUserList, createUser, updateUser, deleteUser } from '@/api/company'
-import { getCompanyDepartmentList, getCompanyPlanList } from '@/api/company'
+import { createUser, updateUser, deleteUser } from '@/api/company'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
   data() {
     return {
-      item: null,
+      temp: {},
       listLoading: true,
-      temp: {
-        user_id: '',
-        value: '', // avatar
-        email: '',
-        avatar: '',
-        work_start_date: '',
-        phone: '',
-        adress: '',
-        depart_id: '',
-        depart_name: '',
-        work_title: '',
-        team_id: '',
-        role_id: '',
-        income: '',
-        approve_status: '',
-        active: '',
-        company_id: '1',
-        password: ''
-      },
       dialogFormVisible: false,
       dialogTitle: '',
       dialogStatus: ''
@@ -234,7 +221,7 @@ export default {
       return valueMap[value]
     }
   },
-    mounted() {
+  mounted() {
     this.fetchData()
   },
   computed: {
@@ -276,7 +263,7 @@ export default {
         income: '',
         approve_status: '',
         active: '',
-        company_id: '1',
+        company_id: '',
         password: ''
       }
     },
@@ -288,6 +275,7 @@ export default {
     },
     createData() {
       const filter_temp = {
+        company_id: this.id,
         user_id: this.temp.user_id,
         username: this.temp.value,
         avatar: this.temp.avatar,
@@ -322,6 +310,7 @@ export default {
     },
     updateData() {
       const filter_temp = {
+        company_id: this.id,
         user_id: this.temp.user_id,
         username: this.temp.value,
         avatar: this.temp.avatar,
@@ -345,7 +334,7 @@ export default {
         this.dialogFormVisible = false
         this.$message({
           type: 'success',
-          message: '更新成功'
+          message: this.$t('table.save')
         })
       })
     },

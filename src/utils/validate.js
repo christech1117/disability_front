@@ -23,7 +23,6 @@ const dictionary = {
       email: '信箱',
       password: '密碼',
       username: '帳號',
-      tel: '電話',
       phone: '手機'
     }
   }
