@@ -11,7 +11,7 @@ html {
   box-sizing: border-box;
 }
 
-#app{
+#app {
   height: 100%;
 }
 
@@ -30,9 +30,9 @@ a:hover {
   text-decoration: none;
 }
 
-div:focus{
+div:focus {
   outline: none;
- }
+}
 
 a:focus,
 a:active {
@@ -57,6 +57,18 @@ a:hover {
     height: 0;
   }
 }
+
+.brand {
+  img {
+    margin: 10px 0;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+  }
+  background-color: $white;
+  border-right: 1px solid $menu-gray-light;
+}
+
 .bottom-line {
   margin-left: 5px;
   border-bottom: 1px $almost-black solid;
@@ -68,25 +80,31 @@ a:hover {
   border-radius: 4px;
   border: 1px $lighter-gray solid;
   padding: 0 15px;
-  &:focus, &:active, &:hover {
+  &:focus,
+  &:active,
+  &:hover {
     border: 1px $theme-orange solid;
   }
 }
+
 .c-other-input {
   height: 40px;
   border-radius: 4px;
   border: 1px $lighter-gray solid;
   padding: 0 15px;
-  &:focus, &:active, &:hover {
+  &:focus,
+  &:active,
+  &:hover {
     border: 1px $theme-orange solid;
   }
 }
+
 .error-message {
   color: $theme-red;
 }
 
 //main-container全局样式
-.app-main{
+.app-main {
   min-height: 100%
 }
 
@@ -99,7 +117,8 @@ a:hover {
   display: flex;
 }
 
-.table, .el-table {
+.table,
+.el-table {
   color: black;
   border-left: 1px solid $dark-gray;
   border-right: 1px solid $dark-gray;
@@ -122,6 +141,7 @@ a:hover {
   height: 40px;
   border-radius: 10px;
 }
+
 .dialog-user-avatar {
   width: 100px;
   height: 100px;

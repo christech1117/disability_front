@@ -3,6 +3,7 @@
     <div class="filter-container">
       <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="warning" icon="el-icon-edit">編輯</el-button>
     </div>
+    <h4 class="text-center">ISP會議記錄</h4>
     <table class="table">
       <tr>
         <th>姓名</th>
@@ -95,11 +96,8 @@
 </template>
 
 <script>
-  export default {
-
-  }
+export default {}
 </script>
 
 <style scoped>
-
 </style>

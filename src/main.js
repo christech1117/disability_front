@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-import 'normalize.css/normalize.css'// A modern alternative to CSS resets
+import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
 import Element from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
@@ -16,7 +16,6 @@ import '@/icons' // icon
 import '@/permission' // permission control
 
 import * as filters from './filters' // global filters
-import PrettyCheckbox from 'pretty-checkbox-vue'
 import './utils/validate.js'
 
 Vue.use(Element, {
@@ -24,7 +23,6 @@ Vue.use(Element, {
   i18n: (key, value) => i18n.t(key, value)
 })
 
-Vue.use(PrettyCheckbox)
 // register global utility filters.
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
@@ -38,5 +36,7 @@ new Vue({
   store,
   i18n,
   template: '<App/>',
-  components: { App }
+  components: {
+    App
+  }
 })

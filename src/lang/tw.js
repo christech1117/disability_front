@@ -4,11 +4,15 @@ export default {
     // 組織管理
     company_manage: '組織管理',
     company_basic: '組織基本資料',
-    sub_company_manage: '子公司管理',
+    sub_company_manage: '子公司/子組織管理',
     depart_manage: '部門/單位管理',
     plan_manage: '方案管理',
-    user_manage: '人員管理',
+    user_manage: '組織人員管理',
+    // 檔案管理
     file_manage: '檔案管理',
+    upload_person: '個人層級照片管理',
+    upload_organization: '組織照片與LOGO管理',
+    upload_activity: '活動照片管理',
     // 個人層級
     person_manage: '個人層級',
     // 團隊層級
@@ -16,14 +20,17 @@ export default {
     team_basic: '團隊管理',
     trait_chart: '團隊特質量表-CFI',
     team_develop_plan: '團隊發展計畫',
-    cfi_statistic: '統計分析',
     // 組織層級
     organization_manage: '組織層級',
     oees: '組織效益效率-OEES',
     organization_develop_plan: '組織發展計畫',
-    organization_statistic: '統計分析',
     // 工作管理
     work_manage: '工作管理',
+    // 統計分析
+    statistic: '統計分析',
+    person_statistic: '個人層級統計分析',
+    team_statistic: '團隊層級統計分析',
+    organization_statistic: '組織層級統計分析',
 
     introduction: '简述',
     documentation: '文档',
@@ -135,6 +142,9 @@ export default {
     cancel: '取消',
     confirm: '確定',
     select: '請選擇',
+    input: '請輸入',
+    search: '搜尋',
+
     dynamicTips1: '固定表头, 按照表头顺序排序',
     dynamicTips2: '不固定表头, 按照点击顺序排序',
     dragTips1: '默认顺序',
@@ -143,7 +153,6 @@ export default {
     importance: '重要性',
     type: '類型',
     remark: '点评',
-    search: '搜索',
     export: '导出',
     reviewer: '审核人',
     date: '時間',
@@ -153,7 +162,7 @@ export default {
     actions: '操作',
     publish: '发布',
     draft: '草稿',
-    created_at: '創造時間',
+    created_at: '建檔日期',
     updated_at: '最後更新時間'
   },
   errorLog: {
@@ -196,7 +205,7 @@ export default {
     budget: '年度預算',
     service_content: '組織服務內容',
     service_type: '服務類型',
-    depart: '單位',
+    depart: '部門/單位',
     depart_type: '單位種類',
     depart_name: '單位名稱',
     plan: '方案',
@@ -211,7 +220,13 @@ export default {
     department: '部門或單位',
     user: '人員',
     team: '團隊',
-    sub_company: '子公司',
-    sub_company_name: '子公司名稱'
+    username: '姓名',
+    sub_company: '子公司/子組織',
+    sub_company_name: '子公司/子組織名稱',
+    sub_company_description: '子公司/子組織簡介'
+  },
+  person: {
+    service_user: '個案人員',
+    name: '姓名'
   }
 }

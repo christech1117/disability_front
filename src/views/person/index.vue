@@ -1,15 +1,30 @@
 <template>
   <div class="app-container">
     <el-tabs :tab-position="tabPosition">
-      <el-tab-pane label="基本資料"><basic></basic></el-tab-pane>
-      <el-tab-pane label="支持強度量表(SIS)"><sis></sis></el-tab-pane>
-      <el-tab-pane label="我的支持計畫"><support-plan></support-plan></el-tab-pane>
-      <el-tab-pane label="個別化支持服務計畫"><support-service></support-service></el-tab-pane>
-      <el-tab-pane label="ISP會議記錄"><isp></isp></el-tab-pane>
-      <el-tab-pane label="個人成果量表(POS)"><pos></pos></el-tab-pane>
-      <el-tab-pane label="社區生活技能評量表"><community></community></el-tab-pane>
-      <el-tab-pane label="統計分析"><statistic></statistic></el-tab-pane>
-      <el-tab-pane label="個案管理"><case></case></el-tab-pane>
+      <el-tab-pane label="個案基本資料表">
+        <basic></basic>
+      </el-tab-pane>
+      <el-tab-pane label="我的支持計畫">
+        <support-plan></support-plan>
+      </el-tab-pane>
+      <el-tab-pane label="個別化支持服務計畫">
+        <support-service></support-service>
+      </el-tab-pane>
+      <el-tab-pane label="ISP會議記錄">
+        <isp></isp>
+      </el-tab-pane>
+      <el-tab-pane label="支持強度量表(SIS)">
+        <sis></sis>
+      </el-tab-pane>
+      <el-tab-pane label="個人成果量表(POS)">
+        <pos></pos>
+      </el-tab-pane>
+      <el-tab-pane label="社區生活技能評量表">
+        <community></community>
+      </el-tab-pane>
+      <el-tab-pane label="個案管理">
+        <case></case>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -24,7 +39,6 @@ import SupportService from './SupportService'
 import Isp from './Isp'
 import Pos from './Pos'
 import Community from './Community'
-import Statistic from './Statistic'
 import Case from './Case'
 
 export default {
@@ -33,7 +47,7 @@ export default {
       item: null,
       list: null,
       listLoading: true,
-      tabPosition: 'right',
+      tabPosition: 'top',
       textMap: {
         update: '編輯',
         create: '新增'
@@ -51,7 +65,16 @@ export default {
       activeName: 'first'
     }
   },
-  components: { Basic, Sis, SupportPlan, SupportService, Isp, Pos, Community, Statistic, Case },
+  components: {
+    Basic,
+    Sis,
+    SupportPlan,
+    SupportService,
+    Isp,
+    Pos,
+    Community,
+    Case
+  },
   props: {
     isEdit: {
       type: Boolean,
@@ -67,14 +90,11 @@ export default {
       return statusMap[status]
     }
   },
-  computed: {
-    ...mapGetters([
-      'id'
-    ])
-  },
-  created() {
+  mounted() {
     this.fetchData()
-    // console.log(this.id)
+  },
+  computed: {
+    ...mapGetters(['id'])
   },
   methods: {
     fetchData() {

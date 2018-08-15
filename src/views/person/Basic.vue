@@ -3,6 +3,7 @@
     <div class="filter-container">
       <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="warning" icon="el-icon-edit">編輯</el-button>
     </div>
+    <h4 class="text-center">個案人員基本資料表</h4>
     <h5>一、基本資料</h5>
     <table class="table">
       <tr>
@@ -67,9 +68,7 @@
       </tr>
       <tr>
         <td colspan="6">
-          多重障礙者
-          罕見疾病
-          其他經中央衛生主管機關認定之障礙者(□先天代謝異常 □染色體異常 □先天性缺陷)
+          多重障礙者 罕見疾病 其他經中央衛生主管機關認定之障礙者(□先天代謝異常 □染色體異常 □先天性缺陷)
         </td>
       </tr>
       <tr>
@@ -256,11 +255,8 @@
 </template>
 
 <script>
-  export default {
-
-  }
+export default {}
 </script>
 
 <style scoped>
-
 </style>

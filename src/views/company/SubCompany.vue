@@ -2,6 +2,11 @@
   <div class="app-container">
     <div class="filter-container">
       <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate()" type="warning" icon="el-icon-plus">{{ $t('table.add') }}</el-button>
+      <!-- <div class="block">
+        <span class="demonstration">{{ $t('table.search') }}</span>
+        <el-date-picker v-model="value7" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="開始日期" end-placeholder="结束日期" :picker-options="pickerOptions2">
+        </el-date-picker>
+      </div> -->
     </div>
     <el-table :data="subCompanys" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row>
       <el-table-column align="center" :label="$t('table.id')" width="95">
@@ -33,51 +38,94 @@
     </el-table>
 
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
-      <table class="table day" border="1">
-        <tr>
-          <th>{{ $t('company.sub_company_name') }}</th>
-          <td colspan="3">
-            <input class="c-input" v-model="temp.sub_company_name" v-validate="'required'" name="sub_company" type="text">
-            <span class="error-message" v-show="errors.has('sub_company')"  >{{ errors.first('sub_company') }}</span>
-          </td>
-          {{temp}}
-        </tr>
-      </table>
-      <span slot="footer" class="dialog-footer">
-        <el-button v-if="dialogStatus=='create'" type="success" @click="createData()" icon="el-icon-check" circle></el-button>
-        <el-button v-else type="success" @click="updateData()" icon="el-icon-check" circle></el-button>
-      </span>
+      <el-form :model="temp" :rules="rules" ref="dataForm" label-width="100px" class="demo-ruleForm">
+        <table class="table day" border="1">
+          <tr>
+            <th>{{ $t('company.sub_company_name') }}</th>
+            <td colspan="3">
+              <el-form-item prop="sub_company_name">
+                <el-input maxlength="15" v-model="temp.sub_company_name"></el-input>
+              </el-form-item>
+            </td>
+          </tr>
+          <tr>
+            <th>{{ $t('company.sub_company_description') }}</th>
+            <td colspan="3">
+              <el-form-item prop="sub_company_description">
+                <el-input maxlength="50" type="textarea" :rows="6" resize="none" v-model="temp.sub_company_description"></el-input>
+              </el-form-item>
+            </td>
+          </tr>
+        </table>
+        <el-form-item class="text-right">
+          <el-button v-if="dialogStatus=='create'" type="success" @click="createData()" icon="el-icon-check" circle></el-button>
+          <el-button v-else type="success" @click="updateData()" icon="el-icon-check" circle></el-button>
+        </el-form-item>
+      </el-form>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { createCompanySubCompany, updateCompanySubCompany, deleteCompanySubCompany } from '@/api/company'
+import {
+  createCompanySubCompany,
+  updateCompanySubCompany,
+  deleteCompanySubCompany
+} from '@/api/company'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
   data() {
     return {
-      temp: {},
+      temp: {
+        company_id: this.id,
+        sub_company_name: '',
+        sub_company_description: ''
+      },
       listLoading: true,
       dialogFormVisible: false,
       dialogTitle: '',
-      dialogStatus: ''
+      dialogStatus: '',
+      rules: {
+        sub_company_name: [
+          {
+            required: true,
+            message:
+              this.$t('table.input') + this.$t('company.sub_company_name'),
+            trigger: 'change'
+          },
+          {
+            max: 15,
+            message: this.$t('company.sub_company_name') + '最長為 15 個字',
+            trigger: 'change'
+          }
+        ],
+        sub_company_description: [
+          {
+            required: true,
+            message:
+              this.$t('table.input') +
+              this.$t('company.sub_company_description'),
+            trigger: 'change'
+          },
+          {
+            max: 50,
+            message:
+              this.$t('company.sub_company_name') + '方案名稱最長為 50 個字',
+            trigger: 'change'
+          }
+        ]
+      }
     }
   },
-  mounted() {
+  created() {
     this.fetchData()
   },
   computed: {
-    ...mapGetters([
-      'id',
-      'subCompanys'
-    ])
+    ...mapGetters(['id', 'subCompanys'])
   },
   methods: {
-    ...mapActions([
-      'GetCompanySubCompanyList'
-    ]),
+    ...mapActions(['GetCompanySubCompanyList']),
     fetchData() {
       this.listLoading = true
       this.GetCompanySubCompanyList(this.id).then(response => {
@@ -86,52 +134,66 @@ export default {
     },
     resetTemp() {
       this.temp = {
-        sub_company_name: ''
+        company_id: this.id,
+        sub_company_name: '',
+        sub_company_description: ''
       }
     },
     handleCreate() {
       this.resetTemp()
-      this.dialogTitle = this.$t('table.add') + ' ' + this.$t('company.sub_company')
+      this.dialogTitle =
+        this.$t('table.add') + ' ' + this.$t('company.sub_company')
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
     },
     createData() {
-      const errors = this.errors.items
-      if (errors.length === 0) {
-        const filter_temp = {
-          company_id: this.id,
-          sub_company_name: this.temp.sub_company_name
-        }
-        const tempData = Object.assign({}, filter_temp)
-        createCompanySubCompany(tempData).then(response => {
-          this.dialogFormVisible = false
-          this.$message({
-            type: 'success',
-            message: this.$t('table.add')
+      this.$refs['dataForm'].validate(valid => {
+        if (valid) {
+          createCompanySubCompany(this.temp).then(response => {
+            this.fetchData()
+            this.subCompanys.unshift(this.temp)
+            this.dialogFormVisible = false
+            this.$message({
+              type: 'success',
+              message: this.$t('table.add')
+            })
           })
-          this.fetchData()
-        })
-      }
+        }
+      })
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row)
-      this.dialogTitle = this.$t('table.edit') + ' ' + this.$t('company.sub_company')
+      this.dialogTitle =
+        this.$t('table.edit') + ' ' + this.$t('company.sub_company')
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
     },
     updateData() {
-      const errors = this.errors.items
-      if (errors.length === 0) {
-        const tempData = Object.assign({}, this.temp)
-        updateCompanySubCompany(tempData, this.temp.id).then(() => {
-          this.fetchData()
-          this.dialogFormVisible = false
-          this.$message({
-            type: 'success',
-            message: this.$t('table.save')
+      this.$refs['dataForm'].validate(valid => {
+        if (valid) {
+          const tempData = Object.assign({}, this.temp)
+          updateCompanySubCompany(tempData, this.temp.id).then(() => {
+            for (const v of this.subCompanys) {
+              if (v.id === this.temp.id) {
+                const index = this.subCompanys.indexOf(v)
+                this.subCompanys.splice(index, 1, this.temp)
+                break
+              }
+            }
+            this.dialogFormVisible = false
+            this.$message({
+              type: 'success',
+              message: this.$t('table.save')
+            })
           })
-        })
-      }
+        }
+      })
     },
     handleDelete(row) {
       this.$confirm(this.$t('errorLog.whether_delete'), this.$t('table.info'), {
@@ -140,16 +202,12 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteCompanySubCompany(row.id).then(() => {
-          this.fetchData()
-        })
-        this.$message({
-          type: 'success',
-          message: this.$t('table.delete')
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: this.$t('table.cancel')
+          const index = this.subCompanys.indexOf(row)
+          this.subCompanys.splice(index, 1)
+          this.$message({
+            type: 'success',
+            message: this.$t('table.delete')
+          })
         })
       })
     }

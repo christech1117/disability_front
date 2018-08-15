@@ -1,14 +1,14 @@
 #app {
-  // 主體區域
   .main-container {
+    // 主體區域
     min-height: 100%;
     transition: margin-left .28s;
-    margin-left: 230px; // 寬度
+    margin-left: 250px; // 寬度
   }
-  // 側邊欄
   .sidebar-container {
+    // 側邊欄
     transition: width 0.28s;
-    width: 230px !important; // 寬度
+    width: 250px !important; // 寬度
     height: 100%;
     position: fixed;
     font-size: 0px;
@@ -16,8 +16,8 @@
     bottom: 0;
     left: 0;
     z-index: 1001;
-    overflow: hidden;
-    //reset element-ui css
+    overflow: hidden; //reset element-ui css
+    margin-bottom: 50px;
     .horizontal-collapse-transition {
       transition: 0s width ease-in-out, 0s padding-left ease-in-out, 0s padding-right ease-in-out;
     }
@@ -81,7 +81,8 @@
       }
     }
   }
-  .el-submenu__title, .el-submenu__title i{
+  .el-submenu__title,
+  .el-submenu__title i {
     color: $white !important;
     font-size: 16px;
   }
@@ -99,9 +100,8 @@
   .el-menu--collapse .el-menu .el-submenu {
     min-width: 180px !important;
   }
-
-  // 手機版配置
   .mobile {
+    // 手機版配置
     .main-container {
       margin-left: 0px;
     }

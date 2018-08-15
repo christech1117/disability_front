@@ -11,9 +11,9 @@
           {{scope.$index + 1}}
         </template>
       </el-table-column>
-      <el-table-column label="姓名" align="center">
+      <el-table-column :label="$t('company.username')" align="center">
         <template slot-scope="scope">
-          {{scope.row.value}}
+          {{scope.row.username}}
         </template>
       </el-table-column>
       <el-table-column label="照片" align="center">
@@ -55,12 +55,14 @@
     </el-table>
 
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
-      <table class="table">
+      <el-form :model="temp" :rules="rules" ref="dataForm" label-width="100px" class="demo-ruleForm">
+        <table class="table">
           <tr>
             <th>姓名</th>
             <td>
-              <input class="c-input" v-model="temp.value" v-validate="'required'" maxlength="30" name="username" type="text">
-              <span class="error-message" v-show="errors.has('username')"  >{{ errors.first('username') }}</span>
+              <el-form-item prop="username">
+                <el-input v-model="temp.username"></el-input>
+              </el-form-item>
             </td>
             <th>照片</th>
             <td>
@@ -70,82 +72,80 @@
           <tr>
             <th>就職日期</th>
             <td>
-              <div class="block">
-                <el-date-picker
-                  value-format="yyyy-MM-dd"
-                  v-model="temp.work_start_date"
-                  type="date"
-                  placeholder="選擇日期">
+              <el-form-item prop="work_start_date">
+                <el-date-picker value-format="yyyy-MM-dd" v-model="temp.work_start_date" type="date" placeholder="選擇日期">
                 </el-date-picker>
-              </div>
+              </el-form-item>
             </td>
             <th>工作狀態</th>
             <td>
-              <p-radio class="p-default p-smooth p-bigger" color="warning" value="1" v-model="temp.active">就職</p-radio>
-              <p-radio class="p-default p-smooth p-bigger" color="warning" value="0" v-model="temp.active">離職</p-radio>
+              <el-form-item prop="active">
+                <el-radio-group v-model="temp.active">
+                  <el-radio :label="'1'">就職</el-radio>
+                  <el-radio :label="'0'">離職</el-radio>
+                </el-radio-group>
+              </el-form-item>
             </td>
           </tr>
           <tr>
             <th>電話</th>
             <td>
-              <input class="c-input" v-model="temp.phone" v-validate="'required|numeric|tel'" maxlength="10" name="tel" type="text">
-              <span class="error-message" v-show="errors.has('tel')"  >{{ errors.first('tel') }}</span>
+              <el-form-item prop="phone">
+                <el-input v-model="temp.phone"></el-input>
+              </el-form-item>
             </td>
             <th>E-mail</th>
             <td>
-              <input class="c-input" v-model="temp.email" v-validate="'required|email'" maxlength="30" name="email" type="text">
-              <span class="error-message" v-show="errors.has('email')"  >{{ errors.first('email') }}</span>
+              <el-form-item prop="email">
+                <el-input v-model="temp.email"></el-input>
+              </el-form-item>
             </td>
           </tr>
           <tr>
             <th>聯絡住址</th>
             <td colspan="3">
-              <input class="c-input" v-model="temp.address" v-validate="'required'" maxlength="30" name="address" type="text">
-              <span class="error-message" v-show="errors.has('address')"  >{{ errors.first('address') }}</span>
+              <el-form-item prop="address">
+                <el-input v-model="temp.address"></el-input>
+              </el-form-item>
             </td>
           </tr>
           <tr>
             <th>部門或單位</th>
             <td>
-              <el-select v-model="temp.depart_id" :placeholder="$t('table.select') + $t('company.department')">
-                <el-option
-                  v-for="item in departs"
-                  :key="item.value"
-                  :label="item.value"
-                  :value="item.user_id">
-                </el-option>
-              </el-select>
+              <el-form-item prop="depart_id">
+                <el-select v-model="temp.depart_id" :placeholder="$t('table.select') + $t('company.department')">
+                  <el-option v-for="item in departs" :key="item.depart_id" :label="item.depart_name" :value="item.depart_id">
+                  </el-option>
+                </el-select>
+              </el-form-item>
             </td>
             <th>職稱</th>
             <td>
-              <input class="c-input" v-model="temp.work_title" v-validate="'required'" maxlength="30" name="work_title" type="text">
-              <span class="error-message" v-show="errors.has('work_title')"  >{{ errors.first('work_title') }}</span>
+              <el-form-item prop="work_title">
+                <el-input v-model="temp.work_title"></el-input>
+              </el-form-item>
             </td>
           </tr>
           <tr>
             <th>方案計畫名稱</th>
             <td colspan="3">
-              <el-select v-model="temp.plan_id" :placeholder="$t('table.select') + $t('company.plan')">
-                <el-option
-                  v-for="item in plans"
-                  :key="item.value"
-                  :label="item.value"
-                  :value="item.user_id">
-                </el-option>
-              </el-select>
+              <el-form-item prop="plan_id">
+                <el-select v-model="temp.plan_id" :placeholder="$t('table.select') + $t('company.plan')">
+                  <el-option v-for="item in plans" :key="item.plan_id" :label="item.plan_name" :value="item.plan_id">
+                  </el-option>
+                </el-select>
+              </el-form-item>
             </td>
           </tr>
           <tr>
             <th>所屬團隊</th>
             <td colspan="3">
-              <el-select v-model="temp.team_id" :placeholder="$t('table.select') + $t('company.team')">
-                <el-option
-                  v-for="item in teams"
-                  :key="item.value"
-                  :label="item.value"
-                  :value="item.user_id">
-                </el-option>
-              </el-select>
+              <el-form-item prop="team_id">
+                <el-select v-model="temp.team_id" :placeholder="$t('table.select') + $t('company.team')">
+                  <el-option v-for="item in teams" :key="item.team_id" :label="item.team_name" :value="item.team_id">
+                  </el-option>
+                </el-select>
+              </el-form-item>
             </td>
           </tr>
           <tr>
@@ -154,35 +154,48 @@
           <tr>
             <th>角色</th>
             <td colspan="3">
-              <p-radio class="p-default p-smooth p-bigger" color="warning" value="2" v-model="temp.role_id">組織管理員</p-radio>
-              <p-radio class="p-default p-smooth p-bigger" color="warning" value="3" v-model="temp.role_id">組織主管</p-radio>
-              <p-radio class="p-default p-smooth p-bigger" color="warning" value="4" v-model="temp.role_id">部門主管</p-radio>
-              <p-radio class="p-default p-smooth p-bigger" color="warning" value="5" v-model="temp.role_id">組/科/室主管</p-radio>
-              <p-radio class="p-default p-smooth p-bigger" color="warning" value="6" v-model="temp.role_id">ISP促進者</p-radio>
-              <p-radio class="p-default p-smooth p-bigger" color="warning" value="7" v-model="temp.role_id">執行監督者</p-radio>
-              <p-radio class="p-default p-smooth p-bigger" color="warning" value="8" v-model="temp.role_id">支持者</p-radio>
-              <p-radio class="p-default p-smooth p-bigger" color="warning" value="9" v-model="temp.role_id">OEES訪員</p-radio>
-              <p-radio class="p-default p-smooth p-bigger" color="warning" value="10" v-model="temp.role_id">SIS訪員</p-radio>
-              <p-radio class="p-default p-smooth p-bigger" color="warning" value="11" v-model="temp.role_id">POS訪員</p-radio>
-              <p-radio class="p-default p-smooth p-bigger" color="warning" value="12" v-model="temp.role_id">服務對象/家屬</p-radio>
+              <el-form-item prop="role_id">
+                <el-radio-group v-model="temp.role_id">
+                  <el-radio :label="'2'">組織管理員</el-radio>
+                  <el-radio :label="'3'">組織主管</el-radio>
+                  <el-radio :label="'4'">部門主管</el-radio>
+                  <el-radio :label="'5'">組/科/室主管</el-radio>
+                  <el-radio :label="'6'">ISP促進者</el-radio>
+                  <el-radio :label="'7'">執行監督者</el-radio>
+                  <el-radio :label="'8'">支持者</el-radio>
+                  <el-radio :label="'9'">OEES訪員</el-radio>
+                  <el-radio :label="'10'">SIS訪員</el-radio>
+                  <el-radio :label="'11'">POS訪員</el-radio>
+                  <el-radio :label="'12'">服務對象/家屬</el-radio>
+                </el-radio-group>
+              </el-form-item>
             </td>
           </tr>
           <tr>
             <th>審核</th>
             <td>
-              <p-radio class="p-default p-smooth p-bigger" color="warning" value="sis" v-model="temp.approve_status">SIS</p-radio>
-              <p-radio class="p-default p-smooth p-bigger" color="warning" value="pos" v-model="temp.approve_status">POS</p-radio>
-              <p-radio class="p-default p-smooth p-bigger" color="warning" value="community" v-model="temp.approve_status">社區生活技能</p-radio>
-              <p-radio class="p-default p-smooth p-bigger" color="warning" value="isp" v-model="temp.approve_status">ISP及會議紀錄</p-radio>
+              <el-form-item prop="approve_status">
+                <el-checkbox-group v-model="temp.approve_status">
+                  <el-checkbox label="sis">SIS</el-checkbox>
+                  <el-checkbox label="pos">POS</el-checkbox>
+                  <el-checkbox label="community">社區生活技能</el-checkbox>
+                  <el-checkbox label="isp">ISP及會議紀錄</el-checkbox>
+                </el-checkbox-group>
+              </el-form-item>
             </td>
             <th>個人收入</th>
             <td>
-              <p-radio class="p-default p-smooth p-bigger" color="warning" value="no" v-model="temp.income">無</p-radio>
-              <p-radio class="p-default p-smooth p-bigger" color="warning" value="look" v-model="temp.income">檢視</p-radio>
-              <p-radio class="p-default p-smooth p-bigger" color="warning" value="edit" v-model="temp.income">編輯</p-radio>
+              <el-form-item prop="income">
+                <el-radio-group v-model="temp.income">
+                  <el-radio :label="'no'">無</el-radio>
+                  <el-radio :label="'look'">檢視</el-radio>
+                  <el-radio :label="'edit'">編輯</el-radio>
+                </el-radio-group>
+              </el-form-item>
             </td>
           </tr>
         </table>
+      </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button v-if="dialogStatus=='create'" type="success" @click="createData()" icon="el-icon-check" circle></el-button>
         <el-button v-else type="success" @click="updateData()" icon="el-icon-check" circle></el-button>
@@ -198,11 +211,102 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   data() {
     return {
-      temp: {},
+      temp: {
+        company_id: this.id,
+        user_id: '',
+        username: '',
+        avatar: '',
+        work_start_date: '',
+        active: '',
+        phone: '',
+        email: '',
+        address: '',
+        work_title: '',
+        role_id: '',
+        approve_status: '',
+        income: '',
+        depart_id: '',
+        depart_name: '',
+        team_id: ''
+      },
       listLoading: true,
       dialogFormVisible: false,
       dialogTitle: '',
-      dialogStatus: ''
+      dialogStatus: '',
+      rules: {
+        username: [
+          {
+            required: true,
+            message: this.$t('table.input') + this.$t('company.username'),
+            trigger: 'change'
+          },
+          { max: 20, message: '姓名最長為 20 個字', trigger: 'change' }
+        ],
+        work_start_date: [
+          {
+            required: true,
+            message: this.$t('table.select') + '就職日期',
+            trigger: 'change'
+          }
+        ],
+        active: [
+          {
+            required: true,
+            message: this.$t('table.select') + '工作狀態',
+            trigger: 'change'
+          }
+        ],
+        phone: [
+          {
+            required: true,
+            message: this.$t('table.select') + '電話',
+            trigger: 'change'
+          },
+          { max: 10, message: '電話最長為 10 個字', trigger: 'change' }
+        ],
+        email: [
+          {
+            required: true,
+            message: this.$t('table.input') + 'email',
+            trigger: 'change'
+          }
+        ],
+        address: [
+          {
+            required: true,
+            message: this.$t('table.input') + '聯絡住址',
+            trigger: 'change'
+          }
+        ],
+        work_title: [
+          {
+            required: true,
+            message: this.$t('table.input') + '職稱',
+            trigger: 'change'
+          }
+        ],
+        role_id: [
+          {
+            required: true,
+            message: this.$t('table.select') + '角色權限',
+            trigger: 'change'
+          }
+        ],
+        approve_status: [
+          {
+            required: true,
+            message: this.$t('table.select') + '審核權限',
+            trigger: 'change'
+          }
+        ],
+        income: [
+          {
+            required: true,
+            message: this.$t('table.select') + '個人收入權限',
+            trigger: 'change'
+          }
+        ]
+      }
     }
   },
   filters: {
@@ -221,16 +325,11 @@ export default {
       return valueMap[value]
     }
   },
-  mounted() {
+  created() {
     this.fetchData()
   },
   computed: {
-    ...mapGetters([
-      'id',
-      'users',
-      'plans',
-      'departs'
-    ])
+    ...mapGetters(['id', 'users', 'plans', 'departs'])
   },
   methods: {
     ...mapActions([
@@ -248,23 +347,22 @@ export default {
     },
     resetTemp() {
       this.temp = {
+        company_id: this.id,
         user_id: '',
-        value: '', // username
-        email: '',
+        username: '',
         avatar: '',
         work_start_date: '',
+        active: '',
         phone: '',
-        adress: '',
+        email: '',
+        address: '',
+        work_title: '',
+        role_id: '',
+        approve_status: '',
+        income: '',
         depart_id: '',
         depart_name: '',
-        work_title: '',
-        team_id: '',
-        role_id: '',
-        income: '',
-        approve_status: '',
-        active: '',
-        company_id: '',
-        password: ''
+        team_id: ''
       }
     },
     handleCreate() {
@@ -272,34 +370,23 @@ export default {
       this.dialogTitle = this.$t('table.add') + ' ' + this.$t('company.user')
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
     },
     createData() {
-      const filter_temp = {
-        company_id: this.id,
-        user_id: this.temp.user_id,
-        username: this.temp.value,
-        avatar: this.temp.avatar,
-        work_start_date: this.temp.work_start_date,
-        phone: this.temp.phone,
-        email: this.temp.email,
-        address: this.temp.address,
-        depart_id: this.temp.depart_id,
-        work_title: this.temp.work_title,
-        plan_name: this.temp.plan_name,
-        team_id: this.temp.team_id,
-        role_id: this.temp.role_id,
-        approve_status: this.temp.approve_status,
-        income: this.temp.income,
-        active: this.temp.active
-      }
-      const tempData = Object.assign({}, filter_temp)
-      createUser(tempData).then(response => {
-        this.dialogFormVisible = false
-        this.$message({
-          type: 'success',
-          message: this.$t('table.add')
-        })
-        this.fetchData()
+      this.$refs['dataForm'].validate(valid => {
+        if (valid) {
+          createUser(this.temp).then(response => {
+            this.users.unshift(this.temp)
+            this.dialogFormVisible = false
+            this.$message({
+              type: 'success',
+              message: this.$t('table.add')
+            })
+            this.fetchData()
+          })
+        }
       })
     },
     handleUpdate(row) {
@@ -307,35 +394,48 @@ export default {
       this.dialogTitle = this.$t('table.edit') + ' ' + this.$t('company.user')
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
     },
     updateData() {
-      const filter_temp = {
-        company_id: this.id,
-        user_id: this.temp.user_id,
-        username: this.temp.value,
-        avatar: this.temp.avatar,
-        work_start_date: this.temp.work_start_date,
-        phone: this.temp.phone,
-        email: this.temp.email,
-        address: this.temp.address,
-        depart_id: this.temp.depart_id,
-        depart_name: this.temp.depart_name,
-        work_title: this.temp.work_title,
-        plan_name: this.temp.plan_name,
-        team_id: this.temp.team_id,
-        role_id: this.temp.role_id,
-        approve_status: this.temp.approve_status,
-        income: this.temp.income,
-        active: this.temp.active
-      }
-      const tempData = Object.assign({}, filter_temp)
-      updateUser(tempData, this.temp.user_id).then(() => {
-        this.fetchData()
-        this.dialogFormVisible = false
-        this.$message({
-          type: 'success',
-          message: this.$t('table.save')
-        })
+      this.$refs['dataForm'].validate(valid => {
+        if (valid) {
+          const filter_temp = {
+            company_id: this.id,
+            user_id: this.temp.user_id,
+            username: this.temp.value,
+            avatar: this.temp.avatar,
+            work_start_date: this.temp.work_start_date,
+            phone: this.temp.phone,
+            email: this.temp.email,
+            address: this.temp.address,
+            depart_id: this.temp.depart_id,
+            depart_name: this.temp.depart_name,
+            work_title: this.temp.work_title,
+            plan_name: this.temp.plan_name,
+            team_id: this.temp.team_id,
+            role_id: this.temp.role_id,
+            approve_status: this.temp.approve_status,
+            income: this.temp.income,
+            active: this.temp.active
+          }
+          const tempData = Object.assign({}, filter_temp)
+          updateUser(tempData, this.temp.user_id).then(() => {
+            for (const v of this.users) {
+              if (v.id === this.temp.id) {
+                const index = this.users.indexOf(v)
+                this.users.splice(index, 1, this.temp)
+                break
+              }
+            }
+            this.dialogFormVisible = false
+            this.$message({
+              type: 'success',
+              message: this.$t('table.save')
+            })
+          })
+        }
       })
     },
     handleDelete(row) {
@@ -345,16 +445,12 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteUser(row.user_id).then(() => {
-          this.fetchData()
-        })
-        this.$message({
-          type: 'success',
-          message: this.$t('table.delete')
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: this.$t('table.cancel')
+          const index = this.users.indexOf(row)
+          this.users.splice(index, 1)
+          this.$message({
+            type: 'success',
+            message: this.$t('table.delete')
+          })
         })
       })
     }

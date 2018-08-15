@@ -20,6 +20,8 @@ const getters = {
   users: state => state.company.users,
   plans: state => state.company.plans,
   departs: state => state.company.departs,
-  subCompanys: state => state.company.subCompanys
+  subCompanys: state => state.company.subCompanys,
+  // 個人層級
+  serviceUsers: state => state.person.serviceUsers
 }
 export default getters
