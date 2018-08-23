@@ -86,10 +86,11 @@ export function getCompanyDepartmentList(id) {
   })
 }
 // 新增單位
-export function createCompanyDepartment() {
+export function createCompanyDepartment(params) {
   return request({
     url: '/company/department',
-    method: 'post'
+    method: 'post',
+    params
   })
 }
 // 修改單位
@@ -105,6 +106,57 @@ export function deleteCompanyDepartment(id) {
   return request({
     url: '/company/department/' + id,
     method: 'delete'
+  })
+}
+
+// 新增單位[日間服務]
+export function createCompanyDepartDay(params) {
+  return request({
+    url: '/company/departday',
+    method: 'post',
+    params
+  })
+}
+// 修改單位[日間服務]
+export function updateCompanyDepartDay(params, id) {
+  return request({
+    url: '/company/departday/' + id,
+    method: 'put',
+    params
+  })
+}
+
+// 新增單位[居住服務]
+export function createCompanyDepartLive(params) {
+  return request({
+    url: '/company/departlive',
+    method: 'post',
+    params
+  })
+}
+// 修改單位[居住服務]
+export function updateCompanyDepartLive(params, id) {
+  return request({
+    url: '/company/departlive/' + id,
+    method: 'put',
+    params
+  })
+}
+
+// 新增單位[就業服務]
+export function createCompanyDepartJob(params) {
+  return request({
+    url: '/company/departjob',
+    method: 'post',
+    params
+  })
+}
+// 修改單位[就業服務]
+export function updateCompanyDepartJob(params, id) {
+  return request({
+    url: '/company/departjob/' + id,
+    method: 'put',
+    params
   })
 }
 

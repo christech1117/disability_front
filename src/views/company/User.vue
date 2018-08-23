@@ -64,9 +64,20 @@
                 <el-input v-model="temp.username"></el-input>
               </el-form-item>
             </td>
-            <th>照片</th>
+            <th rowspan="2">照片</th>
+            <td rowspan="2">
+              <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-change="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :auto-upload="false">
+                <img v-if="temp.avatar" :src="temp.avatar" class="avatar">
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              </el-upload>
+            </td>
+          </tr>
+          <tr>
+            <th>密碼</th>
             <td>
-              <img class="dialog-user-avatar center" :src="temp.avatar" alt="">
+              <el-form-item prop="password">
+                <el-input type="password" v-model="temp.password"></el-input>
+              </el-form-item>
             </td>
           </tr>
           <tr>
@@ -142,7 +153,7 @@
             <td colspan="3">
               <el-form-item prop="team_id">
                 <el-select v-model="temp.team_id" :placeholder="$t('table.select') + $t('company.team')">
-                  <el-option v-for="item in teams" :key="item.team_id" :label="item.team_name" :value="item.team_id">
+                  <!-- <el-option v-for="item in teams" :key="item.team_id" :label="item.team_name" :value="item.team_id"> -->
                   </el-option>
                 </el-select>
               </el-form-item>
@@ -156,17 +167,28 @@
             <td colspan="3">
               <el-form-item prop="role_id">
                 <el-radio-group v-model="temp.role_id">
-                  <el-radio :label="'2'">組織管理員</el-radio>
-                  <el-radio :label="'3'">組織主管</el-radio>
-                  <el-radio :label="'4'">部門主管</el-radio>
-                  <el-radio :label="'5'">組/科/室主管</el-radio>
-                  <el-radio :label="'6'">ISP促進者</el-radio>
-                  <el-radio :label="'7'">執行監督者</el-radio>
-                  <el-radio :label="'8'">支持者</el-radio>
-                  <el-radio :label="'9'">OEES訪員</el-radio>
-                  <el-radio :label="'10'">SIS訪員</el-radio>
-                  <el-radio :label="'11'">POS訪員</el-radio>
-                  <el-radio :label="'12'">服務對象/家屬</el-radio>
+                  <!-- <el-radio label="admin">組織管理員</el-radio>
+                  <el-radio label="company_leader">組織主管</el-radio>
+                  <el-radio label="department_leader">部門主管</el-radio>
+                  <el-radio label="group_leader">組/科/室主管</el-radio>
+                  <el-radio label="isp">ISP促進者</el-radio>
+                  <el-radio label="supervisor">執行監督者</el-radio>
+                  <el-radio label="supporter">支持者</el-radio>
+                  <el-radio label="oees">OEES訪員</el-radio>
+                  <el-radio label="sis">SIS訪員</el-radio>
+                  <el-radio label="pos">POS訪員</el-radio>
+                  <el-radio label="family">服務對象/家屬</el-radio> -->
+                  <el-radio label="2">組織管理員</el-radio>
+                  <el-radio label="3">組織主管</el-radio>
+                  <el-radio label="4">部門主管</el-radio>
+                  <el-radio label="5">組/科/室主管</el-radio>
+                  <el-radio label="6">ISP促進者</el-radio>
+                  <el-radio label="7">執行監督者</el-radio>
+                  <el-radio label="8">支持者</el-radio>
+                  <el-radio label="9">OEES訪員</el-radio>
+                  <el-radio label="10">SIS訪員</el-radio>
+                  <el-radio label="11">POS訪員</el-radio>
+                  <el-radio label="12">服務對象/家屬</el-radio>
                 </el-radio-group>
               </el-form-item>
             </td>
@@ -215,6 +237,7 @@ export default {
         company_id: this.id,
         user_id: '',
         username: '',
+        password: '',
         avatar: '',
         work_start_date: '',
         active: '',
@@ -223,11 +246,14 @@ export default {
         address: '',
         work_title: '',
         role_id: '',
-        approve_status: '',
+        approve_status: [],
+        role_name: [],
         income: '',
         depart_id: '',
         depart_name: '',
-        team_id: ''
+        team_id: '',
+        plan_id: '',
+        plan_name: ''
       },
       listLoading: true,
       dialogFormVisible: false,
@@ -241,6 +267,13 @@ export default {
             trigger: 'change'
           },
           { max: 20, message: '姓名最長為 20 個字', trigger: 'change' }
+        ],
+        password: [
+          {
+            required: true,
+            message: this.$t('table.input') + this.$t('company.password'),
+            trigger: 'change'
+          }
         ],
         work_start_date: [
           {
@@ -261,13 +294,13 @@ export default {
             required: true,
             message: this.$t('table.select') + '電話',
             trigger: 'change'
-          },
-          { max: 10, message: '電話最長為 10 個字', trigger: 'change' }
+          }
         ],
         email: [
           {
+            type: 'email',
             required: true,
-            message: this.$t('table.input') + 'email',
+            message: this.$t('table.input') + '正確的信箱',
             trigger: 'change'
           }
         ],
@@ -337,6 +370,22 @@ export default {
       'GetCompanyPlanList',
       'GetCompanyDepartmentList'
     ]),
+    handleAvatarSuccess(res, file) {
+      this.temp.avatar = res.url
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg'
+      const isPNG = file.type === 'image/png'
+      const isLt2M = file.size / 1024 / 1024 < 2
+
+      if (!isJPG || !isPNG) {
+        this.$message.error('上傳照片只能是 JPG 或 PNG 格式')
+      }
+      if (!isLt2M) {
+        this.$message.error('上傳照片大小不能超過 2MB')
+      }
+      return isJPG && isPNG && isLt2M
+    },
     fetchData() {
       this.listLoading = true
       this.GetUserList(this.id).then(response => {
@@ -350,6 +399,7 @@ export default {
         company_id: this.id,
         user_id: '',
         username: '',
+        password: '',
         avatar: '',
         work_start_date: '',
         active: '',
@@ -358,11 +408,14 @@ export default {
         address: '',
         work_title: '',
         role_id: '',
-        approve_status: '',
+        approve_status: [],
+        role_name: [],
         income: '',
         depart_id: '',
         depart_name: '',
-        team_id: ''
+        team_id: '',
+        plan_id: '',
+        plan_name: ''
       }
     },
     handleCreate() {
@@ -377,20 +430,22 @@ export default {
     createData() {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
+          this.temp.approve_status = this.temp.approve_status.toString()
           createUser(this.temp).then(response => {
-            this.users.unshift(this.temp)
+            // this.$refs.upload.submit()
+            this.fetchData()
             this.dialogFormVisible = false
             this.$message({
               type: 'success',
               message: this.$t('table.add')
             })
-            this.fetchData()
           })
         }
       })
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row)
+      this.temp.approve_status = this.temp.approve_status.split(',')
       this.dialogTitle = this.$t('table.edit') + ' ' + this.$t('company.user')
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
@@ -401,10 +456,12 @@ export default {
     updateData() {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
+          this.temp.approve_status = this.temp.approve_status.toString()
           const filter_temp = {
             company_id: this.id,
             user_id: this.temp.user_id,
-            username: this.temp.value,
+            username: this.temp.username,
+            password: this.temp.password,
             avatar: this.temp.avatar,
             work_start_date: this.temp.work_start_date,
             phone: this.temp.phone,
@@ -413,22 +470,19 @@ export default {
             depart_id: this.temp.depart_id,
             depart_name: this.temp.depart_name,
             work_title: this.temp.work_title,
+            plan_id: this.temp.plan_id,
             plan_name: this.temp.plan_name,
             team_id: this.temp.team_id,
             role_id: this.temp.role_id,
             approve_status: this.temp.approve_status,
+            role_name: this.temp.role_name,
             income: this.temp.income,
             active: this.temp.active
           }
           const tempData = Object.assign({}, filter_temp)
           updateUser(tempData, this.temp.user_id).then(() => {
-            for (const v of this.users) {
-              if (v.id === this.temp.id) {
-                const index = this.users.indexOf(v)
-                this.users.splice(index, 1, this.temp)
-                break
-              }
-            }
+            // this.$refs.upload.submit()
+            this.fetchData()
             this.dialogFormVisible = false
             this.$message({
               type: 'success',
@@ -445,8 +499,7 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteUser(row.user_id).then(() => {
-          const index = this.users.indexOf(row)
-          this.users.splice(index, 1)
+          this.fetchData()
           this.$message({
             type: 'success',
             message: this.$t('table.delete')

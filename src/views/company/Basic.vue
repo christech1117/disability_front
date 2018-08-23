@@ -11,9 +11,8 @@
       <tr>
         <th>{{ $t('company.user_name') }}</th>
         <td>{{ companyBasic.username }}</td>
-        <th>{{ $t('company.tel') }}</th>
-        <td>{{ companyBasic.tel }}
-          <!-- <vue-tel-input v-model="temp.tel" @onInput="onInput"></vue-tel-input> -->
+        <th>{{ $t('company.phone') }}</th>
+        <td>{{ companyBasic.phone }}
         </td>
       </tr>
       <tr>
@@ -32,9 +31,15 @@
       </tr>
       <tr>
         <th>{{ $t('company.serviceUser_count') }}</th>
-        <td>{{ companyBasic.service_count }}</td>
+        <td>
+          <span>{{ companyBasic.service_count }}</span>
+          <span>人</span>
+        </td>
         <th>{{ $t('company.user_count') }}</th>
-        <td>{{ companyBasic.user_count }}</td>
+        <td>
+          <span>{{ companyBasic.user_count }}</span>
+          <span>人</span>
+        </td>
       </tr>
       <tr>
         <th>{{ $t('company.service_people') }}</th>
@@ -44,11 +49,11 @@
             <el-checkbox label="old" disabled>高齡</el-checkbox>
             <el-checkbox label="spirit" disabled>精神/行為健康</el-checkbox>
             <el-checkbox label="Special" disabled>特殊教育</el-checkbox>
-            <el-checkbox label="other" disabled>{{ $t('company.other') }}</el-checkbox>
+            <el-checkbox label="other" disabled>
+              <span>{{ $t('company.other') }}</span>
+              <span class="bottom-line">{{ companyBasic.service_other }}</span>
+            </el-checkbox>
           </el-checkbox-group>
-          <span>{{ $t('company.other') }}
-            <span class="bottom-line">{{ companyBasic.service_other }}</span>
-          </span>
         </td>
       </tr>
       <tr>
@@ -62,48 +67,43 @@
       </tr>
       <tr>
         <th>{{ $t('company.budget') }}</th>
-        <td colspan="3">{{ companyBasic.budget }}</td>
+        <td colspan="3">
+          <vue-numeric read-only :min="0" :minus="false" :precision="0" :empty-value="0" currency="$" separator="," v-model="companyBasic.budget"></vue-numeric>
+          <span>元/每月</span>
+        </td>
       </tr>
       <tr>
         <th>{{ $t('company.service_content') }}</th>
         <td colspan="3">
           <ol>
             <li>
-              <span>居住 ➔</span>
               <el-radio-group v-model="companyBasic.live">
+                <span>居住 ➔</span>
                 <el-radio disabled :label="'large'">大型機構(>200人)</el-radio>
                 <el-radio disabled :label="'small'">小型機構(30人~200人)</el-radio>
                 <el-radio disabled :label="'night'">夜間型住宿機構(&lt;29人)</el-radio>
                 <el-radio disabled :label="'community'">社區居住(&lt;6人)</el-radio>
               </el-radio-group>
             </li>
-            <!-- <li> -->
-            <!-- <el-checkbox disabled v-model="companyBasic.daytime">日間活動</el-checkbox> -->
-            <!-- </li> -->
-            <!-- <li> -->
-            <el-checkbox-group v-model="companyBasic.daytime">
-              <ol>
-                <li>
-                  <el-checkbox label="obstacles">日間活動</el-checkbox>
-                </li>
-                <li>
-                  <span>就業 ➔</span>
-                  <el-checkbox label="Sheltered">庇護性就業</el-checkbox>
-                  <el-checkbox label="Supportive">支持性就業</el-checkbox>
-                </li>
-                <li>
-                  <el-checkbox label="Special">教育(學校)</el-checkbox>
-                </li>
-                <li>
-                  <el-checkbox label="other">{{ $t('company.other') }}</el-checkbox>
-                  <span class="bottom-line">{{ companyBasic.other }}</span>
-                </li>
-              </ol>
+            <el-checkbox-group v-model="companyBasic.service_content">
+              <li>
+                <el-checkbox label="daytime" disabled>日間活動</el-checkbox>
+              </li>
+              <li>
+                <span>就業 ➔</span>
+                <el-checkbox label="Sheltered" disabled>庇護性就業</el-checkbox>
+                <el-checkbox label="Supportive" disabled>支持性就業</el-checkbox>
+              </li>
+              <li>
+                <el-checkbox label="education" disabled>教育(學校)</el-checkbox>
+              </li>
+              <li>
+                <el-checkbox label="other" disabled>
+                  {{ $t('company.other') }}
+                  <span class="bottom-line" maxlength="15">{{ companyBasic.other }}</span>
+                </el-checkbox>
+              </li>
             </el-checkbox-group>
-            <!-- </li> -->
-            <!-- <li>
-              <el-checkbox disabled v-model="companyBasic.education">教育(學校)</el-checkbox>
-            </li> -->
           </ol>
         </td>
       </tr>
@@ -129,10 +129,10 @@
                 </el-select>
               </el-form-item>
             </td>
-            <th>{{ $t('company.tel') }}</th>
+            <th>{{ $t('company.phone') }}</th>
             <td>
-              <el-form-item prop="tel">
-                <el-input maxlength="20" v-model="temp.tel"></el-input>
+              <el-form-item prop="phone">
+                <el-input maxlength="15" v-model="temp.phone"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -158,9 +158,15 @@
           </tr>
           <tr>
             <th>{{ $t('company.serviceUser_count') }}</th>
-            <td>{{ companyBasic.service_count }}</td>
+            <td>
+              <span>{{ companyBasic.service_count }}</span>
+              <span>人</span>
+            </td>
             <th>{{ $t('company.user_count') }}</th>
-            <td>{{ companyBasic.user_count }}</td>
+            <td>
+              <span>{{ companyBasic.user_count }}</span>
+              <span>人</span>
+            </td>
           </tr>
           <tr>
             <th>{{ $t('company.service_people') }}</th>
@@ -171,11 +177,13 @@
                   <el-checkbox label="old">高齡</el-checkbox>
                   <el-checkbox label="spirit">精神/行為健康</el-checkbox>
                   <el-checkbox label="Special">特殊教育</el-checkbox>
-                  <el-checkbox label="other">{{ $t('company.other') }}</el-checkbox>
+                  <div>
+                    <el-checkbox label="service_other">
+                      {{ $t('company.other') }}
+                      <el-input maxlength="15" v-model="temp.service_other" :disabled="temp.service_people.indexOf('service_other') == -1"></el-input>
+                    </el-checkbox>
+                  </div>
                 </el-checkbox-group>
-                <el-form-item prop="service_other">
-                  <el-input maxlength="20" v-model="temp.service_other"></el-input>
-                </el-form-item>
               </el-form-item>
             </td>
           </tr>
@@ -192,7 +200,8 @@
             <th>{{ $t('company.budget') }}</th>
             <td colspan="3">
               <el-form-item prop="budget">
-                <el-input maxlength="20" v-model="temp.budget"></el-input>
+                <vue-numeric class="c-input" :min="0" :minus="false" :precision="0" :empty-value="0" currency="$" separator="," v-model="temp.budget"></vue-numeric>
+                <span>元/每月</span>
               </el-form-item>
             </td>
           </tr>
@@ -202,36 +211,34 @@
               <ol>
                 <li>
                   <span>居住 ➔</span>
-                  <el-form-item prop="live">
-                    <el-radio-group v-model="temp.live">
-                      <el-radio :label="'large'">大型機構(>200人)</el-radio>
-                      <el-radio :label="'small'">小型機構(30人~200人)</el-radio>
-                      <el-radio :label="'night'">夜間型住宿機構(&lt;29人)</el-radio>
-                      <el-radio :label="'community'">社區居住(&lt;6人)</el-radio>
-                    </el-radio-group>
-                  </el-form-item>
+                  <el-radio-group v-model="temp.live">
+                    <el-radio :label="'large'">大型機構(>200人)</el-radio>
+                    <el-radio :label="'small'">小型機構(30人~200人)</el-radio>
+                    <el-radio :label="'night'">夜間型住宿機構(&lt;29人)</el-radio>
+                    <el-radio :label="'community'">社區居住(&lt;6人)</el-radio>
+                  </el-radio-group>
                 </li>
-                <li>
-                  <el-checkbox v-model="temp.daytime">日間活動</el-checkbox>
-                </li>
-                <li>
-                  <span>就業 ➔</span>
-                  <el-form-item prop="job">
-                    <el-radio-group v-model="temp.job">
-                      <el-radio :label="'Sheltered'">庇護性就業</el-radio>
-                      <el-radio :label="'Supportive'">支持性就業</el-radio>
-                    </el-radio-group>
-                  </el-form-item>
-                </li>
-                <li>
-                  <el-checkbox v-model="temp.education">教育(學校)</el-checkbox>
-                </li>
-                <li>
-                  <label for="other">{{ $t('company.other') }}</label>
-                  <el-form-item prop="other">
-                    <el-input maxlength="20" v-model="temp.other"></el-input>
-                  </el-form-item>
-                </li>
+                <el-form-item prop="service_content">
+                  <el-checkbox-group v-model="temp.service_content">
+                    <li>
+                      <el-checkbox label="daytime">日間活動</el-checkbox>
+                    </li>
+                    <li>
+                      <span>就業 ➔</span>
+                      <el-checkbox label="Sheltered">庇護性就業</el-checkbox>
+                      <el-checkbox label="Supportive">支持性就業</el-checkbox>
+                    </li>
+                    <li>
+                      <el-checkbox label="education">教育(學校)</el-checkbox>
+                    </li>
+                    <li>
+                      <el-checkbox label="other">
+                        {{ $t('company.other') }}
+                        <el-input maxlength="15" v-model="temp.other" :disabled="temp.service_content.indexOf('other') == -1"></el-input>
+                      </el-checkbox>
+                    </li>
+                  </el-checkbox-group>
+                </el-form-item>
               </ol>
             </td>
           </tr>
@@ -251,18 +258,56 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   data() {
     return {
-      temp: {},
+      temp: {
+        service_people: [],
+        service_content: []
+      },
       listLoading: true,
       dialogFormVisible: false,
       dialogTitle: '',
       rules: {
-        plan_name: [
+        company_name: [
           {
             required: true,
-            message: this.$t('table.input') + this.$t('company.plan_name'),
+            message: this.$t('table.input') + this.$t('company.company_name'),
             trigger: 'change'
           },
-          { max: 20, message: '方案名稱最長為 20 個字', trigger: 'change' }
+          { max: 15, message: '方案名稱最長為 15 個字', trigger: 'change' }
+        ],
+        user_name: [
+          {
+            required: true,
+            message: this.$t('table.input') + this.$t('company.user_name'),
+            trigger: 'change'
+          },
+          { max: 15, message: '聯絡人姓名最長為 15 個字', trigger: 'change' }
+        ],
+        phone: [
+          {
+            required: true,
+            message: this.$t('table.input') + this.$t('company.phone'),
+            trigger: 'change'
+          },
+          { max: 15, message: '電話最長為 15 個字', trigger: 'change' }
+        ],
+        email: [
+          {
+            required: true,
+            message: this.$t('table.input') + this.$t('company.email'),
+            trigger: 'change'
+          },
+          {
+            type: 'email',
+            message: this.$t('table.input') + '正確的信箱',
+            trigger: 'change'
+          }
+        ],
+        service_area: [
+          {
+            required: true,
+            message: this.$t('table.input') + this.$t('company.service_area'),
+            trigger: 'change'
+          }
         ]
       }
     }
@@ -278,6 +323,12 @@ export default {
     fetchData() {
       this.listLoading = true
       this.GetCompanyBasic(this.id).then(response => {
+        this.companyBasic.service_people = this.companyBasic.service_people.split(
+          ','
+        )
+        this.companyBasic.service_content = this.companyBasic.service_content.split(
+          ','
+        )
         this.listLoading = false
         this.GetUserList(this.id)
       })
@@ -294,7 +345,8 @@ export default {
     updateData() {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
-          console.log(this.temp)
+          this.temp.service_people = this.temp.service_people.toString()
+          this.temp.service_content = this.temp.service_content.toString()
           const tempData = Object.assign({}, this.temp)
           updateCompanyBasic(tempData, this.id).then(() => {
             this.fetchData()

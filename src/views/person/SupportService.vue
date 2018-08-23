@@ -1,8 +1,5 @@
 <template>
   <div>
-    <div class="filter-container">
-      <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="warning" icon="el-icon-edit">編輯</el-button>
-    </div>
     <h4 class="text-center">個別化支持服務計畫</h4>
     <h5>一、綜合摘要</h5>
     <table class="table">

@@ -228,7 +228,7 @@ export default {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
           createServiceUser(this.temp).then(response => {
-            this.serviceUsers.unshift(this.temp)
+            this.fetchData()
             this.dialogFormVisible = false
             this.$message({
               type: 'success',
@@ -248,7 +248,7 @@ export default {
         this.$refs['dataForm'].clearValidate()
       })
     },
-    updateData(temp) {
+    updateData() {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
           const filter_temp = {
@@ -265,13 +265,7 @@ export default {
           const tempData = Object.assign({}, filter_temp)
 
           updateServiceUser(tempData, this.temp.id).then(() => {
-            for (const v of this.serviceUsers) {
-              if (v.id === this.temp.id) {
-                const index = this.serviceUsers.indexOf(v)
-                this.serviceUsers.splice(index, 1, this.temp)
-                break
-              }
-            }
+            this.fetchData()
             this.dialogFormVisible = false
             this.$message({
               type: 'success',
@@ -288,8 +282,7 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteServiceUser(row.id).then(() => {
-          const index = this.serviceUsers.indexOf(row)
-          this.serviceUsers.splice(index, 1)
+          this.fetchData()
           this.$message({
             type: 'success',
             message: this.$t('table.delete')

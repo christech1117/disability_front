@@ -1,9 +1,11 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate()" type="warning" icon="el-icon-plus">{{ $t('table.add') }}</el-button>
+      <el-button class="filter-item" @click="handleCreate()" type="warning" icon="el-icon-plus">{{ $t('table.add') }}</el-button>
+      <el-input style="width: 200px;" class="filter-item" :placeholder="$t('table.search')+$t('table.title')" v-model="search" suffix-icon="el-icon-search"></el-input>
+      <!-- <el-button class="filter-item" type="primary" icon="el-icon-search" @click="filterData">{{$t('table.search')}}</el-button> -->
     </div>
-    <el-table :data="plans" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row>
+    <el-table :data="filterData" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row>
       <el-table-column align="center" :label="$t('table.id')" width="95">
         <template slot-scope="scope">
           {{scope.$index + 1}}
@@ -54,7 +56,18 @@
             <th>方案計畫名稱</th>
             <td colspan="3">
               <el-form-item prop="plan_name">
-                <el-input maxlength="20" v-model="temp.plan_name"></el-input>
+                <el-input maxlength="15" v-model="temp.plan_name"></el-input>
+              </el-form-item>
+            </td>
+          </tr>
+          <tr>
+            <th>{{ $t('company.department') }}</th>
+            <td colspan="3">
+              <el-form-item prop="depart_id">
+                <el-select v-model="temp.depart_id" :placeholder="$t('table.select') + $t('company.depart')">
+                  <el-option v-for="item in departs" :key="item.depart_id" :label="item.depart_name" :value="item.depart_id">
+                  </el-option>
+                </el-select>
               </el-form-item>
             </td>
           </tr>
@@ -62,7 +75,15 @@
             <th>服務據點名稱</th>
             <td colspan="3">
               <el-form-item prop="area_name">
-                <el-input v-model="temp.area_name"></el-input>
+                <el-input maxlength="15" v-model="temp.area_name"></el-input>
+              </el-form-item>
+            </td>
+          </tr>
+          <tr>
+            <th>服務據點說明</th>
+            <td colspan="3">
+              <el-form-item prop="area_description">
+                <el-input maxlength="50" type="textarea" :rows="4" resize="none" v-model="temp.area_description"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -79,11 +100,13 @@
           </tr>
           <tr>
             <th>電話</th>
-            <td colspan="3">{{ temp.phone }}</td>
+            <td colspan="3" v-if="temp.phone">{{ temp.phone }}</td>
+            <td colspan="3" class="warning" v-else>儲存後，自動帶入計畫承辦人電話</td>
           </tr>
           <tr>
             <th>E-mail</th>
-            <td colspan="3">{{ temp.email }}</td>
+            <td colspan="3" v-if="temp.email">{{ temp.email }}</td>
+            <td colspan="3" class="warning" v-else>儲存後，自動帶入計畫承辦人信箱</td>
           </tr>
           <tr>
             <th>服務開辦日期</th>
@@ -104,7 +127,7 @@
           <tr>
             <th>服務時間</th>
             <td colspan="3">
-              {{ temp.service_date }}
+              {{ service_date + '日' }}
             </td>
           </tr>
           <tr>
@@ -114,18 +137,17 @@
             </td>
           </tr>
           <tr>
-            <th>收費(每月)</th>
+            <th>收費</th>
             <td colspan="3">
-              <el-form-item prop="price">
-                <el-input v-model="temp.price"></el-input>
-              </el-form-item>
+              <vue-numeric class="c-input" :min="0" :minus="false" :precision="0" :empty-value="0" currency="$" separator="," v-model="temp.price"></vue-numeric>
+              <span>元/每月</span>
             </td>
           </tr>
           <tr>
             <th>說明</th>
             <td colspan="3">
               <el-form-item prop="description">
-                <el-input v-model="temp.description"></el-input>
+                <el-input maxlength="50" type="textarea" :rows="4" resize="none" v-model="temp.description"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -161,6 +183,7 @@ export default {
         price: '',
         description: ''
       },
+      search: '',
       listLoading: true,
       dialogFormVisible: false,
       dialogTitle: '',
@@ -184,11 +207,15 @@ export default {
             message: this.$t('table.input') + this.$t('company.plan_name'),
             trigger: 'change'
           },
-          { max: 20, message: '方案名稱最長為 20 個字', trigger: 'change' }
+          { max: 15, message: '方案名稱最長為 15 個字', trigger: 'change' }
         ],
         area_name: [
           { required: true, message: '請輸入服務據點名稱', trigger: 'change' },
-          { max: 20, message: '服務據點名稱最長為 20 個字', trigger: 'change' }
+          { max: 15, message: '服務據點名稱最長為 15 個字', trigger: 'change' }
+        ],
+        area_description: [
+          { required: true, message: '請輸入服務據點說明', trigger: 'change' },
+          { max: 50, message: '服務據點說明最長為 50 個字', trigger: 'change' }
         ],
         user_id: [
           { required: true, message: '請選擇計畫承辦人', trigger: 'change' }
@@ -203,7 +230,8 @@ export default {
           { required: true, message: '請輸入每月收費', trigger: 'change' }
         ],
         description: [
-          { required: true, message: '請輸入說明', trigger: 'change' }
+          { required: true, message: '請輸入說明', trigger: 'change' },
+          { max: 50, message: '說明最長為 50 個字', trigger: 'change' }
         ]
       }
     }
@@ -212,10 +240,39 @@ export default {
     this.fetchData()
   },
   computed: {
-    ...mapGetters(['id', 'users', 'plans'])
+    ...mapGetters(['id', 'users', 'plans', 'departs']),
+    filterData() {
+      const filter_name = this.search.toLowerCase()
+
+      if (filter_name.trim() !== '') {
+        return this.plans.filter(plans => {
+          return plans.plan_name
+            .toLowerCase()
+            .includes(this.search.toLowerCase())
+        })
+      }
+      return this.plans
+    },
+    service_date() {
+      if (
+        this.temp.service_start_date === '' ||
+        this.temp.service_end_date === ''
+      ) {
+        return ''
+      }
+      return (
+        (new Date(this.temp.service_end_date).getTime() / 1000 -
+          new Date(this.temp.service_start_date).getTime() / 1000) /
+        86400
+      )
+    }
   },
   methods: {
-    ...mapActions(['GetUserList', 'GetCompanyPlanList']),
+    ...mapActions([
+      'GetUserList',
+      'GetCompanyPlanList',
+      'GetCompanyDepartmentList'
+    ]),
     fetchData() {
       this.listLoading = true
       this.GetCompanyPlanList(this.id).then(response => {
@@ -249,7 +306,7 @@ export default {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
           createCompanyPlan(this.temp).then(response => {
-            this.plans.unshift(this.temp)
+            this.fetchData()
             this.dialogFormVisible = false
             this.$message({
               type: 'success',
@@ -275,6 +332,7 @@ export default {
             plan_id: this.temp.plan_id,
             plan_name: this.temp.plan_name,
             area_name: this.temp.area_name,
+            area_description: this.temp.area_description,
             user_id: this.temp.user_id,
             service_start_date: this.temp.service_start_date,
             service_end_date: this.temp.service_end_date,
@@ -283,13 +341,7 @@ export default {
           }
           const tempData = Object.assign({}, filter_temp)
           updateCompanyPlan(tempData, this.temp.plan_id).then(() => {
-            for (const v of this.plans) {
-              if (v.id === this.temp.id) {
-                const index = this.plans.indexOf(v)
-                this.plans.splice(index, 1, this.temp)
-                break
-              }
-            }
+            this.fetchData()
             this.dialogFormVisible = false
             this.$message({
               type: 'success',
@@ -306,8 +358,7 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteCompanyPlan(row.plan_id).then(() => {
-          const index = this.plans.indexOf(row)
-          this.plans.splice(index, 1)
+          this.fetchData()
           this.$message({
             type: 'success',
             message: this.$t('table.delete')

@@ -6,27 +6,32 @@
     <el-table :data="departs" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row>
       <el-table-column align="center" :label="$t('table.id')" width="95">
         <template slot-scope="scope">
-          {{scope.$index + 1}}
+          {{ scope.$index + 1 }}
         </template>
       </el-table-column>
-      <el-table-column :label="$t('company.depart_type')" align="center">
+      <el-table-column :label="$t('company.sub_company_name')" align="center">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.depart_type | statusFilter">{{scope.row.depart_type | valueFilter}}</el-tag>
+          {{ scope.row.sub_company_name }}
         </template>
       </el-table-column>
       <el-table-column :label="$t('company.depart_name')" align="center">
         <template slot-scope="scope">
-          {{scope.row.depart_name}}
+          {{ scope.row.depart_name }}
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('company.depart_type')" align="center">
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.depart_type | statusFilter">{{ scope.row.depart_type | valueFilter }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column :label="$t('company.principal')" align="center">
         <template slot-scope="scope">
-          {{scope.row.username}}
+          {{ scope.row.username }}
         </template>
       </el-table-column>
-      <el-table-column :label="$t('company.tel')" align="center">
+      <el-table-column :label="$t('company.phone')" align="center">
         <template slot-scope="scope">
-          {{scope.row.tel}}
+          {{ scope.row.phone }}
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.actions')" align="center">
@@ -36,8 +41,7 @@
         </template>
       </el-table-column>
     </el-table>
-
-    <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
+    <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
       <el-form :model="temp" :rules="rules" ref="dataForm" label-width="100px" class="demo-ruleForm">
         <el-form-item prop="depart_type">
           <el-select v-if="dialogStatus=='create'" class="filter-item" v-model="temp.depart_type" :placeholder="$t('table.select') + $t('company.service_type')">
@@ -63,7 +67,18 @@
             <th>{{ $t('company.depart_name') }}</th>
             <td>
               <el-form-item prop="depart_name">
-                <el-input maxlength="20" v-model="temp.depart_name"></el-input>
+                <el-input maxlength="15" v-model="temp.depart_name"></el-input>
+              </el-form-item>
+            </td>
+          </tr>
+          <tr>
+            <th>{{ $t('company.sub_company') }}</th>
+            <td>
+              <el-form-item prop="sub_company_id">
+                <el-select v-model="temp.sub_company_id" :placeholder="$t('table.select') + $t('company.plan')">
+                  <el-option v-for="item in subCompanys" :key="item.id" :label="item.sub_company_name" :value="item.id">
+                  </el-option>
+                </el-select>
               </el-form-item>
             </td>
           </tr>
@@ -98,36 +113,47 @@
             </td>
           </tr>
           <tr>
-            <th>{{ $t('company.tel') }}</th>
+            <th>{{ $t('company.phone') }}</th>
             <td>
-              <el-form-item prop="tel">
-                <el-input maxlength="20" v-model="temp.tel"></el-input>
+              <el-form-item prop="phone">
+                <el-input maxlength="20" v-model="temp.phone"></el-input>
               </el-form-item>
             </td>
           </tr>
         </table>
-        <table class="table day" border="1" v-else-if="temp.depart_type === 'live'">
+        <table class="table day" border="1" v-else-if="temp.depart_type==='live'">
           <tr>
             <th>{{ $t('company.service_type') }}</th>
             <td colspan="7">
               <el-form-item prop="service_type">
-                <el-radio-group v-model="temp.service_type">
-                  <el-radio :label="'large'">大型機構(>200人)</el-radio>
-                  <el-radio :label="'small'">小型機構(30人~200人)</el-radio>
-                  <el-radio :label="'night'">夜間型住宿機構(&lt;29人)</el-radio>
-                  <el-radio :label="'community'">小組工作安置</el-radio>
-                  <el-radio :label="'family'">與家人同住(&lt;6人)</el-radio>
-                  <el-radio :label="'outside'">自己在外面居住</el-radio>
-                  <el-radio :label="'other'">其他</el-radio>
-                </el-radio-group>
+                <el-checkbox-group v-model="temp.service_type" :max="1">
+                  <el-checkbox label="large">大型機構(>200人)</el-checkbox>
+                  <el-checkbox label="small">小型機構(30人~200人)</el-checkbox>
+                  <el-checkbox label="night">夜間型住宿機構(&lt;29人)</el-checkbox>
+                  <el-checkbox label="community">小組工作安置</el-checkbox>
+                  <el-checkbox label="family">與家人同住(&lt;6人)</el-checkbox>
+                  <el-checkbox label="outside">自己在外面居住</el-checkbox>
+                  <el-checkbox label="other">其他</el-checkbox>
+                </el-checkbox-group>
               </el-form-item>
             </td>
           </tr>
           <tr>
-            <th>單位名稱</th>
+            <th>{{ $t('company.sub_company') }}</th>
+            <td colspan="7">
+              <el-form-item prop="sub_company_id">
+                <el-select v-model="temp.sub_company_id" :placeholder="$t('table.select') + $t('company.plan')">
+                  <el-option v-for="item in subCompanys" :key="item.id" :label="item.sub_company_name" :value="item.id">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </td>
+          </tr>
+          <tr>
+            <th>{{ $t('company.depart_name') }}</th>
             <td colspan="7">
               <el-form-item prop="depart_name">
-                <el-input maxlength="20" v-model="temp.depart_name"></el-input>
+                <el-input maxlength="15" v-model="temp.depart_name"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -135,7 +161,7 @@
             <th>{{ $t('company.plan') }}</th>
             <td colspan="7">
               <el-form-item prop="plan_id">
-                <el-select v-model="temp.plan_id" :placeholder="$t('table.select') + $t('company.plan')">
+                <el-select v-model="temp.plan_id" :placeholder="$t('table.select') + $t('company.plan') ">
                   <el-option v-for="item in plans" :key="item.plan_id" :label="item.plan_name" :value="item.plan_id">
                   </el-option>
                 </el-select>
@@ -154,7 +180,7 @@
             </td>
           </tr>
           <tr>
-            <th>地址</th>
+            <th>{{ $t('company.address') }}</th>
             <td colspan="7">
               <el-form-item prop="address">
                 <el-input maxlength="20" v-model="temp.address"></el-input>
@@ -162,10 +188,10 @@
             </td>
           </tr>
           <tr>
-            <th>電話</th>
+            <th>{{ $t('company.phone') }}</th>
             <td colspan="7">
-              <el-form-item prop="tel">
-                <el-input maxlength="20" v-model="temp.tel"></el-input>
+              <el-form-item prop="phone">
+                <el-input v-model="temp.phone"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -173,15 +199,20 @@
             <th>房舍類型</th>
             <td colspan="4">
               <el-form-item prop="house_type">
-                <el-input maxlength="20" v-model="temp.house_type"></el-input>
+                <el-radio-group v-model="temp.house_type">
+                  <el-radio :label="'single'">透天</el-radio>
+                  <el-radio :label="'apartment'">公寓</el-radio>
+                  <el-radio :label="'building'">大厦</el-radio>
+                  <el-radio :label="'other'">其他</el-radio>
+                </el-radio-group>
               </el-form-item>
             </td>
             <th>電梯</th>
             <td colspan="2">
               <el-form-item prop="have_elevator">
                 <el-radio-group v-model="temp.have_elevator">
-                  <el-radio :label="'yes'">有</el-radio>
-                  <el-radio :label="'no'">無</el-radio>
+                  <el-radio :label="'1'">有</el-radio>
+                  <el-radio :label="'0'">無</el-radio>
                 </el-radio-group>
               </el-form-item>
             </td>
@@ -190,13 +221,21 @@
             <th>房舍性質</th>
             <td colspan="4">
               <el-form-item prop="house_nature">
-                <el-input maxlength="20" v-model="temp.house_nature"></el-input>
+                <el-radio-group v-model="temp.house_nature">
+                  <el-radio :label="'self'">自用</el-radio>
+                  <el-radio :label="'rent'">租用</el-radio>
+                  <el-radio :label="'depart'">公部門提供</el-radio>
+                  <el-radio :label="'financial'">財團法人</el-radio>
+                  <el-radio :label="'society'">社團法人</el-radio>
+                  <el-radio :label="'other'">其他</el-radio>
+                </el-radio-group>
               </el-form-item>
             </td>
             <th>每月租金</th>
             <td colspan="2">
               <el-form-item prop="rent">
-                <el-input maxlength="20" v-model="temp.rent"></el-input>
+                <vue-numeric class="c-input" :min="0" :minus="false" :precision="0" :empty-value="0" currency="$" separator="," v-model="temp.rent"></vue-numeric>
+                <span>元/每月</span>
               </el-form-item>
             </td>
           </tr>
@@ -204,7 +243,8 @@
             <th>樓層</th>
             <td colspan="4">
               <el-form-item prop="floor">
-                <el-input maxlength="20" v-model="temp.floor"></el-input>
+                <vue-numeric class="c-input" :min="0" :minus="false" :precision="0" :empty-value="0" currency="" separator="," v-model="temp.floor"></vue-numeric>
+                <span>樓</span>
               </el-form-item>
             </td>
             <th>樓地板面積</th>
@@ -218,30 +258,34 @@
             <th>客廳數</th>
             <td>
               <el-form-item prop="parlor_count">
-                <el-input maxlength="20" v-model="temp.parlor_count"></el-input>
+                <vue-numeric class="c-input-short" :min="0" :minus="false" :precision="0" :empty-value="0" currency="" separator="," v-model="temp.parlor_count"></vue-numeric>
+                <span>間</span>
               </el-form-item>
             </td>
             <th>衛浴數</th>
             <td>
               <el-form-item prop="bathroom_count">
-                <el-input maxlength="20" v-model="temp.bathroom_count"></el-input>
+                <vue-numeric class="c-input-short" :min="0" :minus="false" :precision="0" :empty-value="0" currency="" separator="," v-model="temp.bathroom_count"></vue-numeric>
+                <span>間</span>
               </el-form-item>
             </td>
             <th>房間數</th>
             <td>
               <el-form-item prop="room_count">
-                <el-input maxlength="20" v-model="temp.room_count"></el-input>
+                <vue-numeric class="c-input-short" :min="0" :minus="false" :precision="0" :empty-value="0" currency="" separator="," v-model="temp.room_count"></vue-numeric>
+                <span>間</span>
               </el-form-item>
             </td>
             <th>床位數</th>
             <td>
               <el-form-item prop="bed_count">
-                <el-input maxlength="20" v-model="temp.bed_count"></el-input>
+                <vue-numeric class="c-input-short" :min="0" :minus="false" :precision="0" :empty-value="0" currency="" separator="," v-model="temp.bed_count"></vue-numeric>
+                <span>間</span>
               </el-form-item>
             </td>
           </tr>
         </table>
-        <table class="table day" border="1" v-else-if="temp.depart_type === 'job'">
+        <table class="table day" border="1" v-else-if="temp.depart_type==='job'">
           <tr>
             <th>{{ $t('company.service_type') }}</th>
             <td>
@@ -256,10 +300,21 @@
             </td>
           </tr>
           <tr>
+            <th>{{ $t('company.sub_company') }}</th>
+            <td>
+              <el-form-item prop="sub_company_id">
+                <el-select v-model="temp.sub_company_id" :placeholder="$t('table.select') + $t('company.plan')">
+                  <el-option v-for="item in subCompanys" :key="item.id" :label="item.sub_company_name" :value="item.id">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </td>
+          </tr>
+          <tr>
             <th>{{ $t('company.depart_name') }}</th>
             <td>
               <el-form-item prop="depart_name">
-                <el-input maxlength="20" v-model="temp.depart_name"></el-input>
+                <el-input maxlength="15" v-model="temp.depart_name"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -294,10 +349,10 @@
             </td>
           </tr>
           <tr>
-            <th>{{ $t('company.tel') }}</th>
+            <th>{{ $t('company.phone') }}</th>
             <td>
-              <el-form-item prop="tel">
-                <el-input maxlength="20" v-model="temp.tel"></el-input>
+              <el-form-item prop="phone">
+                <el-input v-model="temp.phone"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -305,23 +360,26 @@
             <th>工作時間</th>
             <td>
               <el-form-item prop="work_time">
-                <el-input maxlength="20" v-model="temp.work_time"></el-input>
+                <input class="c-input-short" maxlength="2" v-model="temp.work_start_time"> 點～
+                <input class="c-input-short" maxlength="2" v-model="temp.work_end_time"> 點
               </el-form-item>
             </td>
           </tr>
           <tr>
             <th>工作時數</th>
-            <td>
-              <el-form-item prop="work_hour">
-                <el-input maxlength="20" v-model="temp.work_hour"></el-input>
-              </el-form-item>
-            </td>
+            <td v-if="work_hour">{{ work_hour }}</td>
+            <td class="warning" v-else>時間範圍有誤</td>
           </tr>
           <tr>
             <th>工資</th>
             <td>
               <el-form-item prop="salary">
-                <el-input maxlength="20" v-model="temp.salary"></el-input>
+                <el-radio-group v-model="temp.salary">
+                  <el-radio :label="'item'">按件計酬</el-radio>
+                  <el-radio :label="'hour'">按時計酬</el-radio>
+                  <el-radio :label="'month'">按月計酬</el-radio>
+                  <el-radio :label="'other'">其他</el-radio>
+                </el-radio-group>
               </el-form-item>
             </td>
           </tr>
@@ -329,14 +387,26 @@
             <th>工作內容</th>
             <td>
               <el-form-item prop="content">
-                <el-input maxlength="20" v-model="temp.content"></el-input>
+                <el-checkbox-group v-model="temp.content">
+                  <el-checkbox label="foundry">代工</el-checkbox>
+                  <el-checkbox label="package">包裝</el-checkbox>
+                  <el-checkbox label="clean">清潔工作</el-checkbox>
+                  <el-checkbox label="document">行政文書</el-checkbox>
+                  <el-checkbox label="bread">麵包烘焙</el-checkbox>
+                  <el-checkbox label="pastry">西點烘焙</el-checkbox>
+                  <el-checkbox label="food">餐飲服務</el-checkbox>
+                  <el-checkbox label="operator">作業員</el-checkbox>
+                  <el-checkbox label="shop">商店販售</el-checkbox>
+                  <el-checkbox label="warehouse">倉庫管理</el-checkbox>
+                  <el-checkbox label="other">其他</el-checkbox>
+                </el-checkbox-group>
               </el-form-item>
             </td>
           </tr>
         </table>
-        <el-form-item class="text-right">
-          <el-button v-if="dialogStatus=='create'" type="success" @click="createData()" icon="el-icon-check" circle></el-button>
-          <el-button v-else type="success" @click="updateData()" icon="el-icon-check" circle></el-button>
+        <el-form-item class="text-right ">
+          <el-button v-if="dialogStatus=='create' " type="success " @click="createData() " icon="el-icon-check " circle></el-button>
+          <el-button v-else type="success " @click="updateData() " icon="el-icon-check " circle></el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -360,11 +430,18 @@ export default {
   data() {
     return {
       temp: {
+        // 日間服務
         company_id: this.id,
-        service_type: '',
+        depart_id: '',
+        depart_type: 'day',
+        sub_company_id: '',
+        service_type: [],
         depart_name: '',
+        plan_id: '',
+        user_id: '',
         address: '',
-        tel: '',
+        phone: '',
+        // 居住服務
         house_type: '',
         have_elevator: '',
         house_nature: '',
@@ -375,10 +452,11 @@ export default {
         bathroom_count: '',
         room_count: '',
         bed_count: '',
-        work_time: '',
-        work_hour: '',
+        // 就業服務
+        work_start_time: '',
+        work_end_time: '',
         salary: '',
-        depart_type: 'day'
+        content: []
       },
       listLoading: true,
       dialogFormVisible: false,
@@ -387,52 +465,141 @@ export default {
       depart_type,
       rules: {
         depart_type: [
-          { required: true, message: '請輸入姓名', trigger: 'change' }
+          {
+            required: true,
+            message: this.$t('table.select') + '單位種類',
+            trigger: 'change'
+          }
         ],
+        // sub_company_id: [
+        //   {
+        //     required: true,
+        //     message: this.$t('table.select') + '子公司/子組織',
+        //     trigger: 'change'
+        //   }
+        // ],
         service_type: [
-          { required: true, message: '請輸入姓名', trigger: 'change' },
-          { max: 20, message: '姓名最長為 20 個字', trigger: 'change' }
+          {
+            required: true,
+            message: this.$t('table.select') + '服務類型',
+            trigger: 'change'
+          }
         ],
         depart_name: [
-          { required: true, message: '請輸入身分證字號', trigger: 'change' },
-          { min: 10, max: 10, message: '身分證長度為10個字', trigger: 'change' }
+          {
+            required: true,
+            message: this.$t('table.input') + '單位名稱',
+            trigger: 'change'
+          },
+          { max: 15, message: '單位名稱最長為15個字', trigger: 'change' }
         ],
-        address: [{ required: true, message: '請選擇日期', trigger: 'change' }],
-        tel: [{ required: true, message: '請選擇日期', trigger: 'change' }],
+        address: [
+          {
+            required: true,
+            message: this.$t('table.input') + '地址',
+            trigger: 'change'
+          },
+          { max: 20, message: '地址最長為20個字', trigger: 'change' }
+        ],
+        phone: [
+          {
+            required: true,
+            message: this.$t('table.input') + '電話',
+            trigger: 'change'
+          }
+        ],
+
         house_type: [
-          { required: true, message: '請選擇日期', trigger: 'change' }
+          {
+            required: true,
+            message: this.$t('table.input') + '房舍類型',
+            trigger: 'change'
+          }
         ],
         have_elevator: [
-          { required: true, message: '請選擇性別', trigger: 'change' }
+          {
+            required: true,
+            message: this.$t('table.select') + '電梯',
+            trigger: 'change'
+          }
         ],
         house_nature: [
-          { required: true, message: '請選擇性別', trigger: 'change' }
+          {
+            required: true,
+            message: this.$t('table.input') + '房舍性質',
+            trigger: 'change'
+          }
         ],
-        rent: [{ required: true, message: '請選擇性別', trigger: 'change' }],
-        floor: [{ required: true, message: '請選擇性別', trigger: 'change' }],
+        rent: [
+          {
+            required: true,
+            message: this.$t('table.input') + '每月租金',
+            trigger: 'change'
+          }
+        ],
+        floor: [
+          {
+            required: true,
+            message: this.$t('table.input') + '樓層',
+            trigger: 'change'
+          }
+        ],
         floor_area: [
-          { required: true, message: '請選擇性別', trigger: 'change' }
+          {
+            required: true,
+            message: this.$t('table.input') + '樓地板面積',
+            trigger: 'change'
+          }
         ],
         parlor_count: [
-          { required: true, message: '請選擇性別', trigger: 'change' }
+          {
+            required: true,
+            message: this.$t('table.input') + '客廳數',
+            trigger: 'change'
+          }
         ],
         bathroom_count: [
-          { required: true, message: '請選擇性別', trigger: 'change' }
+          {
+            required: true,
+            message: this.$t('table.input') + '衛浴數',
+            trigger: 'change'
+          }
         ],
         room_count: [
-          { required: true, message: '請選擇性別', trigger: 'change' }
+          {
+            required: true,
+            message: this.$t('table.input') + '房間數',
+            trigger: 'change'
+          }
         ],
         bed_count: [
-          { required: true, message: '請選擇性別', trigger: 'change' }
-        ],
-        work_time: [
-          { required: true, message: '請選擇性別', trigger: 'change' }
+          {
+            required: true,
+            message: this.$t('table.input') + '床位數',
+            trigger: 'change'
+          }
         ],
         work_hour: [
-          { required: true, message: '請選擇性別', trigger: 'change' }
+          {
+            required: true,
+            message: this.$t('table.input') + '工作時數',
+            trigger: 'change'
+          }
         ],
-        salary: [{ required: true, message: '請選擇性別', trigger: 'change' }],
-        content: [{ required: true, message: '請選擇性別', trigger: 'change' }]
+        salary: [
+          {
+            required: true,
+            message: this.$t('table.input') + '工資',
+            trigger: 'change'
+          }
+        ],
+        content: [
+          {
+            required: true,
+            message: this.$t('table.input') + '工作內容',
+            trigger: 'change'
+          }
+        ]
       }
     }
   },
@@ -458,11 +625,25 @@ export default {
     this.fetchData()
   },
   computed: {
-    ...mapGetters(['id', 'users', 'plans', 'departs'])
+    ...mapGetters(['id', 'users', 'plans', 'departs', 'subCompanys']),
+    work_hour() {
+      if (
+        this.temp.work_start_time === '' ||
+        this.temp.work_end_time === '' ||
+        this.temp.work_start_time < 0 ||
+        this.temp.work_end_time < 0 ||
+        this.temp.work_end_time - this.temp.work_start_time < 0 ||
+        (this.temp.work_start_tim && this.temp.work_end_tim <= 24)
+      ) {
+        return ''
+      }
+      return this.temp.work_end_time - this.temp.work_start_time + '小時'
+    }
   },
   methods: {
     ...mapActions([
       'GetUserList',
+      'GetCompanySubCompanyList',
       'GetCompanyPlanList',
       'GetCompanyDepartmentList'
     ]),
@@ -470,17 +651,25 @@ export default {
       this.listLoading = true
       this.GetCompanyDepartmentList(this.id).then(response => {
         this.listLoading = false
+        this.GetCompanySubCompanyList(this.id)
         this.GetCompanyPlanList(this.id)
         this.GetUserList(this.id)
       })
     },
     resetTemp() {
       this.temp = {
+        // 日間服務
         company_id: this.id,
-        service_type: '',
+        depart_id: '',
+        depart_type: 'day',
+        sub_company_id: '',
+        service_type: [],
         depart_name: '',
+        plan_id: '',
+        user_id: '',
         address: '',
-        tel: '',
+        phone: '',
+        // 居住服務
         house_type: '',
         have_elevator: '',
         house_nature: '',
@@ -491,10 +680,11 @@ export default {
         bathroom_count: '',
         room_count: '',
         bed_count: '',
-        work_time: '',
-        work_hour: '',
+        // 就業服務
+        work_start_time: '',
+        work_end_time: '',
         salary: '',
-        depart_type: 'day'
+        content: []
       }
     },
     handleCreate() {
@@ -509,8 +699,10 @@ export default {
     createData() {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
+          this.temp.service_type = this.temp.service_type.toString()
+          this.temp.content = this.temp.content.toString()
           createCompanyDepartment(this.temp).then(response => {
-            this.departs.unshift(this.temp)
+            this.fetchData()
             this.dialogFormVisible = false
             this.$message({
               type: 'success',
@@ -522,6 +714,10 @@ export default {
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row)
+      this.temp.service_type = this.temp.service_type.split(',')
+      if (this.temp.content !== null) {
+        this.temp.content = this.temp.content.split(',')
+      }
       this.dialogTitle = this.$t('table.edit') + ' ' + this.$t('company.depart')
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
@@ -532,15 +728,13 @@ export default {
     updateData() {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
+          this.temp.service_type = this.temp.service_type.toString()
+          if (this.temp.content !== null) {
+            this.temp.content = this.temp.content.toString()
+          }
           const tempData = Object.assign({}, this.temp)
           updateCompanyDepartment(tempData, this.temp.depart_id).then(() => {
-            for (const v of this.departs) {
-              if (v.id === this.temp.id) {
-                const index = this.departs.indexOf(v)
-                this.departs.splice(index, 1, this.temp)
-                break
-              }
-            }
+            this.fetchData()
             this.dialogFormVisible = false
             this.$message({
               type: 'success',
@@ -557,8 +751,7 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteCompanyDepartment(row.depart_id).then(() => {
-          const index = this.departs.indexOf(row)
-          this.departs.splice(index, 1)
+          this.fetchData()
           this.$message({
             type: 'success',
             message: this.$t('table.delete')

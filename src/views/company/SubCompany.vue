@@ -52,7 +52,7 @@
             <th>{{ $t('company.sub_company_description') }}</th>
             <td colspan="3">
               <el-form-item prop="sub_company_description">
-                <el-input maxlength="50" type="textarea" :rows="6" resize="none" v-model="temp.sub_company_description"></el-input>
+                <el-input maxlength="50" type="textarea" :rows="4" resize="none" v-model="temp.sub_company_description"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -154,7 +154,6 @@ export default {
         if (valid) {
           createCompanySubCompany(this.temp).then(response => {
             this.fetchData()
-            this.subCompanys.unshift(this.temp)
             this.dialogFormVisible = false
             this.$message({
               type: 'success',
@@ -179,13 +178,7 @@ export default {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
           updateCompanySubCompany(tempData, this.temp.id).then(() => {
-            for (const v of this.subCompanys) {
-              if (v.id === this.temp.id) {
-                const index = this.subCompanys.indexOf(v)
-                this.subCompanys.splice(index, 1, this.temp)
-                break
-              }
-            }
+            this.fetchData()
             this.dialogFormVisible = false
             this.$message({
               type: 'success',
@@ -202,8 +195,7 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteCompanySubCompany(row.id).then(() => {
-          const index = this.subCompanys.indexOf(row)
-          this.subCompanys.splice(index, 1)
+          this.fetchData()
           this.$message({
             type: 'success',
             message: this.$t('table.delete')

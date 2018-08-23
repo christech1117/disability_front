@@ -60,7 +60,6 @@ export const asyncRouterMap = [{
   path: '/company',
   component: Layout,
   redirect: '/company/basic',
-  // alwaysShow: true,
   name: 'Company',
   meta: {
     title: 'company_manage',
@@ -93,7 +92,7 @@ export const asyncRouterMap = [{
     path: 'department',
     name: 'Department',
     component: () =>
-          import('@/views/company/department'),
+          import('@/views/company/Department'),
     meta: {
       title: 'depart_manage',
       icon: 'tree',
